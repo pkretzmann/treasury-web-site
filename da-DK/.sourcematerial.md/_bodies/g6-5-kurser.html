@@ -1,0 +1,152 @@
+<div class="section" id="kurser-overblik">
+  <div class="section-header">
+    <div class="section-icon">📈</div>
+    <h2>Kurser — overblik</h2>
+  </div>
+  <p>Kurser bruges som forslag i kladder ved køb og salg, og som grundlag for kursreguleringskørsler. Der er fire typer kurser i systemet: ISIN-koder, fondskurser, valutakurser og indekskurser.</p>
+</div>
+
+<div class="section" id="kurser-isin">
+  <div class="section-header">
+    <div class="section-icon">🔑</div>
+    <h2>ISIN-koder</h2>
+  </div>
+  <p>ISIN (International Securities Identification Number) er en international identifikationskode, der entydigt identificerer et værdipapir. ISIN-koden angives på det enkelte værdipapirkort og bruges som nøgle til fondskurslisten.</p>
+
+  <h3>Sådan åbner du ISIN-koder</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>ISINs</strong>.</li>
+  </ol>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kode</strong></td>
+          <td>ISIN-koden for værdipapiret (op til 20 tegn). Bruges som opslag fra værdipapirkortet og som nøgle i fondskurslisten. Eksempel: <strong>DK0002537027</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Current Price</strong></td>
+          <td>Den seneste registrerede kurs for ISIN-koden. Beregnes og opdateres automatisk fra fondskurslisten.</td>
+        </tr>
+        <tr>
+          <td><strong>Current Price Date</strong></td>
+          <td>Datoen for den seneste registrerede kurs. Beregnes automatisk.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>ISIN-koder oprettes manuelt — én linje per kode. Fra ISIN-listen kan du navigere direkte til fondskurslisten for den valgte kode via handlingen <strong>Investment Fund Prices</strong>.</p>
+
+  <div class="note"><strong>Bemærk:</strong> Automatisk import af ISIN-koder via kurslistefiler er endnu ikke implementeret.</div>
+</div>
+
+<div class="section" id="kurser-fondskurser">
+  <div class="section-header">
+    <div class="section-icon">💹</div>
+    <h2>Fondskurser</h2>
+  </div>
+  <p>Fondskurslisten indeholder historiske kurser pr. ISIN-kode og dato. Kurser kan oprettes manuelt eller — når importfunktionen er implementeret — indlæses automatisk.</p>
+
+  <h3>Sådan åbner du fondskurser</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Investment Fund Prices</strong>.</li>
+  </ol>
+  <p>Du kan også åbne siden filtreret på en valgt ISIN-kode via handlingen <strong>Investment Fund Prices</strong> fra ISIN-listen.</p>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ISIN Code</strong></td>
+          <td>ISIN-koden for det værdipapir, kursen gælder for. Opslag i ISIN-tabellen.</td>
+        </tr>
+        <tr>
+          <td><strong>Date</strong></td>
+          <td>Den dato, kursen er gyldig fra. Der kan kun registreres én kurs pr. ISIN-kode pr. dato.</td>
+        </tr>
+        <tr>
+          <td><strong>Price</strong></td>
+          <td>Kursen for værdipapiret på den angivne dato.</td>
+        </tr>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>Værdipapirets navn. Vises automatisk fra det tilknyttede værdipapir og kan ikke redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Nominal Interest Rate %</strong></td>
+          <td>Nominel rente i procent (relevant for obligationer). Valgfrit felt.</td>
+        </tr>
+        <tr>
+          <td><strong>Issuer</strong></td>
+          <td>Udstederens navn som fritekst (uafhængigt af udstederlisten). Udfyldes primært ved kursimport.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Import og eksport</h3>
+  <p>Siden indeholder knapperne <strong>Import Prices</strong> og <strong>Export Prices</strong>. Disse funktioner er endnu ikke implementeret og kan bruges når de bliver tilgængelige.</p>
+</div>
+
+<div class="section" id="kurser-valuta">
+  <div class="section-header">
+    <div class="section-icon">💱</div>
+    <h2>Valutakurser</h2>
+  </div>
+  <p>Valutakurser administreres via standardfunktionaliteten i Business Centrals finansmodul og er ikke en del af Treasury-opsætningen.</p>
+
+  <h3>Sådan åbner du valutakurser</h3>
+  <ol class="steps">
+    <li>Søg efter <strong>Currency Exchange Rates</strong> i søgefeltet, eller</li>
+    <li>Navigér via menuen <strong>Finance → Setup → Currencies</strong>.</li>
+  </ol>
+
+  <p>Valutakurserne bruges automatisk af Treasury-systemet ved bogføring af transaktioner i udenlandsk valuta.</p>
+</div>
+
+<div class="section" id="kurser-indeks">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Indekskurser</h2>
+  </div>
+  <p>Indekskurser bruges som referenceværdi ved beregning og regulering af indeksobligationer. Tabellen indeholder én global prisserie — der skelnes ikke mellem ISIN-koder.</p>
+
+  <h3>Sådan åbner du indekskurser</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Index Prices</strong>.</li>
+  </ol>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Starting Date</strong></td>
+          <td>Datoen, hvorfra indekskursen er gyldig (primærnøgle). Feltet er obligatorisk. Der kan kun oprettes én post pr. dato.</td>
+        </tr>
+        <tr>
+          <td><strong>Price</strong></td>
+          <td>Indekskursens værdi, gyldig fra Starting Date. Op til 20 decimaler er tilladt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Kurser registreres manuelt — én linje per dato. Den senest registrerede kurs på eller før handelsdatoen vil blive anvendt ved beregninger for indeksobligationer.</p>
+</div>

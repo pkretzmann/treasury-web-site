@@ -1,0 +1,131 @@
+<div class="section" id="udbytte-oversigt">
+  <div class="section-header">
+    <div class="section-icon">🎁</div>
+    <h2>Bogføring af aktieudbytte</h2>
+  </div>
+  <p>Når en aktie udbetaler udbytte, bogføres det via <strong>Værdipapirafkastkladden</strong>. Du kan udfylde kladden manuelt eller lade systemet automatisk foreslå udbyttelinjer for alle aktier i porteføljen.</p>
+</div>
+
+<div class="section" id="manual-indtastning">
+  <div class="section-header">
+    <div class="section-icon">✏️</div>
+    <h2>Manuel udfyldelse</h2>
+  </div>
+  <h3>Åbn Værdipapirafkastkladden</h3>
+  <p>Vælg <strong>Værdipapirafkastkladde</strong> under Treasury-menuen i rollecentret. Hvis du har flere kladdetyper, vises en liste — vælg den ønskede type (fx <strong>AFKAST</strong>). I øverste del af siden kan du skifte batch (kladdenavn) efter behov.</p>
+
+  <h3>Udfyld kladdelinjen</h3>
+  <p>Herunder er de vigtigste felter at udfylde:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Handelsdato</strong></td>
+          <td>Datoen for udbyttebegivenheden. Bogføringsdatoen sættes automatisk til denne dato.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Hentes automatisk hvis kladdbatchen har en nummerserie. Ellers angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Værdipapirnummer</strong></td>
+          <td>Vælg aktien. Systemet indsætter automatisk beskrivelse, valutakode og markedsværdiprincip fra værdipapirets bogføringsgruppe.</td>
+        </tr>
+        <tr>
+          <td><strong>Afkast før skat</strong></td>
+          <td>Det bruttobeløb udbyttet udgør (i værdipapirets valuta). Obligatorisk felt.</td>
+        </tr>
+        <tr>
+          <td><strong>Udbytteskat</strong></td>
+          <td>Den indeholdte skat. Kan beregnes automatisk via batchfunktionen (se nedenfor) eller angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb</strong></td>
+          <td>Beregnes automatisk som Afkast før skat − Udbytteskat. Ikke redigerbart.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdningskode</strong></td>
+          <td>Vælg hvilket depot udbyttet skal bogføres på. Modkonto fyldes automatisk fra depotopsætningen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="automatisk-forslag">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <h2>Automatisk forslag — Foreslå udbyttelinjer</h2>
+  </div>
+  <p>Hvis du har mange aktier i porteføljen, kan du lade systemet automatisk danne udbyttelinjer. Vælg <strong>Foreslå udbyttelinjer</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</p>
+
+  <h3>Felter i anfordringsvinduet</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bogføringsdato</strong></td>
+          <td>Bogføringsdato for de dannede linjer.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnummer</strong></td>
+          <td>Kan også hentes fra kladdens nummerserie.</td>
+        </tr>
+        <tr>
+          <td><strong>Udbytte pr. aktie</strong></td>
+          <td>Det foreslåede udbyttebeløb pr. aktienhed.</td>
+        </tr>
+        <tr>
+          <td><strong>Kladde / Batch</strong></td>
+          <td>Hvor linjerne skal dannes.</td>
+        </tr>
+        <tr>
+          <td><strong>Filter på Værdipapir</strong></td>
+          <td>Du kan begrænsning til ét eller flere værdipapirer.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>For hvert værdipapir og depot opretter systemet én linje hvor:</p>
+  <ul class="bullets">
+    <li>Antallet hentes fra depotets nettobeholdning</li>
+    <li>Afkastet beregnes som Antal × Udbytte pr. aktie</li>
+    <li>Skatten beregnes ud fra skatteprocenten i værdipapirets bogføringsgruppe</li>
+  </ul>
+  <p>Gennemse derefter linjerne i kladden, foretag evt. rettelser, og bogfør.</p>
+</div>
+
+<div class="section" id="bogfoering">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogføring af linjen</h2>
+  </div>
+  <p>Når kladdelinjen er udfyldt, klik på <strong>Bogfør</strong> (F9). Systemet validerer:</p>
+  <ul class="bullets">
+    <li>At værdipapirnummer er udfyldt</li>
+    <li>At bogføringsdato og bilagsnummer er udfyldt</li>
+    <li>At afkastet ikke er nul</li>
+    <li>At valutafaktoren er udfyldt (hvis værdipapiret er i fremmed valuta)</li>
+  </ul>
+  <p>Hvis alt er i orden, dannes der følgende posteringer:</p>
+  <ul class="bullets">
+    <li><strong>Værdipapirpost:</strong> En post med bilagstype Afkast. Antallet er 0 (da et udbytte ikke ændrer beholdningen), men beløbene registreres.</li>
+    <li><strong>Gevinstposter:</strong> En linje for det realiserede afkast og evt. en for skatten.</li>
+    <li><strong>Finansposter:</strong> Modkontoen (typisk bankkonto) debiteres med nettobeløbet. Afkastkontoen og skattkontoen posteres med de rette beløb.</li>
+  </ul>
+  <div class="info-box">
+    <strong>Bemærk:</strong> Du kan markere linjen som urealiseret afkast (fx ved periodiseringer). I så fald bogføres mod en særlig urealiseret afkastkonto og kan tilbageføres senere. Se afsnit 5.3 for obligationsrenter.
+  </div>
+</div>

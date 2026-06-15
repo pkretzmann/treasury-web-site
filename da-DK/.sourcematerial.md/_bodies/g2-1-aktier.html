@@ -1,0 +1,205 @@
+<div class="section" id="generelt-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Fanebladet Generelt</h2>
+  </div>
+  <p>Når du opretter en ny aktie, starter du på fanebladet <strong>Generelt</strong>. Her udfylder du grundoplysningerne — hvad aktien hedder, hvilken ISIN-kode den har, og hvilken valuta den handles i.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>No.</strong></td>
+          <td>V/T</td>
+          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret i Værdipapiropsætning. Er nummerserien tom, skal nummeret angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Number Series</strong></td>
+          <td>T</td>
+          <td>Udfyldes automatisk fra Værdipapiropsætning ved oprettelse. Kan ændres via assisteret redigering på No.-feltet.</td>
+        </tr>
+        <tr>
+          <td><strong>Security Type</strong></td>
+          <td>T</td>
+          <td>Vælg <strong>Stock</strong> (Aktie). Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
+        </tr>
+        <tr>
+          <td><strong>Issuer Code</strong></td>
+          <td>V</td>
+          <td>Angiv udsteder. Feltet er valgfrit for aktier.</td>
+        </tr>
+        <tr>
+          <td><strong>ISIN Code</strong></td>
+          <td>V</td>
+          <td>Angiv eller vælg ISIN-koden for aktien. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes i forvejen. Kan ikke ændres, når der eksisterer bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>V</td>
+          <td>Angiv aktiens navn. Udfyldes manuelt — der er ikke automatisk navnhentning fra ISIN i den nuværende version.</td>
+        </tr>
+        <tr>
+          <td><strong>Search Name</strong></td>
+          <td>V</td>
+          <td>Udfyldes automatisk på baggrund af Name, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Blocked</strong></td>
+          <td>V</td>
+          <td>Markér for at spærre aktien. En spærret aktie kan hverken vælges på en kladdelinje eller bogføres.</td>
+        </tr>
+        <tr>
+          <td><strong>Currency Code</strong></td>
+          <td>V</td>
+          <td>Angiv valutakoden, hvis aktien handles i en anden valuta end regnskabsvalutaen. Lad feltet stå blankt, hvis aktien er noteret i regnskabsvalutaen (f.eks. DKK). Kan ikke ændres, når der eksisterer bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Country Code</strong></td>
+          <td>V</td>
+          <td>Angiv landekode for aktien.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Quantity</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Value</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Undergruppe: Share Details</h3>
+  <p>I denne undergruppe angiver du stykstørrelsen for aktien.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Share Size</strong></td>
+          <td>V</td>
+          <td>Angiv aktiens stykstørrelse (nominel stykstørrelse pr. aktie). Feltet kan ikke redigeres, hvis der eksisterer åbne poster på aktien — ændringen skal i så fald foretages via Overførselskladden.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>Forkortelser i kolonnen "Udfyldes":</strong> <strong>T</strong> = Tvungen (skal altid udfyldes), <strong>V</strong> = Valgfri (udfyldes efter behov), <strong>P</strong> = Programstyret (vedligeholdes automatisk, kan ikke redigeres).
+  </div>
+</div>
+
+<div class="section" id="bogfoering-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Fanebladet Bogføring</h2>
+  </div>
+  <p>På fanebladet <strong>Bogføring</strong> knytter du aktien til finanskontoplanen og definerer bogføringsgrupper og dimensioner. Disse oplysninger styrer, hvordan posteringer på aktien påvirker bogholderiet.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Posting Group</strong></td>
+          <td>T</td>
+          <td>Angiv eller vælg den bogføringsgruppe, der knytter aktien til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 1 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den primære dimensionsværdi (f.eks. afdeling). Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 2 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den sekundære dimensionsværdi. Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Method</strong></td>
+          <td>V</td>
+          <td>Vælg grupperingsmetode til rapporter: <strong>Posting Group</strong>, <strong>Dimension Value</strong> eller <strong>Detailed information</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Code</strong></td>
+          <td>V</td>
+          <td>Angiv den tilhørende gruppekode. Opslaget afhænger af metoden: bogføringsgruppe, dimensionsværdi eller detaljeret information.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="handlinger">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Handlinger og links på aktiekortet</h2>
+  </div>
+  <p>Fra aktiekortet kan du navigere til relaterede data og udføre handlinger:</p>
+
+  <ul class="bullets">
+    <li><strong>Investment Fund Prices</strong> — se kurshistorikken for den tilknyttede ISIN-kode og følg udviklingen i aktiens værdi over tid.</li>
+    <li><strong>Security Accounts</strong> — se hvilke depoter aktien er tilknyttet.</li>
+    <li><strong>Comments</strong> — tilføj noter og kommentarer til aktien, fx for at dokumentere særlige aftaler eller observationer.</li>
+  </ul>
+</div>
+
+<div class="section" id="vejledning-til-udfyldelse">
+  <div class="section-header">
+    <div class="section-icon">📌</div>
+    <h2>Praktisk vejledning til oprettelse</h2>
+  </div>
+
+  <h3>Hvad skal du altid udfylde?</h3>
+  <p>Start med de felter, der er markeret med <strong>T</strong> (Tvungen):</p>
+  <ul class="bullets">
+    <li><strong>Security Type:</strong> Vælg <strong>Stock</strong>.</li>
+    <li><strong>Number Series:</strong> Udfyldes automatisk.</li>
+    <li><strong>Posting Group:</strong> Knyt aktien til en bogføringsgruppe.</li>
+    <li><strong>Global Dimension 1 Code og Global Dimension 2 Code:</strong> Fyld kun ud, hvis dimensioner er konfigureret i systemet.</li>
+  </ul>
+
+  <h3>Hvad kan du udfylde efter behov?</h3>
+  <p>Felterne markeret med <strong>V</strong> (Valgfri) kan udfyldes efter behov:</p>
+  <ul class="bullets">
+    <li><strong>ISIN Code:</strong> Hjælper med at identificere og linke til kurser.</li>
+    <li><strong>Name og Search Name:</strong> Gør det lettere at søge og finde aktien senere.</li>
+    <li><strong>Currency Code:</strong> Fyld ud, hvis aktien handles i en anden valuta end DKK.</li>
+    <li><strong>Share Size:</strong> Angiv, hvis aktien har en bestemt stykstørrelse.</li>
+  </ul>
+
+  <h3>Hvad styres automatisk?</h3>
+  <p>Felterne markeret med <strong>P</strong> (Programstyret) opdateres automatisk baseret på posteringer:</p>
+  <ul class="bullets">
+    <li><strong>Remaining Quantity:</strong> Systemet beregner automatisk, hvor mange aktier du har tilbage.</li>
+    <li><strong>Remaining Value:</strong> Systemet beregner automatisk værdien af det resterende beholdning.</li>
+    <li><strong>Search Name:</strong> Oprettes automatisk fra Name, men kan ændres manuelt.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Security Type</strong>, <strong>ISIN Code</strong> eller <strong>Currency Code</strong>. Plant disse oplysninger omhyggeligt fra starten.
+  </div>
+</div>

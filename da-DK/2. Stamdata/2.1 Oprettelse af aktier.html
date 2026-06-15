@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oprettelse af aktier · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================================
+   html-guide — DEFAULT (fallback) stylesheet
+   This is the generic, neutral-branded canonical stylesheet that
+   /html-guide falls back to when a project has no .website/styles.css.
+   To brand a project, create .website/styles.css (e.g. via /create-css)
+   — do NOT edit this shared file per project. Inlined verbatim by
+   /html-guide; do NOT rewrite CSS from memory.
+   ============================================================ */
+
+/* ============================================================
+   BRAND — neutral defaults. Per project these are set in
+   .website/styles.css (by hand or via /create-css <website-url> [type]).
+   Company: PwC Security for Business Central
+   ============================================================ */
+   :root {
+    --brand-dark:    #5B431F;   /* primary — headers, primary       */
+    --brand-mid:     #946028;   /* buttons, links, table headers    */
+    --brand-light:   #B8884A;   /* accents, arrows, badges          */
+    --brand-pale:    #F5EAD5;   /* hover, decision boxes            */
+    --brand-subtle:  #FCF8EC;   /* step backgrounds                 */
+    --accent:        #C97A3F;   /* general accent                   */
+  }
+  
+  /* ── System tokens (brand-neutral — usually leave as-is) ── */
+  :root {
+    --white:        #FFFFFF;
+    --gray-100:     #F4F6F8;   /* page background  */
+    --gray-200:     #E1E8EF;   /* borders          */
+    --gray-400:     #9BAFC0;
+    --gray-700:     #4A5C6A;   /* secondary text   */
+    --text:         #1A2A38;   /* primary text     */
+    --note-bg:      #FFF8E1;   /* warning/note bg  */
+    --note-border:  #F4A918;   /* warning/note border */
+    --success:      #1A7F4B;
+    --success-bg:   #E6F6EE;
+    --info:         #5A6E86;   /* neutral status text */
+    --info-bg:      #EAEEF4;   /* neutral status bg   */
+    --pending:      #B5611C;   /* in-progress text    */
+    --pending-bg:   #FBE7D5;   /* in-progress bg      */
+    --code-bg:      #0E2230;
+    --code-text:    #D6E7F2;
+  }
+  
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--gray-100);
+  }
+  
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 60%, var(--brand-light) 100%);
+    color: var(--white);
+    padding: 48px 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  header p {
+    font-size: 15px;
+    opacity: 0.85;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+  .header-pills {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  
+  /* ── Layout ── */
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+  }
+  
+  /* ── Table of contents ── */
+  .toc {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-left: 4px solid var(--brand-mid);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+  }
+  .toc h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--brand-mid);
+    margin-bottom: 14px;
+  }
+  .toc ol {
+    padding-left: 20px;
+    column-count: 2;
+    column-gap: 32px;
+  }
+  .toc li { margin-bottom: 5px; }
+  .toc a {
+    color: var(--brand-dark);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .toc a:hover { color: var(--brand-light); }
+  
+  /* ── Section cards ── */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0,63,127,0.06);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--brand-pale);
+  }
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--brand-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--brand-dark);
+    letter-spacing: -0.3px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--brand-mid);
+    margin: 24px 0 12px;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin: 18px 0 8px;
+  }
+  p { margin-bottom: 14px; }
+  ul.bullets { margin: 0 0 14px 20px; }
+  ul.bullets li { margin-bottom: 6px; }
+  strong { font-weight: 600; }
+  
+  /* ── Inline code & code blocks ── */
+  code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12.5px;
+    background: var(--brand-subtle);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--brand-dark);
+    overflow-wrap: break-word;   /* wrap long identifiers instead of overflowing in multiline text */
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    white-space: pre;
+    font-size: inherit;
+  }
+  pre .cmt { color: #6F94A8; font-style: italic; }
+  pre .kw  { color: #62B6E8; }
+  pre .str { color: #9AD9A0; }
+  
+  /* ── Numbered steps ──
+     IMPORTANT 1: do NOT use display:flex on the <li>. Flex turns each text
+     run and inline <code> into separate flex items on one non-wrapping
+     line, so a step longer than one line collapses to one word per line.
+     Use block flow + an absolutely-positioned number marker instead.
+     IMPORTANT 2: rules are scoped with the child combinator (.steps > li),
+     NOT a descendant (.steps li). A descendant selector would also match a
+     nested <ul class="sub-steps"> inside a step, leaking the 26px number
+     circle onto the sub-step's marker and overlapping its text. */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 14px 18px 14px 52px;
+    background: var(--brand-subtle);
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid var(--brand-pale);
+  }
+  .steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--brand-mid);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  /* ── Sub-steps (nested) ── same wrap-safe approach as .steps;
+     also scoped with > so a deeper nested list won't inherit the arrow. */
+  .sub-steps {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sub-steps > li {
+    position: relative;
+    padding: 8px 12px 8px 32px;
+    background: var(--white);
+    border-radius: 6px;
+    font-size: 13.5px;
+    border: 1px solid var(--gray-200);
+  }
+  .sub-steps > li::before {
+    content: '→';
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    color: var(--brand-light);
+    font-weight: 700;
+  }
+  
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  thead tr {
+    background: var(--brand-dark);
+    color: var(--white);
+  }
+  thead th {
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+  }
+  tbody tr:nth-child(even) { background: var(--brand-subtle); }
+  tbody tr:hover { background: var(--brand-pale); }
+  tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: top;
+  }
+  table code { white-space: nowrap; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  
+  /* ── Status-badges ── */
+  .badge-ok {
+    display: inline-block;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #B8E2CC;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-tag {
+    display: inline-block;
+    background: var(--brand-pale);
+    color: var(--brand-dark);
+    border: 1px solid #BBDCF2;
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .type-tag {
+    display: inline-block;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  
+  /* ── Day-badge (highlight concrete days/times in examples) ── */
+  .day-tag {
+    display: inline-block;
+    background: #FFF3E0;
+    border: 1px solid #FFB74D;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #BF5E00;
+  }
+  
+  /* ── Tech-details grid ── */
+  dl.tech {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 8px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  dl.tech dt {
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+  dl.tech dd {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--brand-dark);
+  }
+  
+  /* ── Note box ── */
+  .note {
+    background: var(--note-bg);
+    border-left: 4px solid var(--note-border);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .note strong { color: #B7770A; }
+  
+  /* ── Info box ── */
+  .info-box {
+    background: var(--brand-pale);
+    border-left: 4px solid var(--brand-mid);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  
+  /* ── Flowchart ── */
+  .flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 24px 0;
+    font-size: 13px;
+  }
+  .fc-node {
+    background: var(--white);
+    border: 2px solid var(--brand-mid);
+    border-radius: 8px;
+    padding: 11px 22px;
+    text-align: center;
+    max-width: 560px;
+    width: 100%;
+    color: var(--text);
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0,63,127,0.1);
+  }
+  .fc-node code { white-space: normal; }
+  .fc-node .fc-status {
+    display: block;
+    margin-top: 5px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--brand-mid);
+  }
+  .fc-node.start {
+    background: var(--brand-dark);
+    border-color: var(--brand-dark);
+    color: white;
+    font-weight: 600;
+    border-radius: 24px;
+  }
+  .fc-node.start code { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25); color: #fff; }
+  .fc-node.decision {
+    background: var(--brand-pale);
+    border-color: var(--brand-mid);
+    border-style: dashed;
+  }
+  .fc-node.action {
+    background: var(--success-bg);
+    border-color: var(--success);
+  }
+  .fc-node.action .fc-status { color: var(--success); }
+  .fc-node.end {
+    background: var(--gray-200);
+    border-color: var(--gray-400);
+    color: var(--gray-700);
+    border-radius: 24px;
+    font-weight: 600;
+  }
+  .fc-arrow {
+    color: var(--brand-mid);
+    font-size: 22px;
+    line-height: 1;
+    margin: 2px 0;
+  }
+  
+  /* ── Footer ── */
+  footer {
+    background: var(--brand-dark);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    margin-top: 32px;
+  }
+  footer strong { color: rgba(255,255,255,0.9); }
+  
+  /* ── Interactive UI (injected by script.js — progressive enhancement) ──
+     These styles only matter when script.js runs; with JS disabled the
+     elements are never created and the guide reads exactly the same. */
+  .toc a.active { color: var(--brand-light); font-weight: 600; }
+  
+  pre { position: relative; }   /* anchor for the copy button */
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(255,255,255,0.12); color: var(--code-text);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 5px;
+    padding: 2px 10px; font-size: 11.5px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', -apple-system, sans-serif;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.22); }
+  
+  .expand-all-btn {
+    display: inline-block; align-self: flex-start; margin-bottom: 12px;
+    background: var(--brand-pale); color: var(--brand-dark);
+    border: 1px solid var(--brand-mid); border-radius: 6px;
+    padding: 5px 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', -apple-system, sans-serif;
+  }
+  .expand-all-btn:hover { background: var(--brand-mid); color: #fff; }
+  
+  .to-top-btn {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--brand-mid); color: #fff; border: none;
+    font-size: 20px; line-height: 1; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,63,127,0.25);
+    opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
+    z-index: 50;
+  }
+  .to-top-btn.visible { opacity: 1; visibility: visible; }
+  .to-top-btn:hover { background: var(--brand-dark); }
+  
+  /* ── Reading-progress bar (top of viewport, grows with scroll) ── */
+  .reading-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: linear-gradient(90deg, var(--brand-mid), var(--brand-light));
+    z-index: 60; transition: width 0.1s ease-out;
+  }
+  
+  /* ── FAQ search / filter — only created when a .faq accordion exists ── */
+  .doc-search {
+    position: relative; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .doc-search input {
+    flex: 1; min-width: 220px;
+    padding: 10px 14px; font-size: 14px; font-family: 'Inter', -apple-system, sans-serif;
+    border: 1px solid var(--gray-200); border-radius: 8px;
+    color: var(--text); background: var(--white);
+  }
+  .doc-search input:focus {
+    outline: none; border-color: var(--brand-mid);
+    box-shadow: 0 0 0 3px var(--brand-pale);
+  }
+  .doc-search-count { font-size: 13px; color: var(--gray-700); font-weight: 500; }
+  mark.search-hit { background: #FFE9A8; color: inherit; border-radius: 3px; padding: 0 1px; }
+  .faq-no-results { padding: 14px 18px; font-size: 14px; color: var(--gray-700); font-style: italic; }
+  
+  /* ── Two-system data-flow diagram (.sysflow) ──
+     Pure CSS/markup, no JS. Two system boxes with two "wires" between them;
+     data dots glide along each wire (opposite directions) to show data flowing
+     between two systems. Decorative — keep an accessible table/text nearby and
+     mark the diagram aria-hidden. Animation pauses under reduced-motion/print. */
+  .sysflow {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    margin: 22px 0;
+    flex-wrap: wrap;
+  }
+  .sysflow-node {
+    flex: 1 1 160px;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    padding: 18px 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--brand-dark), var(--brand-mid));
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .sysflow-node .sysflow-sub { font-weight: 400; font-size: 12px; opacity: 0.82; }
+  .sysflow-wires {
+    flex: 2 1 220px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 6px 0;
+  }
+  .sysflow-wire {
+    position: relative;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    border-radius: 17px;
+    padding: 0 14px;
+    font-size: 12px;
+    font-weight: 600;
+    overflow: hidden;
+    background: var(--brand-subtle);
+    border: 1px solid var(--brand-pale);
+  }
+  .sysflow-wire .sysflow-label { position: relative; z-index: 2; color: var(--brand-dark); }
+  .sysflow-wire.to-left .sysflow-label { margin-left: auto; }
+  .sysflow-wire::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 2px;
+    transform: translateY(-50%);
+    opacity: 0.35;
+  }
+  .sysflow-wire.to-right::before { background: var(--brand-mid); }
+  .sysflow-wire.to-left::before  { background: var(--accent); }
+  .sysflow-wire .dot {
+    position: absolute;
+    top: 50%;
+    width: 9px; height: 9px;
+    margin-top: -4.5px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .sysflow-wire.to-right .dot { background: var(--brand-mid); animation: sysflow-right 2.6s linear infinite; }
+  .sysflow-wire.to-left  .dot { background: var(--accent);   animation: sysflow-left  2.6s linear infinite; }
+  .sysflow-wire .dot:nth-of-type(1) { animation-delay: 0s; }
+  .sysflow-wire .dot:nth-of-type(2) { animation-delay: 0.65s; }
+  .sysflow-wire .dot:nth-of-type(3) { animation-delay: 1.3s; }
+  .sysflow-wire .dot:nth-of-type(4) { animation-delay: 1.95s; }
+  @keyframes sysflow-right {
+    0%   { left: -4%;  opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { left: 104%; opacity: 0; }
+  }
+  @keyframes sysflow-left {
+    0%   { left: 104%; opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { left: -4%;  opacity: 0; }
+  }
+  @media (max-width: 600px) {
+    .sysflow { flex-direction: column; }
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     EXTENDED COMPONENTS — cards, stats, accordion, posting graphs and
+     entity diagram. Branded via the tokens above. Used for livelier,
+     more visual guides (concept/overview pages especially).
+     ════════════════════════════════════════════════════════════════ */
+
+  /* ── Status tags (content pills — distinct from header .pill) ── */
+  .tag {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .tag.done    { background: var(--success-bg); color: var(--success); }
+  .tag.info    { background: var(--info-bg);     color: var(--info); }
+  .tag.pending { background: var(--pending-bg);  color: var(--pending); }
+  .tag.setup   { background: var(--brand-pale);  color: var(--brand-dark); }
+
+  /* ── Card grid + feature cards (give pages "life") ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: 22px 0;
+  }
+  .card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 3px rgba(91, 67, 31, 0.05);
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  }
+  .feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(91, 67, 31, 0.10);
+    border-color: var(--brand-pale);
+  }
+  .feature-card .feature-icon {
+    display: block;
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .feature-card h3 { margin: 0 0 6px; font-size: 16px; color: var(--brand-dark); }
+  .feature-card h4 {
+    margin: 0 0 8px; font-size: 14px; color: var(--brand-dark);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .feature-card p { font-size: 14px; }
+  .feature-card p:last-child,
+  .feature-card ul:last-child { margin-bottom: 0; }
+  .feature-card ul { font-size: 14px; }
+
+  /* ── Stat cards (big-number callouts; support data-countup) ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 22px 0;
+  }
+  .stat-card {
+    background: var(--brand-subtle);
+    border: 1px solid var(--brand-pale);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-card .stat-num {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--brand-mid);
+    line-height: 1.1;
+  }
+  .stat-card .stat-label { color: var(--gray-700); font-size: 13px; margin-top: 6px; }
+
+  /* ── Accordion (details/summary; script.js adds a "fold alle ud/ind") ── */
+  .accordion details {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .accordion details[open] {
+    box-shadow: 0 2px 10px rgba(91, 67, 31, 0.07);
+    border-color: var(--brand-pale);
+  }
+  .accordion summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .accordion summary::-webkit-details-marker { display: none; }
+  .accordion summary::before {
+    content: "\25B8";
+    color: var(--accent);
+    font-size: 14px;
+    flex: 0 0 auto;
+    transition: transform 0.15s;
+  }
+  .accordion details[open] summary::before { transform: rotate(90deg); }
+  .accordion summary:hover { background: var(--brand-subtle); }
+  .accordion summary .acc-title { flex: 1 1 auto; min-width: 0; }
+  .accordion summary .acc-sub { color: var(--gray-700); font-weight: 400; font-size: 13px; }
+  .accordion summary .tag { flex: 0 0 auto; margin-left: auto; }
+  .accordion .acc-body {
+    padding: 6px 20px 18px;
+    border-top: 1px solid var(--gray-200);
+  }
+  .accordion .acc-body h5 {
+    margin: 16px 0 6px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--brand-mid);
+    font-weight: 700;
+  }
+  .accordion .acc-body > :first-child { margin-top: 0; }
+  .accordion .acc-body ul { margin-bottom: 6px; }
+
+  /* ── Posting graph (which ledger entries a transaction creates) ── */
+  .ledger-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 14px 0 16px;
+  }
+  .ledger-box {
+    background: var(--brand-subtle);
+    border: 1px solid var(--brand-pale);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .ledger-box .lbl {
+    display: block;
+    color: var(--gray-700);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+  .ledger-box .val { font-weight: 700; color: var(--brand-dark); font-size: 14px; }
+  .ledger-box.miss { background: var(--gray-100); border-color: var(--gray-200); }
+  .ledger-box.miss .val { color: var(--gray-400); }
+
+  /* ── Entity diagram (concept relationships) ── */
+  .entity-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 26px auto 10px;
+    max-width: 720px;
+  }
+  .entity-card {
+    background: var(--white);
+    border: 2px solid var(--brand-light);
+    border-radius: 12px;
+    padding: 14px 22px;
+    text-align: center;
+    min-width: 260px;
+    box-shadow: 0 2px 6px rgba(91, 67, 31, 0.06);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(91, 67, 31, 0.10); }
+  .entity-card .entity-name { display: block; font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 3px; }
+  .entity-card .entity-sub { font-size: 12px; color: var(--gray-700); }
+  .entity-arrow { display: flex; flex-direction: column; align-items: center; margin: 6px 0; }
+  .entity-arrow .line { width: 2px; height: 22px; background: var(--brand-light); }
+  .entity-arrow .head {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--brand-light);
+    margin-top: -1px;
+  }
+  .entity-arrow .label {
+    font-size: 11px; color: var(--gray-700);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    font-style: italic; margin-top: 5px;
+  }
+  .entity-branch { display: flex; justify-content: center; gap: 24px; width: 504px; max-width: 100%; }
+  .entity-branch .entity-card { min-width: 200px; flex: 0 1 240px; }
+  /* Forked connector: one arrow splits down to each of the two cards below. */
+  .entity-branch-wrap {
+    width: 504px; max-width: 100%;
+    margin: 8px 0 4px;
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+  }
+  .entity-branch-svg { display: block; color: var(--brand-light); }
+  .entity-branch-label {
+    font-size: 11px; color: var(--gray-700);
+    text-transform: uppercase; letter-spacing: 0.5px; font-style: italic;
+    margin-top: 2px;
+    background: var(--gray-100); padding: 0 8px;
+    position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  }
+
+  @media (max-width: 700px) {
+    .card-grid, .card-grid.cols-2, .card-grid.cols-3 { grid-template-columns: 1fr; }
+    .ledger-grid { grid-template-columns: repeat(2, 1fr); }
+    .entity-branch { flex-direction: column; align-items: center; width: auto; }
+    .entity-branch-wrap { width: auto; }
+    .entity-branch-svg { display: none; }
+    .entity-branch-label { position: static; transform: none; }
+  }
+
+  @media print {
+    .feature-card, .stat-card, .ledger-box, .entity-card, .accordion details {
+      box-shadow: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      page-break-inside: avoid;
+    }
+    .accordion details { border: 1px solid #ccc; }
+    .accordion details:not([open]) .acc-body { display: block; }  /* print all content */
+  }
+
+  /* ── Scroll-reveal — only active under .js-fx (added by script.js when
+     <body class="fx"> and motion is allowed). Without JS the class is never
+     added, so sections stay fully visible. ── */
+  .js-fx .section {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    will-change: opacity, transform;
+  }
+  .js-fx .section.in-view { opacity: 1; transform: none; }
+
+  /* ── Motion safety: honour the OS "reduce motion" setting ── */
+  @media (prefers-reduced-motion: reduce) {
+    .sysflow-wire .dot { animation: none; }
+    .js-fx .section { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; font-size: 13px; }
+    .section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    header { background: var(--brand-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    pre { background: #f4f4f4 !important; color: #111 !important; border: 1px solid #ccc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .to-top-btn, .copy-btn, .expand-all-btn,
+    .reading-progress, .doc-search, .faq-no-results { display: none !important; }
+    .sysflow-wire .dot { display: none !important; }
+    .js-fx .section { opacity: 1 !important; transform: none !important; }
+  }
+  
+  </style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Stamdata</div>
+    <h1>Oprettelse af aktier</h1>
+    <p>Felt-for-felt vejledning til at oprette en aktie som stamdata.</p>
+    <div class="header-pills"><span class="pill">Ved nye papirer</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#generelt-fanebladet">Fanebladet Generelt</a></li>
+        <li><a href="#bogfoering-fanebladet">Fanebladet Bogføring</a></li>
+        <li><a href="#handlinger">Handlinger og links på aktiekortet</a></li>
+        <li><a href="#vejledning-til-udfyldelse">Praktisk vejledning til oprettelse</a></li>
+      </ol>
+    </nav>
+<div class="section" id="generelt-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Fanebladet Generelt</h2>
+  </div>
+  <p>Når du opretter en ny aktie, starter du på fanebladet <strong>Generelt</strong>. Her udfylder du grundoplysningerne — hvad aktien hedder, hvilken ISIN-kode den har, og hvilken valuta den handles i.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>No.</strong></td>
+          <td>V/T</td>
+          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret i Værdipapiropsætning. Er nummerserien tom, skal nummeret angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Number Series</strong></td>
+          <td>T</td>
+          <td>Udfyldes automatisk fra Værdipapiropsætning ved oprettelse. Kan ændres via assisteret redigering på No.-feltet.</td>
+        </tr>
+        <tr>
+          <td><strong>Security Type</strong></td>
+          <td>T</td>
+          <td>Vælg <strong>Stock</strong> (Aktie). Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
+        </tr>
+        <tr>
+          <td><strong>Issuer Code</strong></td>
+          <td>V</td>
+          <td>Angiv udsteder. Feltet er valgfrit for aktier.</td>
+        </tr>
+        <tr>
+          <td><strong>ISIN Code</strong></td>
+          <td>V</td>
+          <td>Angiv eller vælg ISIN-koden for aktien. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes i forvejen. Kan ikke ændres, når der eksisterer bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>V</td>
+          <td>Angiv aktiens navn. Udfyldes manuelt — der er ikke automatisk navnhentning fra ISIN i den nuværende version.</td>
+        </tr>
+        <tr>
+          <td><strong>Search Name</strong></td>
+          <td>V</td>
+          <td>Udfyldes automatisk på baggrund af Name, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Blocked</strong></td>
+          <td>V</td>
+          <td>Markér for at spærre aktien. En spærret aktie kan hverken vælges på en kladdelinje eller bogføres.</td>
+        </tr>
+        <tr>
+          <td><strong>Currency Code</strong></td>
+          <td>V</td>
+          <td>Angiv valutakoden, hvis aktien handles i en anden valuta end regnskabsvalutaen. Lad feltet stå blankt, hvis aktien er noteret i regnskabsvalutaen (f.eks. DKK). Kan ikke ændres, når der eksisterer bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Country Code</strong></td>
+          <td>V</td>
+          <td>Angiv landekode for aktien.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Quantity</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Value</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Undergruppe: Share Details</h3>
+  <p>I denne undergruppe angiver du stykstørrelsen for aktien.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Share Size</strong></td>
+          <td>V</td>
+          <td>Angiv aktiens stykstørrelse (nominel stykstørrelse pr. aktie). Feltet kan ikke redigeres, hvis der eksisterer åbne poster på aktien — ændringen skal i så fald foretages via Overførselskladden.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>Forkortelser i kolonnen "Udfyldes":</strong> <strong>T</strong> = Tvungen (skal altid udfyldes), <strong>V</strong> = Valgfri (udfyldes efter behov), <strong>P</strong> = Programstyret (vedligeholdes automatisk, kan ikke redigeres).
+  </div>
+</div>
+
+<div class="section" id="bogfoering-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Fanebladet Bogføring</h2>
+  </div>
+  <p>På fanebladet <strong>Bogføring</strong> knytter du aktien til finanskontoplanen og definerer bogføringsgrupper og dimensioner. Disse oplysninger styrer, hvordan posteringer på aktien påvirker bogholderiet.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Posting Group</strong></td>
+          <td>T</td>
+          <td>Angiv eller vælg den bogføringsgruppe, der knytter aktien til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 1 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den primære dimensionsværdi (f.eks. afdeling). Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 2 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den sekundære dimensionsværdi. Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Method</strong></td>
+          <td>V</td>
+          <td>Vælg grupperingsmetode til rapporter: <strong>Posting Group</strong>, <strong>Dimension Value</strong> eller <strong>Detailed information</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Code</strong></td>
+          <td>V</td>
+          <td>Angiv den tilhørende gruppekode. Opslaget afhænger af metoden: bogføringsgruppe, dimensionsværdi eller detaljeret information.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="handlinger">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Handlinger og links på aktiekortet</h2>
+  </div>
+  <p>Fra aktiekortet kan du navigere til relaterede data og udføre handlinger:</p>
+
+  <ul class="bullets">
+    <li><strong>Investment Fund Prices</strong> — se kurshistorikken for den tilknyttede ISIN-kode og følg udviklingen i aktiens værdi over tid.</li>
+    <li><strong>Security Accounts</strong> — se hvilke depoter aktien er tilknyttet.</li>
+    <li><strong>Comments</strong> — tilføj noter og kommentarer til aktien, fx for at dokumentere særlige aftaler eller observationer.</li>
+  </ul>
+</div>
+
+<div class="section" id="vejledning-til-udfyldelse">
+  <div class="section-header">
+    <div class="section-icon">📌</div>
+    <h2>Praktisk vejledning til oprettelse</h2>
+  </div>
+
+  <h3>Hvad skal du altid udfylde?</h3>
+  <p>Start med de felter, der er markeret med <strong>T</strong> (Tvungen):</p>
+  <ul class="bullets">
+    <li><strong>Security Type:</strong> Vælg <strong>Stock</strong>.</li>
+    <li><strong>Number Series:</strong> Udfyldes automatisk.</li>
+    <li><strong>Posting Group:</strong> Knyt aktien til en bogføringsgruppe.</li>
+    <li><strong>Global Dimension 1 Code og Global Dimension 2 Code:</strong> Fyld kun ud, hvis dimensioner er konfigureret i systemet.</li>
+  </ul>
+
+  <h3>Hvad kan du udfylde efter behov?</h3>
+  <p>Felterne markeret med <strong>V</strong> (Valgfri) kan udfyldes efter behov:</p>
+  <ul class="bullets">
+    <li><strong>ISIN Code:</strong> Hjælper med at identificere og linke til kurser.</li>
+    <li><strong>Name og Search Name:</strong> Gør det lettere at søge og finde aktien senere.</li>
+    <li><strong>Currency Code:</strong> Fyld ud, hvis aktien handles i en anden valuta end DKK.</li>
+    <li><strong>Share Size:</strong> Angiv, hvis aktien har en bestemt stykstørrelse.</li>
+  </ul>
+
+  <h3>Hvad styres automatisk?</h3>
+  <p>Felterne markeret med <strong>P</strong> (Programstyret) opdateres automatisk baseret på posteringer:</p>
+  <ul class="bullets">
+    <li><strong>Remaining Quantity:</strong> Systemet beregner automatisk, hvor mange aktier du har tilbage.</li>
+    <li><strong>Remaining Value:</strong> Systemet beregner automatisk værdien af det resterende beholdning.</li>
+    <li><strong>Search Name:</strong> Oprettes automatisk fra Name, men kan ændres manuelt.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Security Type</strong>, <strong>ISIN Code</strong> eller <strong>Currency Code</strong>. Plant disse oplysninger omhyggeligt fra starten.
+  </div>
+</div>
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  </script>
+</body>
+</html>

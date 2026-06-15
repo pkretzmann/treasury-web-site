@@ -1,0 +1,242 @@
+<div class="section" id="generelt-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Fanebladet Generelt</h2>
+  </div>
+  <p>Når du opretter en ny obligation, starter du på fanebladet <strong>Generelt</strong>. Her angiver du obligationens grundoplysninger og lader systemet automatisk generere obligationens navn baseret på de værdier, du udfylder.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>No.</strong></td>
+          <td>V/T</td>
+          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret. Er feltet tomt, angives nummeret manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Security Type</strong></td>
+          <td>T</td>
+          <td>Vælg <strong>Bond</strong> (Obligation).</td>
+        </tr>
+        <tr>
+          <td><strong>ISIN Code</strong></td>
+          <td>V</td>
+          <td>Angiv eller vælg ISIN-koden. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes.</td>
+        </tr>
+        <tr>
+          <td><strong>Issuer Code</strong></td>
+          <td>V</td>
+          <td>Vælg den relevante udsteder. Feltet er fremhævet som obligatorisk, når Security Type = Bond. Benyttes i automatisk navnformatering. Se afsnittet om automatisk generering af navn nedenfor.</td>
+        </tr>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>V</td>
+          <td>Angiv obligationens navn eller lad systemet generere det automatisk. Se afsnittet om automatisk generering af navn nedenfor.</td>
+        </tr>
+        <tr>
+          <td><strong>Search Name</strong></td>
+          <td>V</td>
+          <td>Udfyldes automatisk fra Name, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>. Feltet må ikke stå blankt.</td>
+        </tr>
+        <tr>
+          <td><strong>Currency Code</strong></td>
+          <td>V</td>
+          <td>Angiv valutakode, hvis obligationen ikke er noteret i regnskabsvalutaen. Lad feltet stå blankt ved DKK.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Quantity</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Remaining Value</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Blocked</strong></td>
+          <td>V</td>
+          <td>Markér for at spærre obligationen. En spærret obligation kan hverken vælges på en kladdelinje eller bogføres.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>Forkortelser i kolonnen "Udfyldes":</strong> <strong>T</strong> = Tvungen (skal altid udfyldes), <strong>V</strong> = Valgfri (udfyldes efter behov), <strong>P</strong> = Programstyret (vedligeholdes automatisk, kan ikke redigeres).
+  </div>
+
+  <h3>Automatisk generering af navn</h3>
+  <p>Systemet kan automatisk generere obligationens navn ud fra en skabelon. Hvis du har konfigureret <a href="../6.%20Ops%C3%A6tning%20af%20Treasury/6.1%20Ops%C3%A6tning%20af%20v%C3%A6rdipapirer.html#aabn-fanebladet-opdatering">formatering af obligationsnavn</a> (se Opsætning af værdipapirer), vil systemet automatisk formatere navnet første gang, når du udfylder de relevante felter.</p>
+
+  <p>Skabelonen bruger følgende pladsholdere:</p>
+  <ul class="bullets">
+    <li><strong>%1</strong> = Din egen tekst (hvad du selv skriver i Name-feltet)</li>
+    <li><strong>%2</strong> = Udsteder (fra Issuer Code)</li>
+    <li><strong>%3</strong> = Nominel renteprocent (fra Nom. Interest Rate %)</li>
+    <li><strong>%4</strong> = Udløbsår (fra L. Coup. Payment Date)</li>
+  </ul>
+
+  <p>Eksempel: Hvis skabelonen er "%1 %2 %3% %4" og du udfylder "Obl", udsteder "Danske Bank", rentesats "3,5%" og sidste kupondag "2030", genereres navnet automatisk til "Obl Danske Bank 3,5% 2030".</p>
+
+  <div class="note">
+    <strong>Vigtigt — manuel ændring af navn:</strong> Når du først har oprettet obligationen med automatisk navn, vil senere manuelle ændringer af Name-feltet <strong>ikke blive overskrevet</strong> af formateringen. Hvis du vil regenerere navnet på ny, skal du rydde Name-feltet helt og udfylde det igen.
+  </div>
+</div>
+
+<div class="section" id="bond-details-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">🎯</div>
+    <h2>Fanebladet Bond Details</h2>
+  </div>
+  <p>Fanebladet <strong>Bond Details</strong> vises kun, når du har valgt <strong>Bond</strong> som Security Type. Her angiver du obligationens specifikke egenskaber — rente, kuponer og særlige karakteristika.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nom. Interest Rate %</strong></td>
+          <td>V</td>
+          <td>Angiv den nominelle renteprocent. Bruges i renteberegning. Denne værdi kan også bruges i automatisk generering af navn (se %3 ovenfor).</td>
+        </tr>
+        <tr>
+          <td><strong>Payment Code</strong></td>
+          <td>V</td>
+          <td>Angiv terminskoden for obligationens rentebetalingsplan. Denne kode definerer, hvor ofte renter betales (f.eks. årligt, halvårligt osv.).</td>
+        </tr>
+        <tr>
+          <td><strong>F. Coup. Payment Date</strong></td>
+          <td>V</td>
+          <td>Angiv første kuponforfaldsdag — dvs. den første dato, hvor der udbetales renter på obligationen.</td>
+        </tr>
+        <tr>
+          <td><strong>L. Coup. Payment Date</strong></td>
+          <td>V</td>
+          <td>Angiv sidste kuponforfaldsdag (udtræksdato). Dette er obligationens slutdato, hvor den sidste rentebetaling og tilbagebetaling af hovedstolen sker. Denne værdi bruges også i automatisk generering af navn (se %4 ovenfor).</td>
+        </tr>
+        <tr>
+          <td><strong>Index Bond</strong></td>
+          <td>V</td>
+          <td>Markér, hvis det er en indeksobligation. Indeksobligationer er obligationer, hvor renter eller hovedstol er knyttet til et indeks (f.eks. inflationsindeks).</td>
+        </tr>
+        <tr>
+          <td><strong>Excl. Interest Calculation</strong></td>
+          <td>V</td>
+          <td>Markér, hvis obligationen skal udelades ved kørsel af renteberegningsbatchen. Brug dette, hvis obligationen f.eks. er udløbet eller skal håndteres manuelt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="bogfoering-fanebladet">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Fanebladet Bogføring</h2>
+  </div>
+  <p>På fanebladet <strong>Bogføring</strong> knytter du obligationen til finanskontoplanen og definerer bogføringsgrupper og dimensioner. Disse oplysninger styrer, hvordan posteringer på obligationen påvirker bogholderiet.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Udfyldes</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Posting Group</strong></td>
+          <td>T</td>
+          <td>Angiv bogføringsgruppen, der knytter obligationen til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 1 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den primære dimensionsværdi. Obligatorisk, hvis dimensioner er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 2 Code</strong></td>
+          <td>T</td>
+          <td>Angiv den sekundære dimensionsværdi.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Method</strong></td>
+          <td>V</td>
+          <td>Grupperingsmetode til rapporter: <strong>Posting Group</strong>, <strong>Dimension Value</strong> eller <strong>Detailed information</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Report Grouping Code</strong></td>
+          <td>V</td>
+          <td>Tilhørende gruppekode — afhænger af valgt metode.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="handlinger">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Handlinger og links på obligationskortet</h2>
+  </div>
+  <p>Fra obligationskortet kan du navigere til relaterede data og udføre handlinger:</p>
+
+  <ul class="bullets">
+    <li><strong>Investment Fund Prices</strong> — se kurshistorikken for den tilknyttede ISIN-kode.</li>
+    <li><strong>Security Accounts</strong> — se hvilke depoter obligationen er tilknyttet.</li>
+    <li><strong>Comments</strong> — tilføj noter og kommentarer til obligationen.</li>
+  </ul>
+</div>
+
+<div class="section" id="vejledning-til-udfyldelse">
+  <div class="section-header">
+    <div class="section-icon">📌</div>
+    <h2>Praktisk vejledning til oprettelse</h2>
+  </div>
+
+  <h3>Trin-for-trin guide</h3>
+  <ol class="steps">
+    <li>Angiv <strong>Security Type</strong> som <strong>Bond</strong> — fanebladet Bond Details bliver nu synligt.</li>
+    <li>Udfyld <strong>Issuer Code</strong> — dette er obligatorisk for obligationer og bruges også til automatisk generering af navn.</li>
+    <li>Angiv obligationens grundlæggende egenskaber: <strong>Nom. Interest Rate %</strong>, <strong>F. Coup. Payment Date</strong> og <strong>L. Coup. Payment Date</strong>.</li>
+    <li>Lad Name-feltet være og lade systemet automatisk generere navnet baseret på skabelonen — eller angiv selv navn, hvis ingen skabelon er konfigureret.</li>
+    <li>Tilknyt obligationen til finanskontoplanen via fanebladet <strong>Bogføring</strong> — udfyld <strong>Posting Group</strong>, <strong>Global Dimension 1 Code</strong> og <strong>Global Dimension 2 Code</strong>.</li>
+    <li>Gem obligationen.</li>
+  </ol>
+
+  <h3>Hvad er obligatorisk?</h3>
+  <ul class="bullets">
+    <li><strong>Security Type:</strong> Skal være <strong>Bond</strong>.</li>
+    <li><strong>Posting Group:</strong> Knyt obligationen til en bogføringsgruppe.</li>
+    <li><strong>Global Dimension 1 Code og Global Dimension 2 Code:</strong> Fyld ud, hvis dimensioner er konfigureret.</li>
+    <li><strong>Issuer Code:</strong> Obligatorisk for obligationer.</li>
+  </ul>
+
+  <h3>Hvad kan du udfylde efter behov?</h3>
+  <ul class="bullets">
+    <li><strong>Kuponer:</strong> Udfyld F. Coup. Payment Date og L. Coup. Payment Date, hvis du vil bruge systemets rentebetaling.</li>
+    <li><strong>Payment Code:</strong> Definer betalingsplanen (årligt, halvårligt osv.).</li>
+    <li><strong>Index Bond:</strong> Markér, hvis obligationen er indekseret.</li>
+    <li><strong>Excl. Interest Calculation:</strong> Markér, hvis obligationen skal udelades fra renteberegning.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Vigtigt — ændring af navn:</strong> Hvis du ændrer Name-feltet manuelt efter oprettelse, vil systemet ikke automatisk regenerere det ved næste gemning. Ryd Name-feltet helt og udfyld det igen, hvis du vil have systemet til at anvende navnskabelonen på ny.
+  </div>
+</div>

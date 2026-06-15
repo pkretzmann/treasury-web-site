@@ -1,0 +1,165 @@
+<div class="section" id="kladdetype-overblik">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Kladdetyper — overblik</h2>
+  </div>
+  <p>Treasury-systemet indeholder fem kladdetyper til bogføring af forskellige transaktioner. For hver kladde, der skal bruges fra rollecentrets Treasury-menu, skal der mindst eksistere én skabelon (template).</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Kladdetype</th><th>Formål</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Trade (Handelskladde)</strong></td>
+          <td>Køb og salg af værdipapirer</td>
+        </tr>
+        <tr>
+          <td><strong>Return (Afkastkladde)</strong></td>
+          <td>Aktieudbytte, obligationsrente og andre afkast</td>
+        </tr>
+        <tr>
+          <td><strong>Curr. Exch. Rate Adjustment (Kursreguleringskladde)</strong></td>
+          <td>Fonds- og valutakursregulering</td>
+        </tr>
+        <tr>
+          <td><strong>Transfer (Overførselskladde)</strong></td>
+          <td>Værdioverførsler mellem værdipapirer (fusion, split mv.)</td>
+        </tr>
+        <tr>
+          <td><strong>Correction (Omposteringskladde)</strong></td>
+          <td>Ompostering og korrektion af fejlposteringer</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><strong>Vigtigt:</strong> Systemet opretter <strong>ikke</strong> automatisk skabeloner, når du åbner en kladde fra rollecentret. Du skal selv oprette de skabeloner, du har brug for.</div>
+</div>
+
+<div class="section" id="kladdetype-aabning">
+  <div class="section-header">
+    <div class="section-icon">🔓</div>
+    <h2>Sådan åbner du kladdetyper</h2>
+  </div>
+
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Security Journal Templates</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+  </ol>
+
+  <p>Alternativt kan du søge efter <strong>Security Journal Templates</strong> i søgefeltet.</p>
+</div>
+
+<div class="section" id="kladdetype-felter">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Felter på Security Journal Templates</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>En unik kode for kladdetypen (op til 10 tegn). Eksempler: <strong>HANDEL</strong>, <strong>AFKAST</strong>, <strong>KURSREG</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Description</strong></td>
+          <td>Et beskrivende navn eller tekst.</td>
+        </tr>
+        <tr>
+          <td><strong>Type</strong></td>
+          <td>Kladdens type: <strong>Trade</strong>, <strong>Return</strong>, <strong>Curr. Exch. Rate Adjustment</strong>, <strong>Transfer</strong> eller <strong>Correction</strong>. Valget styrer automatisk, hvilken kladdesidetype der åbnes.</td>
+        </tr>
+        <tr>
+          <td><strong>Source Code</strong></td>
+          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>SEC-HANDEL</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Reason Code</strong></td>
+          <td>En årsagskode, der indsættes automatisk på nye kladdelinjer. Kan overstyres på den enkelte linje.</td>
+        </tr>
+        <tr>
+          <td><strong>Show Stock Columns</strong></td>
+          <td>Markér for at vise aktie-specifikke kolonner i kladden: <strong>Drawing</strong> (Udtræk) og <strong>Bonus Share</strong> (Fondsaktie).</td>
+        </tr>
+        <tr>
+          <td><strong>Show Bond Columns</strong></td>
+          <td>Markér for at vise obligations-specifikke kolonner: <strong>Trading Interest</strong> (Handelsrente).</td>
+        </tr>
+        <tr>
+          <td><strong>Show Currency Columns</strong></td>
+          <td>Markér for at vise valutarelaterede kolonner: <strong>Currency Factor</strong> (Valutafaktor).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><strong>Bemærk om kolonnevisning:</strong> Hvis du ikke markerer nogle af de tre kolonneflags, bruger systemet Business Centrals standard personalisering — programmet husker din egen kolonneopsætning for den pågældende kladde.</div>
+</div>
+
+<div class="section" id="kladdetype-batches">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <h2>Kladdenavne (Batches)</h2>
+  </div>
+  <p>Til hver kladdetype kan du oprette ét eller flere kladdenavne (batches). Kladdenavnene administreres fra knappen <strong>Batches</strong> øverst i kladdetyplisten.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Name</strong></td>
+          <td>Navn på kladdenavnet (op til 10 tegn). Eksempel: <strong>JAN-2026</strong> eller <strong>KØBER</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Description</strong></td>
+          <td>En beskrivelse af kladdenavnet.</td>
+        </tr>
+        <tr>
+          <td><strong>Reason Code</strong></td>
+          <td>En årsagskode specifik for dette kladdenavn — tilsidesætter kladdtypens årsagskode.</td>
+        </tr>
+        <tr>
+          <td><strong>No. Series</strong></td>
+          <td>Nummerserie til tildeling af midlertidige bilagsnumre på kladdelinjer. Lades feltet tomt, tildeles numre manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Posting No. Series</strong></td>
+          <td>Nummerserie til bilagsnumre på de <strong>bogførte</strong> poster. Skal adskille sig fra No. Series. Lades feltet tomt, benyttes det nummer, der allerede er angivet på kladdelinjen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="kladdetype-anbefaling">
+  <div class="section-header">
+    <div class="section-icon">💡</div>
+    <h2>Anbefalet opsætning</h2>
+  </div>
+  <p>Opret som minimum én skabelon for hver af de fem typer, inden kladder tages i brug. Her er et eksempel på navngivning:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>HANDEL</strong></td><td>Trade</td></tr>
+        <tr><td><strong>AFKAST</strong></td><td>Return</td></tr>
+        <tr><td><strong>KURSREG</strong></td><td>Curr. Exch. Rate Adjustment</td></tr>
+        <tr><td><strong>OVERF</strong></td><td>Transfer</td></tr>
+        <tr><td><strong>OMPOST</strong></td><td>Correction</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

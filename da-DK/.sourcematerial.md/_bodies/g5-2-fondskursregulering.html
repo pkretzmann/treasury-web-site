@@ -1,0 +1,95 @@
+<div class="section" id="kursregulering-oversigt">
+  <div class="section-header">
+    <div class="section-icon">📈</div>
+    <h2>Fondskursregulering — mark-to-market</h2>
+  </div>
+  <p>Fondskursregulering bruges til at opskrive eller nedskrive porteføljens værdi til seneste markedskurs. Typisk gøres dette pr. kvartal eller ved årets afslutning. Reguleringen beregner automatisk ændringerne i fondskurs og valutakurs for hver åben beholdning.</p>
+</div>
+
+<div class="section" id="saadan-kores">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Sådan kører du reguleringen</h2>
+  </div>
+  <h3>Åbn kørslen</h3>
+  <p>Vælg <strong>Reguler fondskurser</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</p>
+
+  <h3>Udfyld anfordringsvinduet</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kladdetype</strong></td>
+          <td>Vælg <strong>Kursreguleringskladde</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Batch</strong></td>
+          <td>Kladdbatch hvor linjerne dannes.</td>
+        </tr>
+        <tr>
+          <td><strong>Handelsdato</strong></td>
+          <td>Bogføringsdato for reguleringen. Bruges også som kursdato til at finde seneste fondskurs og valutakurs.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnummer</strong></td>
+          <td>Kan hentes automatisk fra batchens nummerserie.</td>
+        </tr>
+        <tr>
+          <td><strong>Fundskurs-advarsel</strong></td>
+          <td>Hvis afkrydset, advares du hvis der ikke er en kurs på den eksakte dato. Ellers bruges seneste tilgængelige kurs.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakurs-advarsel</strong></td>
+          <td>Tilsvarende for valutakurser (relevant for værdipapirer i fremmed valuta).</td>
+        </tr>
+        <tr>
+          <td><strong>Filter på Værdipapir</strong></td>
+          <td>Du kan begrænsning til ét eller flere værdipapirer.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Hvad gør kørslen?</h3>
+  <p>For hvert værdipapir beregner systemet:</p>
+  <ol class="steps">
+    <li>Seneste fondskurs på eller før handelsdatoen.</li>
+    <li>Totalbeløbet for værdændringen i regnskabsvaluta — både fra kursændringer og valutaændringer.</li>
+    <li>For værdipapirer i fremmed valuta: opdeling i en kurskomponent og en valutakomponent.</li>
+    <li>Fordeling pr. depot efter beholdning og oprettelse af én reguleringslin pr. depot i kladden.</li>
+  </ol>
+  <p>Linjerne vises i kladden, hvor du kan gennemse dem før bogføring.</p>
+</div>
+
+<div class="section" id="bogfoering">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogføring af regulering</h2>
+  </div>
+  <p>Gennemse linjerne i kladden og foretag eventuelle rettelser (fx for afrundinger). Når du er parat, klik <strong>Bogfør</strong> (F9).</p>
+
+  <p>Ved bogføringen dannes:</p>
+  <ul class="bullets">
+    <li><strong>Værdipapirpost:</strong> En post med bilagstype Fondskursregulering, antal = 0, beløb svarende til ændringen.</li>
+    <li><strong>Gevinstposter:</strong> Én for kursændringen (Price Adjustment) og evt. én for valutaændringen, begge som urealiserede.</li>
+    <li><strong>Finansposter:</strong> Beholdningskontoen justeres med beløbet. En modpost dannes på gevinstkontoen.</li>
+  </ul>
+  <div class="note">
+    <strong>Vigtigt:</strong> Urealiserede gevinster fra reguleringer bliver automatisk tilbageført, når værdipapirerne senere sælges. Systemet handler korrekt uden manuel indgriben.
+  </div>
+</div>
+
+<div class="section" id="lagerprincip">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <h2>Lagerprincip vs. realisationsprincip</h2>
+  </div>
+  <p>Fondskursregulering bruges kun for værdipapirer der anvender <strong>lagerprincip</strong> eller <strong>begge principper</strong> i deres bogføringsgruppe. Værdipapirer med <strong>realisationsprincip</strong> indgår ikke — gevinster på disse bogføres først ved salg.</p>
+  <p>Systemet kontrollerer automatisk hvilket princip der gælder, så du behøver ikke angive det manuelt.</p>
+</div>

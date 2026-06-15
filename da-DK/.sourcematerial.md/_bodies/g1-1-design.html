@@ -1,0 +1,221 @@
+<div class="section" id="design-overblik">
+  <div class="section-header">
+    <div class="section-icon">🧭</div>
+    <h2>Sådan hænger modulet sammen</h2>
+  </div>
+  <p>Værdipapirmodulet er bygget op om nogle få centrale begreber: <strong>Depot</strong>,
+  <strong>Værdipapir</strong> samt <strong>ISIN</strong> og <strong>Udsteder</strong>. Et depot
+  ligger altid hos en ekstern bank eller handelsplatform (fx Nordea, SEB eller Saxo) — det
+  såkaldte depotinstitut. Diagrammet nedenfor viser, hvordan begreberne hænger sammen.</p>
+
+  <div class="entity-diagram">
+    <div class="entity-card">
+      <span class="entity-name">Depot</span>
+      <span class="entity-sub">én pr. konto hos depotinstituttet — frit, pension, virksomhed osv.</span>
+    </div>
+    <div class="entity-arrow"><div class="line"></div><div class="head"></div><div class="label">rummer flere</div></div>
+    <div class="entity-card">
+      <span class="entity-name">Værdipapir</span>
+      <span class="entity-sub">aktie eller obligation</span>
+    </div>
+    <div class="entity-branch-wrap">
+      <svg class="entity-branch-svg" viewBox="0 0 504 70" width="100%" height="70" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <line x1="252" y1="0"  x2="252" y2="28" stroke="currentColor" stroke-width="2" />
+        <line x1="120" y1="28" x2="384" y2="28" stroke="currentColor" stroke-width="2" />
+        <line x1="120" y1="28" x2="120" y2="58" stroke="currentColor" stroke-width="2" />
+        <line x1="384" y1="28" x2="384" y2="58" stroke="currentColor" stroke-width="2" />
+        <polygon points="120,66 113,54 127,54" fill="currentColor" />
+        <polygon points="384,66 377,54 391,54" fill="currentColor" />
+      </svg>
+      <div class="entity-branch-label">peger på</div>
+    </div>
+    <div class="entity-branch">
+      <div class="entity-card">
+        <span class="entity-name">ISIN</span>
+        <span class="entity-sub">internationalt nummer på papiret</span>
+      </div>
+      <div class="entity-card">
+        <span class="entity-name">Udsteder</span>
+        <span class="entity-sub">virksomheden bag papiret</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box"><strong>Kort fortalt:</strong> Et depot kan rumme mange værdipapirer, og
+  det samme værdipapir kan ligge på flere depoter. Hvert værdipapir peger på en ISIN-kode og
+  (for obligationer) en udsteder.</div>
+</div>
+
+<div class="section" id="design-byggeklodser">
+  <div class="section-header">
+    <div class="section-icon">🧩</div>
+    <h2>Byggeklodserne — klik for at folde ud</h2>
+  </div>
+  <p>Klik på hvert begreb for at se, hvad det dækker over, og hvordan det bruges i det daglige.</p>
+
+  <div class="accordion">
+
+    <details open>
+      <summary>
+        <span class="acc-title">Depot <span class="acc-sub">én konto hos depotinstituttet</span></span>
+        <span class="tag setup">Stamdata</span>
+      </summary>
+      <div class="acc-body">
+        <p>Et depot svarer til én konto hos et depotinstitut (fx Nordea, SEB eller Saxo). Depotet
+        har sit eget nummer og navn, en henvisning til depotinstituttets egen kontoreference og en
+        modkonto — typisk en bankkonto — der bruges, når I køber og sælger.</p>
+        <p>Har I to depoter hos samme bank — fx ét frit og ét pensionsdepot — opretter I to
+        separate depoter i systemet. På den måde kan I følge beholdning og bevægelser hver for sig.</p>
+        <h5>Hvad ligger der på et depot</h5>
+        <ul>
+          <li>Et navn og et nummer (jeres interne reference)</li>
+          <li>Depotinstituttets egen kontoreference (depotnummeret)</li>
+          <li>Modkonto i finansen (bank- eller finanskonto)</li>
+          <li>Standarddimensioner, så bevægelser fra depotet automatisk får de rigtige dimensioner</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Værdipapir <span class="acc-sub">aktie, obligation eller fond</span></span>
+        <span class="tag setup">Stamdata</span>
+      </summary>
+      <div class="acc-body">
+        <p>Værdipapiret er det instrument, I handler med — en aktie eller en obligation. Hvert
+        værdipapir har sit eget nummer, et navn, en valuta, en bogføringsgruppe (der bestemmer hvilke
+        finanskonti bevægelser rammer) og en reference til ISIN-koden og eventuelt udstederen.</p>
+        <h5>Hvorfor har værdipapiret sit eget nummer — og ikke bare ISIN-koden?</h5>
+        <ul>
+          <li><strong>Fleksibilitet</strong> — vil I af regnskabs- eller skattetekniske grunde
+          opsætte samme instrument på to måder, kan I oprette to værdipapirer med samme ISIN-kode.</li>
+          <li><strong>ISIN-koder kan skifte</strong> — fx ved omstrukturering hos udsteder. Med et
+          fast internt nummer behøver I ikke at røre de tilknyttede poster, hvis det sker.</li>
+          <li><strong>Konsistens</strong> — Business Central bruger generelt interne numre som
+          identifikation på alle stamdata (kunder, varer, leverandører). Værdipapirer følger samme
+          mønster.</li>
+        </ul>
+        <p>I praksis bruger I ISIN-koden som det naturlige opslag, når I leder efter et værdipapir —
+        den er unik på det internationale marked og er synlig overalt i systemet.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">ISIN <span class="acc-sub">internationalt værdipapirnummer</span></span>
+        <span class="tag info">Reference</span>
+      </summary>
+      <div class="acc-body">
+        <p>ISIN er en 12-tegns kode, der entydigt identificerer et værdipapir på verdensplan. Koden
+        består af to landebogstaver, ni tegn der identificerer papiret, og et kontrolciffer.</p>
+        <h5>Eksempler</h5>
+        <ul>
+          <li><strong>DK0010274414</strong> — Novo Nordisk B</li>
+          <li><strong>FR0010315770</strong> — Lyxor MSCI World UCITS ETF</li>
+          <li><strong>DK0009295149</strong> — Danske Bank</li>
+        </ul>
+        <h5>Hvad bruges ISIN til</h5>
+        <p>ISIN gemmer koden og den seneste kendte handelskurs. Flere værdipapirer kan referere til
+        samme ISIN, så kursen kun skal opdateres ét sted — derfra slås den automatisk op på alle de
+        værdipapirer, der peger på den.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Udsteder <span class="acc-sub">virksomheden bag værdipapiret</span></span>
+        <span class="tag info">Reference</span>
+      </summary>
+      <div class="acc-body">
+        <p>Udsteder er den virksomhed eller institution, der har udstedt værdipapiret — fx en
+        børsnoteret virksomhed bag en aktie, eller en stat eller et realkreditinstitut bag en
+        obligation.</p>
+        <h5>Eksempler</h5>
+        <ul>
+          <li>Novo Nordisk A/S</li>
+          <li>Realkredit Danmark</li>
+          <li>Den Danske Stat</li>
+        </ul>
+        <h5>Hvad bruges udsteder til</h5>
+        <p>Udsteder bruges især til rapportering og gruppering — fx hvis I vil se jeres samlede
+        eksponering mod én virksomhed på tværs af alle de papirer, I ejer fra dem. For obligationer
+        indgår udsteder også i navnedannelsen, så obligationsnavnet automatisk bliver fx
+        <strong>Realkredit Danmark 2,5 % 2042</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Værdipapirtype <span class="acc-sub">Aktie eller Obligation</span></span>
+        <span class="tag setup">Opsætning</span>
+      </summary>
+      <div class="acc-body">
+        <p>Typen bestemmer, hvilke felter der vises på papiret, og hvordan det opfører sig i
+        bogføring og rapportering.</p>
+        <h5>Aktie</h5>
+        <ul>
+          <li>Handles i antal stykker.</li>
+          <li>Stykstørrelse er som regel 1 (kan justeres ved aktiesplit).</li>
+          <li>Afkast = udbytte, typisk med udbytteskat.</li>
+          <li>Kursudsving håndteres som kursregulering eller realiseres ved salg.</li>
+        </ul>
+        <h5>Obligation</h5>
+        <ul>
+          <li>Handles i procent af nominel værdi (fx 99,75 %).</li>
+          <li>Renteberegning ud fra nominel rente og dag-tællingskonvention.</li>
+          <li>Betalingsterminer styrer, hvornår rente og afdrag falder.</li>
+          <li>Kan være indekseret og indfries på udløbsdatoen.</li>
+        </ul>
+        <div class="info-box"><strong>Investeringsfonde</strong> registreres som type
+        <strong>Aktie</strong> — de handles i andele med samme mekanik som almindelige aktier.</div>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Bogføringsgruppe <span class="acc-sub">styrer hvilke finanskonti bevægelser rammer</span></span>
+        <span class="tag setup">Opsætning</span>
+      </summary>
+      <div class="acc-body">
+        <p>Hvert værdipapir tilknyttes en bogføringsgruppe. Det er bogføringsgruppen, der bestemmer,
+        hvilke finanskonti bevægelser rammer — både balance- og resultatkonti. Det er en af de
+        vigtigste opsætninger, fordi den definerer den regnskabsmæssige behandling.</p>
+        <h5>Hvad bogføringsgruppen styrer</h5>
+        <ul>
+          <li><strong>Balancekonto</strong> — hvor beholdningen står.</li>
+          <li><strong>Salgsprovenu og kostpris</strong> — konti der bruges ved salg.</li>
+          <li><strong>Realiseret og urealiseret gevinst/tab</strong> — opdelt i kurs- og valutadel.</li>
+          <li><strong>Afkastkonto og udbytteskat</strong> — for aktier.</li>
+          <li><strong>Renteindtægter</strong> — for obligationer.</li>
+        </ul>
+        <div class="note"><strong>Vigtigt:</strong> Bogføringsgruppen kan ikke ændres på et
+        værdipapir, når der først er bogført på det. Vil I kunne skille danske og udenlandske
+        papirer ad i regnskabet, opretter I separate bogføringsgrupper fra start.</div>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Bogføringsprincip <span class="acc-sub">Lagerprincippet eller Realisationsprincippet</span></span>
+        <span class="tag setup">Opsætning</span>
+      </summary>
+      <div class="acc-body">
+        <p>Bogføringsprincippet bestemmer, hvornår kursudsving slår igennem i regnskabet.</p>
+        <h5>Lagerprincippet (mark-to-market)</h5>
+        <ul>
+          <li>Beholdningen måles løbende til markedsværdi — typisk måneds- eller kvartalsultimo.</li>
+          <li>Kursudsving siden seneste måling bogføres som urealiseret kursregulering.</li>
+          <li>Ved salg tilbageføres de urealiserede reguleringer, og hele gevinsten/tabet realiseres.</li>
+        </ul>
+        <h5>Realisationsprincippet</h5>
+        <ul>
+          <li>Beholdningen står til kostpris hele ejertiden.</li>
+          <li>Kursudsving slår først igennem ved salg — så bogføres hele gevinsten/tabet på én gang.</li>
+          <li>Ingen løbende kursreguleringer.</li>
+        </ul>
+        <p>Valget er regnskabs- og skattefagligt og bør altid afstemmes med revisor.</p>
+      </div>
+    </details>
+
+  </div>
+</div>

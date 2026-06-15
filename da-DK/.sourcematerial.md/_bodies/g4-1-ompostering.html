@@ -1,0 +1,43 @@
+<div class="section" id="hvad-er-ompostering">
+  <div class="section-header">
+    <div class="section-icon">↩️</div>
+    <h2>Hvad er ompostering?</h2>
+  </div>
+  <p>Ompostering bruges til at tilbageføre værdipapirposteringer, fx hvis der er bogført en transaktion for en forkert dato, beløb eller værdipapir. Systemet opretter automatisk et spejlsæt af poster med modsatte fortegn og markerer både de oprindelige og de tilbageførte poster som omposterede.</p>
+  <p>På denne måde bibeholdes en komplet revisionsspor af alle ændringer — ingen poster slettes, kun omposteret.</p>
+</div>
+
+<div class="section" id="ompostering-fra-ledger">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <h2>Ompostering fra værdipapirposter</h2>
+  </div>
+  <h3>Sådan tilbagefører du en post</h3>
+  <ol class="steps">
+    <li>Åbn <strong>Værdipapirposter</strong> under Treasury-menuen i rollecentret.</li>
+    <li>Find den post du ønsker at ompostere. Du kan filtrere efter værdipapir, dato eller bilagsnummer.</li>
+    <li>Vælg posten og klik på handlingen <strong>Reverse Entry</strong>.</li>
+    <li>Systemet åbner et vindue hvor du vælger hvilken kladde og batch ompostberingen skal dannes i. Vælg en Værdipapirljedaldes batch af passende type (fx Journal Template = <strong>JOURNAL</strong>, Journal Batch = <strong>REVERSAL</strong>).</li>
+    <li>Systemet danner automatisk en tilbageføringslinje i kladden med modsatte beløb og samme værdipapir, dato og øvrige felter.</li>
+    <li>Åbn kladden og gennemse linjen. Du kan rette bogføringsdatoen hvis ompostberingen skal have anden dato end oprindelsen.</li>
+    <li>Bogfør kladdelinjen ved at klikke <strong>Bogfør</strong> (F9).</li>
+  </ol>
+  <div class="info-box">
+    <strong>Vigtig regel:</strong> Den senest bogførte transaktion på et værdipapir bør omposteres først. Systemet tillader dig at ompostere ældre poster, men det kan gøre afstemning vanskeligere.
+  </div>
+</div>
+
+<div class="section" id="resultatet">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Hvad sker der ved bogføring?</h2>
+  </div>
+  <p>Når du bogfører ompostberingen, sker følgende:</p>
+  <ul class="bullets">
+    <li>Den <strong>oprindelige post</strong> markeres som omposteret.</li>
+    <li>Der dannes en <strong>ny post</strong> med modsatte beløb — hvis oprindelsen var en indgang på +10, bliver ompostberingen −10.</li>
+    <li>Både oprindelig og tilbageføring får samme <strong>Reversed Entry No.</strong> så de kan linkes sammen.</li>
+    <li>Generelle finansposter dannes på samme måde — hvis transaktionen påvirkede GL-kontiene, tilbageføres også disse.</li>
+  </ul>
+  <p>Kontroller altid de nye poster i <strong>Værdipapirposter</strong> for at sikre, at ompostberingen er korrekt bogført, og at depotets beholdning afspejler det forventede.</p>
+</div>

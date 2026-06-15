@@ -1,0 +1,214 @@
+<div class="section" id="bogfoering-overblik">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Bogføringsgrupper — overblik</h2>
+  </div>
+  <p>Bogføringsgrupper knytter værdipapirer til finanskonti i regnskabet. Når du bogfører køb, salg, rente- eller kursreguleringer, bruger systemet bogføringsgruppen til at finde de korrekte finanskonti at debitere og kreditere.</p>
+  <p>Det anbefales som minimum at oprette én bogføringsgruppe for aktier og én for obligationer, så beholdnings- og resultatkonti holdes adskilt. Det er dog ikke et systemkrav.</p>
+  <p>Bogføringsgrupper knyttes til det enkelte værdipapir via feltet <strong>Bogføringsgruppe</strong> på værdipapirkortet.</p>
+
+  <h3>Sådan åbner du bogføringsgrupper</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Security Posting Groups</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+    <li>Oversigtsvinduet viser alle oprettede bogføringsgrupper med kode, beskrivelse og regnskabsprincip. Klik på en kode for at åbne bogføringsgruppekortet.</li>
+  </ol>
+</div>
+
+<div class="section" id="bogfoering-fanebladet-generelt">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Fanebladet Generelt</h2>
+  </div>
+  <p>Her definerer du den overordnede opsætning af bogføringsgruppen.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kode</strong></td>
+          <td>En unik kode for bogføringsgruppen (op til 10 tegn, tal og bogstaver). Giv gruppen et beskrivende navn, f.eks. <strong>AK-DK</strong> for danske aktier eller <strong>OBL</strong> for obligationer.</td>
+        </tr>
+        <tr>
+          <td><strong>Beskrivelse</strong></td>
+          <td>Fritekstbeskrivelse af bogføringsgruppen.</td>
+        </tr>
+        <tr>
+          <td><strong>Regnskabsprincip</strong></td>
+          <td>Vælg <strong>Realisationsprincippet</strong> eller <strong>Lagerprincippet</strong>. Valget skal stemme overens med den tilsvarende indstilling i Værdipapiropsætning. Det håndhæves automatisk ved bogføring — en kladdelinje med lagerprincip-flaget afvises på en bogføringsgruppe sat til realisationsprincippet, og omvendt.</td>
+        </tr>
+        <tr>
+          <td><strong>Skattemetode avance</strong></td>
+          <td>Fastlægger skattestemplet på avanceposter ved salg. Valgene er: <strong>Blank</strong> (ingen skatteoplysning), <strong>Taxable</strong> (Skattepligtig), <strong>Tax-Free</strong> (Skattefri) eller <strong>Holding Period Based</strong> (Ejertidsbestemt). Ved Ejertidsbestemt stemples avancen som skattepligtig, indtil ejertiden i feltet <strong>Metodeskift ejertid</strong> er opfyldt, herefter som skattefri.</td>
+        </tr>
+        <tr>
+          <td><strong>Skattemetode afkast</strong></td>
+          <td>Fastlægger skattestemplet på afkastposter (renter, udbytter). Valgene er: <strong>Blank</strong>, <strong>Taxable</strong> eller <strong>Tax-Free</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Avancemetode</strong></td>
+          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Valgene er: <strong>Average</strong> (Gennemsnit) eller <strong>FIFO</strong> (Aktie-for-aktie). Se nedenfor for eksempler.</td>
+        </tr>
+        <tr>
+          <td><strong>Metodeskift ejertid (år)</strong></td>
+          <td>Kun relevant ved Holding Period Based-avancemetode. Angiv det antal år, der skal forløbe, inden metodeskiftet aktiveres automatisk. Bemærk: automatisk skift er endnu ikke fuldt implementeret.</td>
+        </tr>
+        <tr>
+          <td><strong>Udbytteskat pct.</strong></td>
+          <td>Angiv beskatningsprocent for udbytte, hvis bogføringsgruppen bruges til aktier med udbytte. Procenten bruges af systemet til at beregne udbytteskatten ved oprettelse af afkastkladdelinjer.</td>
+        </tr>
+        <tr>
+          <td><strong>Trading Interest Account</strong></td>
+          <td>Finanskonto til bogføring af handelsrente (i regnskabsvaluta) ved køb og salg af obligationer. Hvis feltet er blankt, bogføres ingen separat handelsrente — handelsrenten skal i så fald være indeholdt i handelskursen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Avancemetoder — forklaret</h3>
+  <ul class="bullets">
+    <li><strong>Average (Gennemsnit):</strong> Anskaffelsessummen beregnes som et vægtet gennemsnit af alle åbne køb. Eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 100 kr. (250 − 150 gennemsnit).</li>
+    <li><strong>FIFO (Aktie-for-aktie):</strong> Ældste køb fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
+  </ul>
+</div>
+
+<div class="section" id="bogfoering-værdibogfoeringsgrupper">
+  <div class="section-header">
+    <div class="section-icon">💰</div>
+    <h2>Fanebladet Værdibogføringsgrupper (Value Posting Groups)</h2>
+  </div>
+  <p>Her knytter du transaktionstyper til <strong>beholdningskonti</strong> (balance). For hver transaktionstype du ønsker at bogføre, skal der oprettes én linje med den tilhørende finanskonto.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bilagstype</strong></td>
+          <td>Transaktionstypen. Valgene er: <strong>Purchase</strong> (Køb), <strong>Sale</strong> (Salg), <strong>Yield</strong> (Afkast), <strong>Price Adjustment</strong> (Kursregulering), <strong>Transfer</strong> (Overførsel) eller <strong>Reversal</strong> (Tilbageføring).</td>
+        </tr>
+        <tr>
+          <td><strong>Finanskonto</strong></td>
+          <td>Nummeret på den finanskonto, der skal bruges for den pågældende bilagstype.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanskontonavn</strong></td>
+          <td>Vises automatisk fra finanskontoplanen. Kan ikke redigeres.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Eksempel på typisk opsætning</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Bilagstype</th><th>Finanskonto</th><th>Bemærkning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Purchase</td>
+          <td>60</td>
+          <td>Værdipapirsbeholdning (debiteres ved køb)</td>
+        </tr>
+        <tr>
+          <td>Sale</td>
+          <td>60</td>
+          <td>Samme beholdningskonto (krediteres ved salg)</td>
+        </tr>
+        <tr>
+          <td>Price Adjustment</td>
+          <td>61</td>
+          <td>Kursregulering på beholdningen</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="bogfoering-avancebogfoeringsgrupper">
+  <div class="section-header">
+    <div class="section-icon">📈</div>
+    <h2>Fanebladet Avancebogføringsgrupper (Profit Posting Groups)</h2>
+  </div>
+  <p>Her knytter du kombinationer af transaktionstype, avancetype og skattetype til <strong>resultatkonti</strong>. For hver kombination du ønsker at bogføre, oprettes én linje.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Realiseringstype</strong></td>
+          <td><strong>Realized</strong> (Realiseret) — bruges til realiserede transaktioner som salg og udtræk. <strong>Unrealized</strong> (Urealiseret) — bruges til urealiserede kursreguleringer under lagerprincippet.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagstype</strong></td>
+          <td>Transaktionstypen som i Værdibogføringsgrupper (Purchase, Sale, Yield osv.).</td>
+        </tr>
+        <tr>
+          <td><strong>Avancetype</strong></td>
+          <td>Typen af avance eller tab. Valgene er: <strong>Price Adjustment</strong> (Fondskursavance/tab), <strong>Currency Adjustment</strong> (Valutakursavance/tab), <strong>Yield</strong> (Afkast), <strong>Dividend Tax</strong> (Udbytteskat) eller <strong>Transfer</strong> (Overførsel).</td>
+        </tr>
+        <tr>
+          <td><strong>Skattetype</strong></td>
+          <td><strong>Blank</strong> — ingen skatteoplysning (bruges til afkast, udbytteskat, overførsler). <strong>Taxable</strong> (Skattepligtig) — avancen er fradragsberettiget ved tab eller beskattet ved gevinst. <strong>Tax-Free</strong> (Skattefri) — skattefri avance.</td>
+        </tr>
+        <tr>
+          <td><strong>Tilbageførsel</strong></td>
+          <td>Markér feltet, hvis linjen bruges til tilbageføring af urealiserede reguleringer ved salg.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanskonto</strong></td>
+          <td>Den finanskonto, der bruges for den pågældende kombination.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanskontonavn</strong></td>
+          <td>Vises automatisk. Kan ikke redigeres.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Eksempel på typisk opsætning for realiserede fondskursavancer</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Skattetype</th><th>Finanskonto</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Realized</td>
+          <td>Sale</td>
+          <td>Price Adjustment</td>
+          <td>Taxable</td>
+          <td>6 (Fondskursgevinst, skattepligtig)</td>
+        </tr>
+        <tr>
+          <td>Realized</td>
+          <td>Sale</td>
+          <td>Price Adjustment</td>
+          <td>Tax-Free</td>
+          <td>8 (Skattefri fondskursgevinst)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><strong>Bemærk:</strong> Gevinst og tab skelnes ikke via separate felter — det afgøres af beregningsresultatet. Et positivt beløb bogføres som gevinst, et negativt som tab, men på den samme finanskonto.</div>
+</div>
+
+<div class="section" id="bogfoering-tilknytning-værdipapirer">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Tilknytning til værdipapirer</h2>
+  </div>
+  <p>Når bogføringsgrupperne er oprettet, skal koden angives i feltet <strong>Bogføringsgruppe</strong> på hvert enkelt værdipapirkort (fanebladet <strong>Bogføring</strong>). Uden en bogføringsgruppe kan der ikke bogføres på værdipapiret.</p>
+  <div class="note"><strong>Vigtigt:</strong> Hvis en bogføringskombination, der opstår ved bogføring, ikke er oprettet i Avance- eller Værdibogføringsgruppen, vil bogføringen fejle med en fejlmeddelelse om manglende opsætning.</div>
+</div>

@@ -1,0 +1,126 @@
+<div class="section" id="introduktion-fem-typer">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Introduktion til de fem kladdetyper</h2>
+  </div>
+  <p>I værdipapirmodulet arbejder du med fem forskellige kladdetyper, der hver håndterer en specifik type af transaktion. Hver kladdetype har sit eget formål og styrer, hvordan posteringen registreres i både værdipapirjournal og finansmodulet.</p>
+  <p>Hvilken kladdetype du bruger, afhænger af, hvad du gøre med værdipapirerne dine — om du handler, får afkast, justerer værdier, eller retter tidligere posteringer.</p>
+</div>
+
+<div class="section" id="handel-kladdetype">
+  <div class="section-header">
+    <div class="section-icon">💰</div>
+    <h2>Handel — køb og salg af værdipapirer</h2>
+  </div>
+  <p><strong>Handel</strong> er den vigtigste kladde type. Her registrerer du køb og salg af værdipapirer — det er dit startpunkt for at opbygge en portefølje.</p>
+  <h3>Hvad der sker når du handler</h3>
+  <ul class="bullets">
+    <li><strong>Køb</strong> — når du køber værdipapirer, opretter systemet automatisk en <strong>post</strong> (en linje i værdipapirdepotjournalen) som holder værdipapirerne. Værdien registreres som en kostpris.</li>
+    <li><strong>Salg</strong> — når du sælger værdipapirer, fjerner systemet værdipapirerne fra depottet i den rækkefølge, de blev købt (FIFO — "først ind, først ud"). Hvis salgsprisen er højere eller lavere end kostprisen, registreres en avance eller tab.</li>
+  </ul>
+  <div class="info-box"><strong>Værdisætningsmetode har betydning:</strong> Systemet regner avance og tab på forskellige måder, alt efter hvordan dine værdipapirer er værdsat — enten løbende efter dagens pris (Mark-to-Market) eller først når du sælger (Realisering). Du sætter dette op ved at knytte værdipapirerne til en <strong>bogføringsgruppe</strong>.</div>
+</div>
+
+<div class="section" id="afkast-kladdetype">
+  <div class="section-header">
+    <div class="section-icon">🎁</div>
+    <h2>Afkast — dividender og renteindtægter</h2>
+  </div>
+  <p><strong>Afkast</strong> bruges når du modtager penge fra dine værdipapirer uden at sælge dem — f.eks. aktiedividender eller rentebetalinger på obligationer.</p>
+  <h3>Sådan arbejder afkast</h3>
+  <ul class="bullets">
+    <li>Afkast <strong>ændrer ikke</strong> antallet af værdipapirer i depottet — du holder stadig præcis lige så mange.</li>
+    <li>Systemet registrerer pengene som indkomst, minus eventuelle skatter (f.eks. udbytteskat).</li>
+    <li>Du kan registrere afkast som <strong>realiseret</strong> (penge modtaget) eller <strong>påløbet</strong> (penge forespeiled, men endnu ikke modtaget).</li>
+  </ul>
+</div>
+
+<div class="section" id="overfoering-kladdetype">
+  <div class="section-header">
+    <div class="section-icon">↔️</div>
+    <h2>Overførsel — flytning af værdipapirer</h2>
+  </div>
+  <p><strong>Overførsel</strong> bruges når du flytter værdipapirer fra et depot til et andet depot, eller når værdipapirerne ændres (f.eks. ved en fondssammenslutning eller aktiesplit).</p>
+  <h3>To varianter af overførsel</h3>
+  <ul class="bullets">
+    <li><strong>Simpel overførsel</strong> — du flytter værdipapirer fra ét depot til et andet. Værdien og antallet ændres ikke — alt forbliver præcis som det var.</li>
+    <li><strong>Aktiestørrelse justeret</strong> — når en fond eller et aktie undergår en split eller sammenlægning (f.eks. 1:10 split, hvor 100 aktier bliver til 1.000). Systemet ændrer antallet af værdipapirer, men holder totalværdien konstant — du har stadig den samme værdi, bare flere eller færre papirer.</li>
+  </ul>
+  <div class="note"><strong>Vigtigt:</strong> Overførsel påvirker <strong>ikke</strong> avancer eller tab — værdipapirernes oprindelige kostpris bevares.</div>
+</div>
+
+<div class="section" id="kursregulering-kladdetype">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Kursregulering — daglig værdiændring</h2>
+  </div>
+  <p><strong>Kursregulering</strong> bruges når du vil opdatere værdien af dine værdipapirer til dagens pris — det hedder også "mark-to-market".</p>
+  <h3>Hvornår og hvorfor</h3>
+  <p>Hvis du har valgt at revaluere dine værdipapirer løbende (i stedet for kun når du sælger), bruger du denne kladdetype til at registrere ændringer i værdi dag-for-dag:</p>
+  <ul class="bullets">
+    <li><strong>Prisændringer</strong> — når aktie- eller fondsprisen ændres, registrerer du differensen mellem gamle og nye pris.</li>
+    <li><strong>Valutaændringer</strong> — hvis værdipapirerne handles i en anden valuta, registrerer du gevinst eller tab fra valutakurs-ændringer.</li>
+  </ul>
+  <p>Systemet er automatisk — du kører rapporten <strong>Juster værdipapirpriser</strong> ("Adjust Security Prices"), som køber hele listen af dine værdipapirer og beregner alle kursreguleringer for dig.</p>
+  <div class="note"><strong>Vigtigt:</strong> Kursregulering kan kun bruges, hvis du har valgt mark-to-market eller begge værdisetningsmetoder. Den bruges ikke, hvis du bruger ren realiserings-metode.</div>
+</div>
+
+<div class="section" id="rettelse-kladdetype">
+  <div class="section-header">
+    <div class="section-icon">✏️</div>
+    <h2>Rettelse — justering af tidligere posteringer</h2>
+  </div>
+  <p><strong>Rettelse</strong> bruges når du skal korrigere en tidligere posting, der ikke helt passer — den er ikke en simpel tilbageførsel, men en manuel justering.</p>
+  <h3>Sådan fungerer en rettelse</h3>
+  <ul class="bullets">
+    <li>Du angiver, hvilken tidligere posting du vil rette (den oprindelige post-nummer).</li>
+    <li>Systemet anulerer den gamle posting med negative værdier og kører den nye, korrekte posting med de rigtige værdier.</li>
+    <li>Du kan se både den oprindelige og den rettede version i journalen.</li>
+  </ul>
+  <p>Hvis du senere skal sælge værdipapirer, der blev korrigeret, sikrer systemet, at du ikke kommer til at bruge værdipapirer dobbelt.</p>
+</div>
+
+<div class="section" id="oversigt-tabel">
+  <div class="section-header">
+    <div class="section-icon">📑</div>
+    <h2>Oversigt over alle fem typer</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Kladdetype</th>
+          <th>Formål</th>
+          <th>Påvirker depot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Handel</strong></td>
+          <td>Køb og salg af værdipapirer</td>
+          <td>Ja — tilføjer eller fjerner værdipapirer</td>
+        </tr>
+        <tr>
+          <td><strong>Afkast</strong></td>
+          <td>Dividender og renteindtægter</td>
+          <td>Nej — antallet forbliver uændret</td>
+        </tr>
+        <tr>
+          <td><strong>Overførsel</strong></td>
+          <td>Flytning mellem depotter eller aktiestørrelse-justering</td>
+          <td>Nej — værdien forbliver uændret</td>
+        </tr>
+        <tr>
+          <td><strong>Kursregulering</strong></td>
+          <td>Daglig værdiændring (mark-to-market)</td>
+          <td>Nej — antallet forbliver uændret</td>
+        </tr>
+        <tr>
+          <td><strong>Rettelse</strong></td>
+          <td>Justering af tidligere posteringer</td>
+          <td>Afhænger af rettelsen</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="section" id="ekstra-overblik">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Ekstra informationer — hvad de er</h2>
+  </div>
+  <p>Ekstra informationer giver dig mulighed for at registrere brugerdefinerbare oplysninger på et værdipapir — oplysninger, som der ikke er standardfelter til på værdipapirkortet.</p>
+
+  <p>Eksempler på ekstra informationer:</p>
+  <ul class="bullets">
+    <li>Dato for seneste generalforsamling</li>
+    <li>Kreditvurdering</li>
+    <li>Investeringsmandat</li>
+    <li>Ejerstruktur</li>
+  </ul>
+
+  <p>Funktionaliteten bygger på to niveauer: du definerer først attributtyper, derefter knytter du værdier til hvert værdipapir.</p>
+</div>
+
+<div class="section" id="ekstra-trin1">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Trin 1 — Opret attributdefinitioner</h2>
+  </div>
+  <p>Attributdefinitioner oprettes i listen <strong>Detailed Attributes</strong>. Her definerer du koderne og typerne, der skal bruges.</p>
+
+  <h3>Sådan åbner du attributdefinitioner</h3>
+  <ol class="steps">
+    <li>Søg efter <strong>Detailed Attributes</strong> i søgefeltet (forstørrelsesglasset øverst til højre).</li>
+    <li>Listen åbnes.</li>
+  </ol>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Code</strong></td>
+          <td>En unik kode for attributten (op til 10 tegn). Eksempel: <strong>GF-DATO</strong> for "dato for seneste generalforsamling".</td>
+        </tr>
+        <tr>
+          <td><strong>Description</strong></td>
+          <td>Et beskrivende navn for attributten. Eksempel: <strong>Dato for seneste generalforsamling</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Type</strong></td>
+          <td>Datatypen for den tilknyttede værdi. Valgene er: <strong>Date</strong> (Dato) eller <strong>Decimal</strong> (tal med decimaler).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="ekstra-trin2">
+  <div class="section-header">
+    <div class="section-icon">📎</div>
+    <h2>Trin 2 — Tilknyt værdier til et værdipapir</h2>
+  </div>
+  <p>Fra et værdipapirkort klikker du på handlingen <strong>Detailed Information</strong> i navigationslinjen. Siden åbnes filtreret på det pågældende værdipapir.</p>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Attribute Code</strong></td>
+          <td>Vælg attributkoden fra listen over definerede attributter.</td>
+        </tr>
+        <tr>
+          <td><strong>Attribute Type</strong></td>
+          <td>Vises automatisk ud fra den valgte attributkodes type (Date eller Decimal). Kan ikke redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Active</strong></td>
+          <td>Markér feltet for at angive, at denne kombination er aktiv og skal medtages.</td>
+        </tr>
+        <tr>
+          <td><strong>Date Information Field</strong></td>
+          <td>Datoværdi. Vises kun, når Attribute Type er <strong>Date</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Decimal Information Field</strong></td>
+          <td>Decimalværdi (tal). Vises kun, når Attribute Type er <strong>Decimal</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box"><strong>Tip:</strong> Kun det værdiefelt, der svarer til attributkodens type, vises på siden. Når du skifter attributkode, opdateres Attribute Type automatisk, og systemet viser det rigtige værdiefelt.</div>
+</div>

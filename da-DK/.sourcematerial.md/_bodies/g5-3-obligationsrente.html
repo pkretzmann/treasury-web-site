@@ -1,0 +1,120 @@
+<div class="section" id="obligationsrente-oversigt">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Bogføring af obligationsrente</h2>
+  </div>
+  <p>Når du holder obligationer i porteføljen, kan du beregne og bogføre rente på disse baseret på obligationens nominelle rente og terminsdatoer. Renten kan bogføres som realiseret (faktisk indtægt) eller urealiseret (periodisering, der kan tilbageføres senere).</p>
+</div>
+
+<div class="section" id="saadan-gores">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>To måder at beregne rente</h2>
+  </div>
+  <h3>Metode 1: Beregn obligationsrente</h3>
+  <p>Denne rapport bruges til at gennemløbe et helt datointerval og oprette linjer for alle åbne terminsdatoer. Vælg <strong>Beregn obligationsrente</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fra dato / Til dato</strong></td>
+          <td>Datointerval. Systemet finder alle åbne terminsdatoer i intervallet og opretter rentelinjer for hver.</td>
+        </tr>
+        <tr>
+          <td><strong>Kladde / Batch</strong></td>
+          <td>Værdipapirafkastkladde og batch hvor linjerne dannes.</td>
+        </tr>
+        <tr>
+          <td><strong>Filter på Værdipapir</strong></td>
+          <td>Du kan filtrering til ét eller flere obligationsværdipapirer.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Metode 2: Periodiseringskladde for enkelt termin</h3>
+  <p>Hvis du kun skal bogføre rente for én bestemt terminsdato, bruges <strong>Periodiseringskladde</strong>. Dette er nyttigt ved manuelt kontrolleret bogføring af individuelle betalinger.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Terminsdato-filter</strong></td>
+          <td>Den konkrete terminsdato på obligationens betalingsplan.</td>
+        </tr>
+        <tr>
+          <td><strong>Bogføringsdato / Bilagsnummer</strong></td>
+          <td>Dato og bilag for kladdelinjerne.</td>
+        </tr>
+        <tr>
+          <td><strong>Kladde / Batch</strong></td>
+          <td>Værdipapirafkastkladde og batch.</td>
+        </tr>
+        <tr>
+          <td><strong>Filter på Værdipapir</strong></td>
+          <td>Begrænsning til obligationer.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="saetup">
+  <div class="section-header">
+    <div class="section-icon">🔧</div>
+    <h2>Opsætning på obligationen</h2>
+  </div>
+  <p>For at systemet kan beregne renten korrekt, skal følgende felter være udfyldt på obligationens værdipapirkort:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nominel rente %</strong></td>
+          <td>Den årlige renteprocent. Systemet bruger dette til at beregne rentebeløbet.</td>
+        </tr>
+        <tr>
+          <td><strong>Betalingsplan-kode</strong></td>
+          <td>Kode der peger på de terminsdatoer hvor rente betales.</td>
+        </tr>
+        <tr>
+          <td><strong>Udeluk fra renteberegning</strong></td>
+          <td>Hvis afkrydset, springes obligationen over. Bruges fx hvis renten håndteres manuelt eller obligationen er udløbet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Betalingsplanen selv skal indeholde hver terminsdato og antal rentedage frem til denne dato.</p>
+</div>
+
+<div class="section" id="bogfoering">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogføring og resultatet</h2>
+  </div>
+  <p>Når du bogfører rentelinjen fra Værdipapirafkastkladden dannes:</p>
+  <ul class="bullets">
+    <li><strong>Værdipapirpost:</strong> En post med bilagstype Afkast, renten som beløb. Hvis det er urealiseret rente, markeres det som sådan.</li>
+    <li><strong>Gevinstpost:</strong> Én for det realiserede eller urealiserede afkast (Yield).</li>
+    <li><strong>Finanspost:</strong> Rentebeløbet bogføres på den relevante konto (typisk bankkonto ved realiseret rente, periodiseringskonto ved urealiseret).</li>
+  </ul>
+  <div class="info-box">
+    <strong>Tilbageføring:</strong> Hvis du bogfører urealiseret rente, tilbageføres den automatisk når værdipapirerne senere sælges, eller du kan manuelt ompostere linjen. Systemet håndterer tilbageførsler efter behov.
+  </div>
+</div>

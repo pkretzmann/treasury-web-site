@@ -1,0 +1,90 @@
+<div class="section" id="depot-overblik">
+  <div class="section-header">
+    <div class="section-icon">🏦</div>
+    <h2>Depoter — hvad de er</h2>
+  </div>
+  <p>Et depot er en konto hvor du opbevarer værdipapirer. Det kan være et depot hos en bank, en mægler eller en internt administreret depot. Hvert depot kobles til en finanskonto eller bankkonto, som brugeges som modkonto ved bogføring.</p>
+  <p>I systemet kaldes depoter <strong>Accounts</strong> (konti).</p>
+
+  <h3>Sådan åbner du depoter</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Accounts</strong>.</li>
+    <li>Listen viser alle oprettede depoter.</li>
+  </ol>
+</div>
+
+<div class="section" id="depot-felter">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Felter i depotkontolisten</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kode</strong></td>
+          <td>En unik kode for depotet (op til 20 tegn). Koden bruges som opslag fra kladdelinjer og værdipapirkort. Eksempel: <strong>NORDEA</strong> eller <strong>DANSKE-BANK</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Navn</strong></td>
+          <td>Et beskrivende navn på depotet, f.eks. <strong>Nordea Depot</strong> eller <strong>Interne aktier</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Security Account No.</strong></td>
+          <td>Depotets eget kontonummer hos banken eller mægleren (eksternt referencenummer). Feltet er valgfrit og bruges alene til information.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Account Type</strong></td>
+          <td>Vælg <strong>G/L Account</strong> (Finanskonto) for direkte bogføring i finansmodulet, eller <strong>Bank Account</strong> (Bankkonto) for bogføring via bankmodulet.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Account No.</strong></td>
+          <td>Angiv det finanskontonummer eller bankkontonummer, der skal bruges som modkonto ved bogføring på dette depot. Indholdet af opslagslisten afhænger af valget i <strong>Bal. Account Type</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 1 Code</strong></td>
+          <td>Valgfri dimensionsværdi (f.eks. afdeling) der automatisk foreslås på kladdelinjer for dette depot.</td>
+        </tr>
+        <tr>
+          <td><strong>Global Dimension 2 Code</strong></td>
+          <td>Valgfri dimensionsværdi (f.eks. projekt) der automatisk foreslås på kladdelinjer for dette depot.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="depot-tilknytning-værdipapirer">
+  <div class="section-header">
+    <div class="section-icon">📎</div>
+    <h2>Tilknytning af værdipapirer til depoter</h2>
+  </div>
+  <p>Et værdipapir kan tilknyttes ét eller flere depoter. Tilknytningen administreres fra siden <strong>Security Accounts</strong>, som åbnes fra depotlisten via knappen <strong>Security Accounts</strong> øverst på siden.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Account Code</strong></td>
+          <td>Koden på det depot, der knyttes til værdipapiret.</td>
+        </tr>
+        <tr>
+          <td><strong>Standard</strong></td>
+          <td>Markér feltet på det depot, der skal foreslås som standard, når der oprettes en kladdelinje for det pågældende værdipapir.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Tilknytningen kan også ses og redigeres fra det enkelte værdipapirkort.</p>
+
+  <div class="note"><strong>Bemærk:</strong> Hvis depotet er koblet til en bankkonto, skal bankkontoens valutakode stemme overens med valutakoden på de værdipapirer, der handles via depotet. Systemet kontrollerer dette automatisk når du vælger et depot på en kladdelinje — er valutaerne ikke ens, afvises valget med en fejlbesked.</div>
+</div>

@@ -1,0 +1,51 @@
+<div class="section" id="udsteder-overblik">
+  <div class="section-header">
+    <div class="section-icon">🏛️</div>
+    <h2>Udstedere — hvad de er</h2>
+  </div>
+  <p>En udsteder er typisk en stat, realkreditinstitut, virksomhed eller anden organisation, der udsender obligationer. Udstederkoder oprettes i en selvstændig liste og bruges på obligationskortet samt til automatisk formatering af obligationsnavne.</p>
+
+  <h3>Sådan åbner du udstederlisten</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>I Treasury-menuen finder du <strong>ISINs</strong>-gruppen — her ligger menupunktet <strong>Issuers</strong>.</li>
+  </ol>
+  <p>Alternativt kan du søge efter <strong>Issuers</strong> i søgefeltet.</p>
+</div>
+
+<div class="section" id="udsteder-felter">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Felter i udstederlisten</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kode</strong></td>
+          <td>En unik kode for udstederen (op til 20 tegn). Koden bruges som opslag på obligationskortet i feltet <strong>Issuer Code</strong>. Eksempel: <strong>DK-STAT</strong> eller <strong>DANSKE-BANK</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Navn</strong></td>
+          <td>Udstederens fulde navn. Dette navn benyttes i obligationsnavnets format-skabelon (pladsholder %2, se afsnittet Værdipapiropsætning). Eksempel: <strong>Danmarks Regering</strong> eller <strong>Danske Bank A/S</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="udsteder-tilknytning">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Tilknytning til værdipapirer</h2>
+  </div>
+  <p>Udstederkoden angives på det enkelte værdipapirkort (obligation) i feltet <strong>Issuer Code</strong>. Feltet er valgfrit, men er nødvendigt for at obligationsnavnets automatiske formatering fungerer korrekt.</p>
+
+  <div class="note"><strong>Bemærk:</strong> Udstedere oprettes udelukkende manuelt i denne version. Automatisk oprettelse af udstedere via import af kurslistefiler er endnu ikke implementeret.</div>
+
+  <div class="info-box"><strong>Tip:</strong> Udstedernavne fra filleverandører er ofte formateret med store bogstaver. Du kan redigere navnene frit efter oprettelse for at få dem til at matche dine navnekonventioner.</div>
+</div>

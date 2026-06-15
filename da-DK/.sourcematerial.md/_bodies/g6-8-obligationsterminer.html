@@ -1,0 +1,177 @@
+<div class="section" id="termin-overblik">
+  <div class="section-header">
+    <div class="section-icon">📅</div>
+    <h2>Obligationsterminer — overblik</h2>
+  </div>
+  <p>Obligationsterminer bruges til at angive de faktiske kuponforfaldsdatoer og det tilhørende antal rentedage. Dette er grundlaget for beregning af obligationernes realiserede og urealiserede renter.</p>
+  <p>Hvert værdipapir af typen obligation skal knyttes til en terminskode via feltet <strong>Payment Code</strong> på værdipapirkortet.</p>
+  <p>Opsætningen er opdelt i tre niveauer:</p>
+  <ol class="steps">
+    <li><strong>Payment Codes</strong> — definerer kodetypen (halvårlig, kvartårlig osv.) og antal dage i renteåret.</li>
+    <li><strong>Payment Days</strong> — en global liste af gyldige kuponforfaldsdatoer.</li>
+    <li><strong>Payment Days Setup</strong> — kobler en terminskode til en terminsdato med realiseringstype og rentedage.</li>
+  </ol>
+</div>
+
+<div class="section" id="termin-aabning">
+  <div class="section-header">
+    <div class="section-icon">🔓</div>
+    <h2>Sådan åbner du terminskoder</h2>
+  </div>
+
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Klik på <strong>Payment Codes</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+  </ol>
+
+  <p>Alternativt kan du søge efter <strong>Payment Codes</strong> i søgefeltet.</p>
+  <p>Fra terminskodeoversigten åbnes <strong>Payment Days</strong> og <strong>Payment Days Setup</strong> via handlingsknapperne øverst på siden.</p>
+</div>
+
+<div class="section" id="termin-payment-codes">
+  <div class="section-header">
+    <div class="section-icon">🏷️</div>
+    <h2>Terminskoder (Payment Codes)</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Code</strong></td>
+          <td>En unik kode for terminskoden (op til 10 tegn). Eksempler: <strong>2T</strong> for halvårlig, <strong>4T</strong> for kvartårlig. Koden angives på obligationskortet i feltet <strong>Payment Code</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Description</strong></td>
+          <td>Et beskrivende navn. Eksempler: <strong>Halvårlig termin</strong> eller <strong>Kvartårlig termin</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Number of Days in Year</strong></td>
+          <td>Antal dage i renteåret, brugt som divisor i renteberegningsformlen. Typisk <strong>360</strong> eller <strong>365</strong>, afhængigt af rentekonventionen for obligationstypen. Lad feltet stå tomt (0) hvis dagsbasis ikke er relevant.</td>
+        </tr>
+        <tr>
+          <td><strong>Date Filter</strong></td>
+          <td>Datofilter der afgrænser beregningen af No. of Payments og No. of Interest Days til en bestemt periode. Sættes som standard til indeværende kalenderår når siden åbnes. Du kan redigere det direkte.</td>
+        </tr>
+        <tr>
+          <td><strong>No. of Payments</strong></td>
+          <td>Beregnet felt der viser antallet af terminsopsætningslinjer for terminskoden inden for datofilterets periode. Kan ikke redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>No. of Interest Days</strong></td>
+          <td>Beregnet felt der viser summen af rentedage på tværs af alle terminsopsætningslinjer for terminskoden inden for datofilterets periode. Kan ikke redigeres.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="termin-payment-days">
+  <div class="section-header">
+    <div class="section-icon">📆</div>
+    <h2>Terminsdatoer (Payment Days)</h2>
+  </div>
+  <p>Terminsdatoer er en global liste af gyldige kuponforfaldsdatoer. De er <strong>ikke</strong> knyttet til en bestemt terminskode — samme dato kan genbruges på tværs af flere terminskoder via terminsopsætningen.</p>
+  <p>Åbnes via knappen <strong>Payment Days</strong> fra terminskodeoversigten.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Date</strong></td>
+          <td>Forfaldsdatoen for kuponen. Dette er primærnøglen — der kan kun oprettes én post per dato i den globale liste.</td>
+        </tr>
+        <tr>
+          <td><strong>Closed</strong></td>
+          <td>Markér feltet, når terminen er afsluttet og ikke længere skal indgå i løbende renteberegninger.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="termin-setup">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Terminsopsætning (Payment Days Setup)</h2>
+  </div>
+  <p>Terminsopsætningen kobler en terminskode til en terminsdato og angiver, hvor mange rentedage der indgår i renteberegningen, og om beregningen er realiseret eller urealiseret.</p>
+  <p>Åbnes via knappen <strong>Payment Days Setup</strong> fra terminskodeoversigten — siden filtreres automatisk til den aktuelle terminskode.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Payment Code</strong></td>
+          <td>Terminskoden. Kobler opsætningslinjen til en terminskode.</td>
+        </tr>
+        <tr>
+          <td><strong>Payment Date</strong></td>
+          <td>Terminsdatoen. Opslag i den globale terminsdatoliste (Payment Days).</td>
+        </tr>
+        <tr>
+          <td><strong>Realization Type</strong></td>
+          <td><strong>Realized</strong> (Realiseret) — renten bogføres ved kuponforfald. <strong>Unrealized</strong> (Urealiseret) — renten periodiseres løbende frem mod forfald.</td>
+        </tr>
+        <tr>
+          <td><strong>Interest Days</strong></td>
+          <td>Antal rentedage, der indgår i renteberegningen for den pågældende dato.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Renteberegningsformel</h3>
+  <p>Renten beregnes efter denne formel:</p>
+  <p><strong>Nominelt antal × Rente % ÷ Number of Days in Year × Rentedage</strong></p>
+  <p>Antal dage i renteåret hentes fra feltet <strong>Number of Days in Year</strong> på terminskoden.</p>
+
+  <h3>Eksempler</h3>
+  <ul class="bullets">
+    <li><strong>Halvårlig termin (365 dage):</strong> 100 stk × 6 % ÷ 365 × 180 dage = 2.95</li>
+    <li><strong>Kvartårlig termin (360 dage):</strong> 100 stk × 6 % ÷ 360 × 90 dage = 1.50</li>
+  </ul>
+</div>
+
+<div class="section" id="termin-periodiske-aktiviteter">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <h2>Periodiske aktiviteter — renteberegning</h2>
+  </div>
+  <p>Renteberegning udføres via to periodiske kørsler, som åbnes fra rollecenteret under <strong>Treasury → Periodic Activities</strong>:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Kørsel</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Calculate Bond Interest</strong></td>
+          <td>Beregner og opretter Yield-kladdelinjer for alle obligationer i et givent datointerval baseret på terminsopsætningen. Realiserede terminsopsætningslinjer markeres som <strong>Closed</strong> efter kørslen.</td>
+        </tr>
+        <tr>
+          <td><strong>Interest Accrual Batch</strong></td>
+          <td>Foreslår yield-kladdelinjer til renteperiodisering for en specifik terminsdato — primært til urealiseret periodisering frem mod næste kupon.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="termin-tilknytning-obligationer">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Tilknytning til obligationer</h2>
+  </div>
+  <p>Terminskoden knyttes til det enkelte obligationskort via feltet <strong>Payment Code</strong> (på fanebladet med obligations-specifikke felter). Uden en terminskode kan der ikke beregnes rente på obligationen.</p>
+</div>

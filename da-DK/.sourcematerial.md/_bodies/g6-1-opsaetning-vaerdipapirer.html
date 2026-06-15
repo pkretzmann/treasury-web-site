@@ -1,0 +1,120 @@
+<div class="section" id="aabn-generelt">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <h2>Grundlæggende opsætning</h2>
+  </div>
+  <p>Før du kan arbejde med værdipapirer, skal du opsætte grundlæggende regler i <strong>Værdipapiropsætning</strong>. Her definerer du nummerserier, regnskabsprincipper og andre centrale indstillinger.</p>
+
+  <h3>Sådan åbner du Værdipapiropsætning</h3>
+  <ol class="steps">
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong> i navigationslinjen.</li>
+    <li>Klik på <strong>Treasury Setup</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+  </ol>
+  <p>Alternativt kan du søge efter <strong>Security Setup</strong> i søgefeltet.</p>
+</div>
+
+<div class="section" id="aabn-fanebladet-generelt">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Fanebladet Generelt</h2>
+  </div>
+  <p>Her angiver du centrale indstillinger for hvordan systemet skal opfatte værdipapirer.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Treasury G/L Account Filter</strong></td>
+          <td>Angiv et filter for, hvilke finanskonti der vedrører værdipapirerne. Filteret bestemmer, hvilke finanskonti der vises ved opslag i bogføringsopsætningen. Lades feltet blankt, vises alle finanskonti. Feltet er skjult som standard — klik på <strong>Vis mere</strong> for at se det.</td>
+        </tr>
+        <tr>
+          <td><strong>Rapportgrupperingsmetode</strong></td>
+          <td>Vælg den grupperingsmetode, der skal indsættes på værdipapiret ved oprettelse. Valgene er: <strong>Blank</strong>, <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>. Valget påvirker, hvordan værdipapirerne grupperes på rapporter.</td>
+        </tr>
+        <tr>
+          <td><strong>Regnskabsprincip</strong></td>
+          <td>Vælg det regnskabsprincip, der skal anvendes: <strong>Realisationsprincippet</strong>, <strong>Lagerprincippet</strong> eller <strong>Begge</strong>. Standardværdien er Realisationsprincippet. Valget bestemmer, hvilke muligheder der kan vælges i bogføringsgrupperne.</td>
+        </tr>
+        <tr>
+          <td><strong>Brug ISIN-kode i rapporter</strong></td>
+          <td>Markér feltet, hvis ISIN-koden skal vises i stedet for værdipapirsnummeret på visse rapporter.</td>
+        </tr>
+        <tr>
+          <td><strong>Foreslå fondskurs v. handel</strong></td>
+          <td>Markér feltet, hvis programmet skal foreslå en fondskurs fra kurslisten ved køb og salg af værdipapirer.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Regnskabsprincipper</h3>
+  <ul class="bullets">
+    <li><strong>Realisationsprincippet:</strong> Tab og avancer opgøres og bogføres først ved salg. Urealiserede kursreguleringer medregnes ikke løbende.</li>
+    <li><strong>Lagerprincippet (Mark-to-Market):</strong> Beholdningen opgøres til markedsværdi, og urealiserede kursreguleringer medregnes løbende i regnskabet.</li>
+    <li><strong>Begge:</strong> Du kan anvende begge principper inden for samme regnskab på tværs af bogføringsgrupper.</li>
+  </ul>
+</div>
+
+<div class="section" id="aabn-fanebladet-nummerering">
+  <div class="section-header">
+    <div class="section-icon">🔢</div>
+    <h2>Fanebladet Nummerering</h2>
+  </div>
+  <p>Her definerer du, hvordan værdipapirer nummereres.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapirsnr.</strong></td>
+          <td>Angiv den nummerserie, der bruges til at tildele nye værdipapirer et nummer automatisk. Ønsker du kun manuel nummerering — f.eks. den officielle fondskode — kan du lade feltet blankt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="aabn-fanebladet-opdatering">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <h2>Fanebladet Opdatering</h2>
+  </div>
+  <p>Her styrer du, hvordan værdipapirnavne skal opdateres automatisk.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt</th><th>Beskrivelse</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Opdater aktienavn</strong></td>
+          <td>Markér feltet, hvis værdipapirets navn skal opdateres automatisk, når det importeres fra en kurslistefil. Bemærk: denne funktion er endnu ikke fuldt implementeret.</td>
+        </tr>
+        <tr>
+          <td><strong>Obligationsnavn format</strong></td>
+          <td>Angiv en skabelon for navngivning af obligationer. Du kan bruge følgende pladsholdere: <strong>%1</strong> = Navn (som du indtastede det), <strong>%2</strong> = Udsteder, <strong>%3</strong> = Rentepct., <strong>%4</strong> = Udløbsår. Eksempel: hvis du angiver <strong>%3 %2 %1 %4</strong>, navngives en obligation som "6 % Danske Statslån Grøn 2035". Formateringen anvendes kun ved første oprettelse af obligationen — efterfølgende manuelle redigeringer ændres ikke automatisk.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box"><strong>Tip:</strong> Værdipapiropsætningen gælder for både aktier og obligationer.</div>
+</div>
+
+<div class="section" id="aabn-handlinger">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <h2>Handlinger og navigation</h2>
+  </div>
+  <p>Fra Værdipapiropsætning kan du navigere direkte til:</p>
+  <ul class="bullets">
+    <li><strong>Security Posting Groups</strong> — her opretter du bogføringsgrupper, der knytter værdipapirer til finanskonti (se næste afsnit).</li>
+  </ul>
+</div>

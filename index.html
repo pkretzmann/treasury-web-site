@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Dokumentation</title>
+  <meta http-equiv="refresh" content="0; url=da-DK/index.html" />
+  <script>
+    // Vælg sprogmappe: gemt manuelt valg (fra portalens sprogvælger) vinder, ellers browserens sprog.
+    (function () {
+      // === LOCALES:START — auto-genereret af /update-website. Rediger ikke manuelt. ===
+      var LOCALES = ["da-DK"];
+      var DEFAULT = "da-DK";
+      // === LOCALES:END ===
+      function valid(c){ for (var i = 0; i < LOCALES.length; i++) { if (LOCALES[i] === c) return true; } return false; }
+      var pick = null;
+      // 1) Manuelt gemt valg (sat af portalens sprogvælger) vinder.
+      try { var saved = localStorage.getItem("docs.locale"); if (saved && valid(saved)) pick = saved; } catch (e) {}
+      // 2) Ellers browserens sprog, med standardsproget som fald-tilbage.
+      if (!pick) {
+        var want = (navigator.language || navigator.userLanguage || "").toLowerCase();
+        pick = DEFAULT;
+        for (var i = 0; i < LOCALES.length; i++) {
+          var l = LOCALES[i].toLowerCase();
+          if (want === l || want.split("-")[0] === l.split("-")[0]) { pick = LOCALES[i]; break; }
+        }
+      }
+      location.replace(pick + "/index.html");
+    })();
+  </script>
+</head>
+<body>
+  <p>Omdirigerer til dokumentationen … hvis intet sker, <a href="da-DK/index.html">klik her</a>.</p>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<div class="section" id="posteringer-overblik">
+  <div class="section-header">
+    <div class="section-icon">🗂️</div>
+    <h2>Fra kladde til poster</h2>
+  </div>
+  <p>Modulet følger Business Centrals standardmønster: <strong>kladde → bogføring → poster</strong>.
+  En transaktion føres som en linje i værdipapirkladden, og når den bogføres, danner systemet
+  parallelt poster i flere tabeller — samt almindelige finansposter.</p>
+
+  <div class="flowchart">
+    <div class="fc-node start">Kladdelinje</div>
+    <div class="fc-arrow">↓</div>
+    <div class="fc-node decision">Bogføring</div>
+    <div class="fc-arrow">↓</div>
+    <div class="fc-node end">Poster i finans + værdipapirposter</div>
+  </div>
+</div>
+
+<div class="section" id="posteringer-tabeller">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>De fem slags poster</h2>
+  </div>
+  <p>Hver bogføring kan ramme op til fem slags poster. Finansposterne er de velkendte
+  finansbevægelser; de øvrige fire er værdipapirmodulets egne poster.</p>
+
+  <div class="card-grid">
+    <div class="feature-card">
+      <h4>Finanspost <span class="tag done">Finans</span></h4>
+      <p>Almindelige finansposter i Business Central. Bogføringen kalder den normale
+      finansbogføring, så bevægelser på balance- og resultatkonti dannes parallelt med
+      værdipapirposterne.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Værdipapirpost <span class="tag info">VP</span></h4>
+      <p>Hovedposten pr. transaktion — én linje pr. handel, kursregulering, afkast osv. Indeholder
+      bilagstype, antal, beløb og reference til kladdelinjen.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Depotbeholdningspost <span class="tag info">Depot</span></h4>
+      <p>Beholdningsbevægelse på det enkelte depot. Bruges til at vise aktuel beholdning og til
+      afstemning mod depotinstituttet.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Detaljeret værdipapirpost <span class="tag info">Værdidetalje</span></h4>
+      <p>Holder styr på resterende antal og kostpris pr. købspost samt urealiserede kursreguleringer
+      pr. købspost.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Detaljeret afkastpost <span class="tag info">Afkastdetalje</span></h4>
+      <p>Realiseret og urealiseret gevinst/tab — opdelt i kurs- og valutakurskomponent. Driver
+      finansposterne for gevinst og tab.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="posteringer-graf">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <h2>Hvad danner hver transaktion?</h2>
+  </div>
+  <p>Klik på en transaktionstype for at se, hvilke poster den danner. De fem felter svarer til de
+  fem slags poster ovenfor — en streg betyder, at typen ikke danner den slags post.</p>
+
+  <div class="accordion">
+
+    <details open>
+      <summary>
+        <span class="acc-title">Køb <span class="acc-sub">tilgang — opretter en ny åben købspost</span></span>
+        <span class="tag done">Aktier afstemt</span>
+      </summary>
+      <div class="acc-body">
+        <p>Et køb registrerer tilgang af et værdipapir til et depot. Hver købslinje opretter en
+        selvstændig købspost, som senere salg, kursreguleringer og overførsler refererer til.</p>
+        <div class="ledger-grid">
+          <div class="ledger-box"><span class="lbl">Finans</span><span class="val">2 linjer</span></div>
+          <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1</span></div>
+          <div class="ledger-box miss"><span class="lbl">Afkastdetalje</span><span class="val">—</span></div>
+        </div>
+        <ul>
+          <li><strong>Finans:</strong> Debet værdipapirkonto · Kredit modkonto (bank/finans).</li>
+          <li>Købsposten markeres som åben med fuldt resterende antal og købspris — bruges senere
+          ved salg til at beregne kostprisen.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Salg <span class="acc-sub">afgang — udligner åbne købsposter og realiserer gevinst/tab</span></span>
+        <span class="tag done">Aktier afstemt</span>
+      </summary>
+      <div class="acc-body">
+        <p>Et salg trækker ud fra de åbne købsposter og realiserer den forskel, der er opstået siden
+        købet — både i kurs og i valuta. Eventuelle tidligere urealiserede reguleringer tilbageføres
+        samtidig.</p>
+        <div class="ledger-grid">
+          <div class="ledger-box"><span class="lbl">Finans</span><span class="val">5–9 linjer</span></div>
+          <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1 + reverseringer</span></div>
+          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">2–4</span></div>
+        </div>
+        <ul>
+          <li><strong>Finans:</strong> Salgsprovenu mod afgang fra værdipapirkontoen, plus realiseret
+          gevinst/tab opdelt i kurs- og valutakomponent.</li>
+          <li>Ved delvist salg bliver købsposten ved med at være åben med reduceret resterende antal.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Afkast <span class="acc-sub">udbytte, evt. med udbytteskat</span></span>
+        <span class="tag done">Aktier afstemt</span>
+      </summary>
+      <div class="acc-body">
+        <p>Afkast bogfører udbytte fra aktien. Beløbet rammer afkastkontoen, og en eventuel
+        udbytteskat trækkes fra nettomodtagelsen.</p>
+        <div class="ledger-grid">
+          <div class="ledger-box"><span class="lbl">Finans</span><span class="val">2–3 linjer</span></div>
+          <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1 (antal = 0)</span></div>
+          <div class="ledger-box miss"><span class="lbl">Værdidetalje</span><span class="val">—</span></div>
+          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">1</span></div>
+        </div>
+        <ul>
+          <li><strong>Uden skat:</strong> Debet bank · Kredit afkastkonto.</li>
+          <li><strong>Med udbytteskat:</strong> Debet bank (netto) · Debet udbytteskat · Kredit
+          afkastkonto (brutto).</li>
+          <li>Beholdningen på depotet ændres ikke (antal = 0), men afkastet registreres, så det kan
+          afstemmes pr. depot.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Kursregulering <span class="acc-sub">lagerprincippet — opdelt i kurs- og valutakomponent</span></span>
+        <span class="tag done">Aktier afstemt</span>
+      </summary>
+      <div class="acc-body">
+        <p>Kursregulering måler beholdningens markedsværdi til en given dato (typisk månedsultimo) og
+        bogfører forskellen som urealiseret kursregulering. Beløbet opdeles i en kursdel og en
+        valutakursdel, så de kan følges hver for sig.</p>
+        <div class="ledger-grid">
+          <div class="ledger-box"><span class="lbl">Finans</span><span class="val">4 linjer</span></div>
+          <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">2 (kurs + valuta)</span></div>
+          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">2 + tilbageførsel</span></div>
+        </div>
+        <ul>
+          <li>Den seneste regulering pr. købspost tilbageføres automatisk, før den nye bogføres — så
+          det kun er den aktuelle markedsværdi, der står åben.</li>
+          <li>Reguleringer kan kun foretages frem i tid.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="note"><strong>Bemærk:</strong> Tallene er typiske eksempler for aktiehandel, der er
+  afstemt mod tilsvarende data fra det tidligere NAV-system. Det præcise antal linjer afhænger af,
+  om handlen er i fremmed valuta, og om der er udbytteskat.</div>
+</div>

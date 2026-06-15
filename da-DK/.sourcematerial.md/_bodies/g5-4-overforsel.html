@@ -1,0 +1,115 @@
+<div class="section" id="overforsel-oversigt">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <h2>Overførsel af værdipapirværdier</h2>
+  </div>
+  <p>Overførselskladden bruges når sammensetningen af en værdipapirportefølje skal ændres uden at der bogføres et reelt salg. Typiske eksempler er sammenlægning af værdipapirer, aktie-splits, eller flytning af beholdning fra ét depot til et andet.</p>
+</div>
+
+<div class="section" id="sammenlægning-split">
+  <div class="section-header">
+    <div class="section-icon">🔀</div>
+    <h2>Sammenlægning og split</h2>
+  </div>
+  <p>Hvis du skal slå to værdipapirer sammen til ét, eller dele ét værdipapir op i to, bruger du <strong>Overførselskladden</strong> til at flytte beholdningen fra det gamle papir til det nye.</p>
+
+  <h3>Sådan gøres det</h3>
+  <ol class="steps">
+    <li>Vælg <strong>Overførselsbatch</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</li>
+    <li>Udfyld anfordringsvinduet:
+      <ul class="sub-steps">
+        <li><strong>Kilde værdipapir:</strong> Det papir beholdningen flyttes fra.</li>
+        <li><strong>Mål værdipapir:</strong> Det papir beholdningen flyttes til.</li>
+        <li><strong>Bogføringsdato:</strong> Datoen for transaktionen.</li>
+        <li><strong>Kladde / Batch:</strong> Overførselsbatch hvor linjerne dannes.</li>
+      </ul>
+    </li>
+    <li>Systemet finder alle åbne køb på det gamle papir og opretter:
+      <ul class="sub-steps">
+        <li>En <strong>sælgslinje</strong> på det gamle papir med negativt antal</li>
+        <li>En <strong>købslinje</strong> på det nye papir med tilsvarende positivt antal</li>
+      </ul>
+    </li>
+    <li>Gennemse linjerne i kladden. Du kan foretage korrekturringer (fx for øreafrundinger).</li>
+    <li>Bogfør når summen af beløbene går i nul.</li>
+  </ol>
+  <div class="note">
+    <strong>Vigtig regel:</strong> Kun restbeholdningen pr. oprindelig købsdato overføres — hele historikken bevares ved at det nye papir får samme købsdato som det gamle.
+  </div>
+</div>
+
+<div class="section" id="aktiesplit">
+  <div class="section-header">
+    <div class="section-icon">✂️</div>
+    <h2>Stykregulering (aktiesplit)</h2>
+  </div>
+  <p>Hvis en aktie undergår en split (fx 1:10-split hvor en aktie bliver til 10 stykker) bruger du <strong>Stykregulering</strong> i overførselskladden.</p>
+
+  <h3>Felter</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapirnummer</strong></td>
+          <td>Det værdipapir der undergo splitter.</td>
+        </tr>
+        <tr>
+          <td><strong>Nuværende stykstørrelse</strong></td>
+          <td>Automatisk udfyldt fra værdipapirkortet (fx 100 kr. pr. styk).</td>
+        </tr>
+        <tr>
+          <td><strong>Ny stykstørrelse</strong></td>
+          <td>Den nye stykstørrelse efter split (fx 10 kr. pr. styk).</td>
+        </tr>
+        <tr>
+          <td><strong>Antal</strong></td>
+          <td>Det nye antal enheder. Systemet beregner dette automatisk ud fra stykstørrelserne, eller du kan angive det manuelt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Resultatet</h3>
+  <p>Ved bogføring dannes:</p>
+  <ul class="bullets">
+    <li><strong>Afgangspost:</strong> Negativt antal i den oprindelige stykstørrelse.</li>
+    <li><strong>Tilgangspost:</strong> Positivt antal i den nye stykstørrelse (samme totalbeløb).</li>
+    <li>Værdipapirets <strong>stykstørrelse</strong> opdateres på kortet, så alle fremtidige posteringer bruger den nye størrelse.</li>
+  </ul>
+</div>
+
+<div class="section" id="depotflytning">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <h2>Depotflytning</h2>
+  </div>
+  <p>Hvis du skal flytte en del af en værdipapirs beholdning fra ét depot til et andet — uden at ændre værdipapiret selv — bruges <strong>Depotregulering</strong>.</p>
+
+  <h3>Sådan gøres det</h3>
+  <p>I overførselskladden:</p>
+  <ol class="steps">
+    <li>Vælg bilagstype <strong>Depotregulering</strong>.</li>
+    <li>Udfyld:
+      <ul class="sub-steps">
+        <li><strong>Værdipapirnummer:</strong> Værdipapiret der flyttes.</li>
+        <li><strong>Antal:</strong> Hvor mange enheder der flyttes.</li>
+        <li><strong>Depot (fra):</strong> Det nuværende depot.</li>
+        <li><strong>Nyt depot:</strong> Destinationsdepot.</li>
+      </ul>
+    </li>
+    <li>Bogfør linjen.</li>
+  </ol>
+
+  <h3>Resultatet</h3>
+  <ul class="bullets">
+    <li>Beholdningen på det gamle depot reduceres.</li>
+    <li>Beholdningen på det nye depot øges.</li>
+    <li>Værdipapirerne og deres værdi ændres ikke — det er kun en depotflytning.</li>
+  </ul>
+</div>

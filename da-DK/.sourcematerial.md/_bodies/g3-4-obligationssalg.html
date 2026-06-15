@@ -1,0 +1,152 @@
+<div class="section" id="abent-handelskladden-obligationssalg">
+  <div class="section-header">
+    <div class="section-icon">📂</div>
+    <h2>Åbn Handelskladden</h2>
+  </div>
+  <p>Klik på <strong>Handelskladder</strong> i Treasury-menuen i rollecentret. Vælg den kladdetype, der er oprettet til obligationshandel. Vinduet <strong>Handelskladder</strong> vises.</p>
+</div>
+
+<div class="section" id="udfyld-kladdelinjen-obligationssalg">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Udfyld kladdelinjen</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Vejledning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Handelsdato</strong></td>
+          <td>Angiv salgsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen. Tilbagelogging er spærret (undtagen tilbageførsler).</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Udfyldes automatisk fra kladdenavnets nummerserie, eller angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagstype</strong></td>
+          <td>Vælg <strong>Salg</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Værdipapirnummer</strong></td>
+          <td>Vælg den obligation, der er solgt eller udtrukket. Spærrede obligationer kan ikke vælges.</td>
+        </tr>
+        <tr>
+          <td><strong>Beskrivelse</strong></td>
+          <td>Udfyldes automatisk. Kan redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Udtrækning</strong></td>
+          <td>Markér feltet, hvis salget er en udtrækning (obligationen er udtrukket). <strong>OBS:</strong> I modsætning til tidligere systemer sættes kursen <strong>ikke</strong> automatisk til 100 ved udtrækning – du skal angive kursen manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakode</strong></td>
+          <td>Hentes automatisk fra obligationskortet. Tomt felt = regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Antal</strong></td>
+          <td>Angiv det antal enheder, der er solgt eller udtrukket.</td>
+        </tr>
+        <tr>
+          <td><strong>Kurs</strong></td>
+          <td>Kursen foreslås automatisk fra ISIN-kurslisten. Ved udtrækning skal kursen normalt være 100. <strong>OBS:</strong> Som ved køb: kursen divideres ikke automatisk med 100.</td>
+        </tr>
+        <tr>
+          <td><strong>Omkostninger</strong></td>
+          <td>Angiv salgsomkostninger som et <strong>negativt beløb</strong>, så de fratrækkes salgsprovenuet.</td>
+        </tr>
+        <tr>
+          <td><strong>Handelsrente</strong></td>
+          <td><em>(Synlig når Vis obligationskolonner er aktiveret.)</em> Angiv evt. handelsrente ved salget. Feltet registreres på posten.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb</strong></td>
+          <td>Beregnes automatisk: <strong>Beløb = (Antal × Kurs) + Omkostninger</strong>. Handelsrente er ikke inkluderet.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb (LCY)</strong></td>
+          <td>Beløbet i regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdningskode</strong></td>
+          <td>Det depot, obligationen fragår. Obligatorisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Kontotype</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Kontonr.</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><strong>Vigtig:</strong> Obligationskursen skal angives korrekt uden automatisk division med 100. Er den nominelle værdi 1.000 DKK og udtrækkingskursen er 100 %, angiv 100 som kurs (eller 100.000 hvis du vil have det samlede beløb – afklar konventionen med dit regnskabskontor). Handelsrenten registreres på posten men bogføres ikke til finansmodulet i den nuværende version.</div>
+</div>
+
+<div class="section" id="bogforing-obligationssalg">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogfør salget</h2>
+  </div>
+  <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>). Programmet udfører de samme kontroller som ved aktiesalg, herunder at der eksisterer åbne kostprislots svarende til det solgte antal.</p>
+</div>
+
+<div class="section" id="resultatet-bogforing-obligationssalg">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Hvad sker der ved bogføring</h2>
+  </div>
+  <p>Bogføringen forbruger åbne kostprislots på baggrund af avancemetoden (FIFO eller Gennemsnit) og opretter følgende poster:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Posteringstype</th>
+          <th>Beskrivelse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Obligationspost</strong></td>
+          <td>En post med dokumenttype Salg og negativt antal. Udtrækkingsmarkeringen gemmes på posten.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdsningspost</strong></td>
+          <td>En depotpost der registrerer, at antallet er fragået depotet.</td>
+        </tr>
+        <tr>
+          <td><strong>Kostprislots</strong></td>
+          <td>Et eller flere lot reduceres/lukkes afhængig af avancemetoden. FIFO bruger ældste lot først, Gennemsnit bruger vægtet gennemsnitskostpris.</td>
+        </tr>
+        <tr>
+          <td><strong>Avanceposter</strong></td>
+          <td>Én post pr. berørt lot. Avance = (Antal × Salgskurs) – (Antal × Kostpris).</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (værdipapirkonto)</strong></td>
+          <td>Bogføres til den finanskonto der er konfigureret for Salg.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (modkonto)</strong></td>
+          <td>Bankmodkontoen debiteres med salgsprovenuet.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (avancekonto)</strong></td>
+          <td>Oprettes, hvis avance ≠ 0 og avancekonto er konfigureret.</td>
+        </tr>
+        <tr>
+          <td><strong>Handelsrente</strong></td>
+          <td>Registreres på obligationsposten men genererer ikke en separat finanspost.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Alle poster knyttes til samme transaktionsnummer og registreres som audit trail.</p>
+</div>

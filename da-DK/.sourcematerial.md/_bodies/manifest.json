@@ -1,0 +1,235 @@
+{
+  "website": "C:/AL/PwC-Security-for-Business-Central/Security Management/.website",
+  "locale": "da-DK",
+  "lang": "da",
+  "motion": true,
+  "title_suffix": " · Værdipapirhandel",
+  "footer": "<strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026",
+  "pages": [
+    {
+      "group": "1. Introduktion",
+      "file": "1.1 Design.html",
+      "title": "Design",
+      "badge": "Introduktion",
+      "subtitle": "Modulets byggeklodser — depot, værdipapir, ISIN og udsteder — og hvordan de hænger sammen.",
+      "pills": ["Koncept"],
+      "body_file": "g1-1-design.html"
+    },
+    {
+      "group": "1. Introduktion",
+      "file": "1.2 De fem kladdetyper.html",
+      "title": "De fem kladdetyper",
+      "badge": "Introduktion",
+      "subtitle": "De fem kladdetyper i værdipapirmodulet — og hvad hver type bruges til.",
+      "pills": ["Koncept"],
+      "body_file": "g1-2-kladdetyper.html"
+    },
+    {
+      "group": "1. Introduktion",
+      "file": "1.3 Posteringer i modulet.html",
+      "title": "Posteringer i modulet",
+      "badge": "Introduktion",
+      "subtitle": "Fra kladde til poster — de fem slags poster og hvad hver transaktion danner.",
+      "pills": ["Koncept"],
+      "body_file": "g1-3-posteringer.html"
+    },
+    {
+      "group": "2. Stamdata",
+      "file": "2.1 Oprettelse af aktier.html",
+      "title": "Oprettelse af aktier",
+      "badge": "Stamdata",
+      "subtitle": "Felt-for-felt vejledning til at oprette en aktie som stamdata.",
+      "pills": ["Ved nye papirer"],
+      "body_file": "g2-1-aktier.html"
+    },
+    {
+      "group": "2. Stamdata",
+      "file": "2.2 Oprettelse af obligationer.html",
+      "title": "Oprettelse af obligationer",
+      "badge": "Stamdata",
+      "subtitle": "Felt-for-felt vejledning til at oprette en obligation, inkl. automatisk navngivning.",
+      "pills": ["Ved nye papirer"],
+      "body_file": "g2-2-obligationer.html"
+    },
+    {
+      "group": "3. Handel",
+      "file": "3.1 Aktiekøb.html",
+      "title": "Aktiekøb",
+      "badge": "Handel",
+      "subtitle": "Sådan registrerer og bogfører du et køb af aktier i handelskladden.",
+      "pills": ["Daglig brug"],
+      "body_file": "g3-1-aktiekob.html"
+    },
+    {
+      "group": "3. Handel",
+      "file": "3.2 Aktiesalg.html",
+      "title": "Aktiesalg",
+      "badge": "Handel",
+      "subtitle": "Sådan registrerer og bogfører du et salg af aktier, inkl. gevinst og tab.",
+      "pills": ["Daglig brug"],
+      "body_file": "g3-2-aktiesalg.html"
+    },
+    {
+      "group": "3. Handel",
+      "file": "3.3 Obligationskøb.html",
+      "title": "Obligationskøb",
+      "badge": "Handel",
+      "subtitle": "Sådan køber du obligationer — bemærk kurskonventionen (120 = 120 %).",
+      "pills": ["Daglig brug"],
+      "body_file": "g3-3-obligationskob.html"
+    },
+    {
+      "group": "3. Handel",
+      "file": "3.4 Obligationssalg.html",
+      "title": "Obligationssalg",
+      "badge": "Handel",
+      "subtitle": "Sådan sælger du obligationer, inkl. udtrækning ved udløb.",
+      "pills": ["Daglig brug"],
+      "body_file": "g3-4-obligationssalg.html"
+    },
+    {
+      "group": "4. Opfølgning",
+      "file": "4.1 Ompostering.html",
+      "title": "Ompostering",
+      "badge": "Opfølgning",
+      "subtitle": "Sådan retter eller tilbagefører du en bogført værdipapirpostering.",
+      "pills": ["Løbende opfølgning"],
+      "body_file": "g4-1-ompostering.html"
+    },
+    {
+      "group": "4. Opfølgning",
+      "file": "4.2 Værdipapirstatistik.html",
+      "title": "Værdipapirstatistik",
+      "badge": "Opfølgning",
+      "subtitle": "Overblik over beholdning og afkast samt afstemning mod finans.",
+      "pills": ["Løbende opfølgning"],
+      "body_file": "g4-2-statistik.html"
+    },
+    {
+      "group": "4. Opfølgning",
+      "file": "4.3 Værdipapirposter og analyse.html",
+      "title": "Værdipapirposter og analyse",
+      "badge": "Opfølgning",
+      "subtitle": "Find og analysér de enkelte værdipapirposter.",
+      "pills": ["Løbende opfølgning"],
+      "body_file": "g4-3-poster.html"
+    },
+    {
+      "group": "5. Periodiske aktiviteter",
+      "file": "5.1 Aktieudbytte.html",
+      "title": "Aktieudbytte",
+      "badge": "Periodisk",
+      "subtitle": "Registrér og bogfør udbytte — manuelt eller med automatisk forslag.",
+      "pills": ["Periodisk"],
+      "body_file": "g5-1-aktieudbytte.html"
+    },
+    {
+      "group": "5. Periodiske aktiviteter",
+      "file": "5.2 Fondskursregulering.html",
+      "title": "Fondskursregulering",
+      "badge": "Periodisk",
+      "subtitle": "Reguler porteføljen til markedsværdi (mark-to-market).",
+      "pills": ["Periodisk"],
+      "body_file": "g5-2-fondskursregulering.html"
+    },
+    {
+      "group": "5. Periodiske aktiviteter",
+      "file": "5.3 Beregning af obligationsrente.html",
+      "title": "Beregning af obligationsrente",
+      "badge": "Periodisk",
+      "subtitle": "Tilskriv renter på obligationer på terminsdatoer.",
+      "pills": ["Periodisk"],
+      "body_file": "g5-3-obligationsrente.html"
+    },
+    {
+      "group": "5. Periodiske aktiviteter",
+      "file": "5.4 Overførsel af værdipapirværdier.html",
+      "title": "Overførsel af værdipapirværdier",
+      "badge": "Periodisk",
+      "subtitle": "Sammenlægning, split og flytning af beholdninger mellem papirer og depoter.",
+      "pills": ["Periodisk"],
+      "body_file": "g5-4-overforsel.html"
+    },
+    {
+      "group": "5. Periodiske aktiviteter",
+      "file": "5.5 Likviditetssimulering.html",
+      "title": "Likviditetssimulering",
+      "badge": "Periodisk",
+      "subtitle": "Forventet likviditet fra porteføljen (planlagt funktion).",
+      "pills": ["Periodisk"],
+      "body_file": "g5-5-likviditet.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.1 Opsætning af værdipapirer.html",
+      "title": "Opsætning af værdipapirer",
+      "badge": "Opsætning",
+      "subtitle": "Globale indstillinger for værdipapirmodulet.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-1-opsaetning-vaerdipapirer.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.2 Oprettelse af bogføringsgrupper.html",
+      "title": "Oprettelse af bogføringsgrupper",
+      "badge": "Opsætning",
+      "subtitle": "Knyt værdipapirer til finanskonti via værdi- og avancebogføringsgrupper.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-2-bogfoeringsgrupper.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.3 Oprettelse af depoter.html",
+      "title": "Oprettelse af depoter",
+      "badge": "Opsætning",
+      "subtitle": "Opret depoter (værdipapirkonti) og knyt dem til finans eller bank.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-3-depoter.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.4 Oprettelse af udstedere.html",
+      "title": "Oprettelse af udstedere",
+      "badge": "Opsætning",
+      "subtitle": "Opret udstedere — bruges især til obligationer.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-4-udstedere.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.5 Oprettelse af kurser.html",
+      "title": "Oprettelse af kurser",
+      "badge": "Opsætning",
+      "subtitle": "ISIN, fondskurser, valutakurser og indekskurser.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-5-kurser.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.6 Oprettelse af ekstra informationer.html",
+      "title": "Oprettelse af ekstra informationer",
+      "badge": "Opsætning",
+      "subtitle": "Brugerdefinerede attributter på værdipapirer.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-6-ekstra-informationer.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.7 Oprettelse af kladdetyper.html",
+      "title": "Oprettelse af kladdetyper",
+      "badge": "Opsætning",
+      "subtitle": "Opret kladdetyper og kladdenavne for de fem transaktionstyper.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-7-kladdetyper.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.8 Oprettelse af obligationsterminer.html",
+      "title": "Oprettelse af obligationsterminer",
+      "badge": "Opsætning",
+      "subtitle": "Terminskoder, terminsdatoer og terminsopsætning for obligationer.",
+      "pills": ["Engangsopsætning"],
+      "body_file": "g6-8-obligationsterminer.html"
+    }
+  ]
+}

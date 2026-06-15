@@ -1,0 +1,139 @@
+<div class="section" id="abent-handelskladden-obligation">
+  <div class="section-header">
+    <div class="section-icon">📂</div>
+    <h2>Åbn Handelskladden</h2>
+  </div>
+  <p>Klik på <strong>Handelskladder</strong> i Treasury-menuen i rollecentret. Vælg den kladdetype, der er oprettet til obligationshandel. Kladdetypen bør have <strong>Vis obligationskolonner</strong> aktiveret, så handelsrentefeltet vises. Vinduet <strong>Handelskladder</strong> vises.</p>
+</div>
+
+<div class="section" id="udfyld-kladdelinjen-obligation">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Udfyld kladdelinjen</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Vejledning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Handelsdato</strong></td>
+          <td>Angiv handelsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen. Det er ikke muligt at bogføre med en dato tidligere end den sidst bogførte post på obligationen.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Udfyldes automatisk fra kladdenavnets nummerserie, eller angives manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagstype</strong></td>
+          <td>Vælg <strong>Køb</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Værdipapirnummer</strong></td>
+          <td>Vælg den obligation, der er købt. Spærrede obligationer kan ikke vælges. Beskrivelse, valutakode og seneste kurs indsættes automatisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Beskrivelse</strong></td>
+          <td>Udfyldes automatisk. Kan redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakode</strong></td>
+          <td>Hentes automatisk fra obligationskortet. Tomt felt = regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Antal</strong></td>
+          <td>Angiv det antal enheder (stk./nominelt), der er købt.</td>
+        </tr>
+        <tr>
+          <td><strong>Kurs</strong></td>
+          <td>Kursen foreslås automatisk fra ISIN-kurslisten. Kan overskrives. <strong>OBS:</strong> I modsætning til det tidligere system divideres kursen ikke automatisk med 100 – se vigtig note nedenfor.</td>
+        </tr>
+        <tr>
+          <td><strong>Omkostninger</strong></td>
+          <td>Angiv omkostninger (kurtage, provisioner m.v.). Indgår i anskaffelsesværdien ved fremtidig avanceopgørelse.</td>
+        </tr>
+        <tr>
+          <td><strong>Handelsrente</strong></td>
+          <td><em>(Synlig når Vis obligationskolonner er aktiveret på kladdetypen.)</em> Angiv evt. handelsrente ved købet. Feltet registreres på posten.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb</strong></td>
+          <td>Beregnes automatisk: <strong>Beløb = (Antal × Kurs) + Omkostninger</strong>. Handelsrente er ikke inkluderet i beregningen.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb (LCY)</strong></td>
+          <td>Beløbet i regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdningskode</strong></td>
+          <td>Det depot, obligationen tilskrives. Obligatorisk. Modkontotype og modkonto sættes automatisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Kontotype</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+        <tr>
+          <td><strong>Bal. Kontonr.</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><strong>Vigtig:</strong> Obligationskurser er traditionelt angivet som en procentsats af den nominelle værdi (f.eks. 120,00 betyder 120 % af nominelt). I modsætning til tidligere systemer divideres kursen <strong>ikke</strong> automatisk med 100. Du skal selv angive kursen korrekt. Hvis den nominelle værdi er 1.000 DKK og kursen er 120 %, skal du angive 120 (hvis du vil have en enhedskurs) eller 120.000 (hvis du vil have det samlede beløb). Afklar med dit regnskabskontor, hvordan kursfeltet skal udfyldes.</div>
+</div>
+
+<div class="section" id="bogforing-obligation">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogfør købet</h2>
+  </div>
+  <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>). Programmet udfører de samme kontroller som ved aktiekøb.</p>
+</div>
+
+<div class="section" id="resultatet-bogforing-obligation">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Hvad sker der ved bogføring</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Posteringstype</th>
+          <th>Beskrivelse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Obligationspost</strong></td>
+          <td>En post med dokumenttype Køb, antal, kurs og beløb. Posten er åben og udgør et nyt kostprislot.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdsningspost</strong></td>
+          <td>En depotpost der registrerer, at antallet er tilgået depotet.</td>
+        </tr>
+        <tr>
+          <td><strong>Kostprislot</strong></td>
+          <td>Et åbent lot til fremtidig avanceopgørelse (FIFO/Gennemsnit).</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (beholdningskonto)</strong></td>
+          <td>Obligationsbeholdningskontoen debiteres med beløbet.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (modkonto)</strong></td>
+          <td>Bankmodkontoen krediteres.</td>
+        </tr>
+        <tr>
+          <td><strong>Handelsrente</strong></td>
+          <td>Registreres på obligationsposten.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Alle poster knyttes til samme transaktionsnummer og registreres som audit trail.</p>
+</div>

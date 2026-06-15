@@ -1,0 +1,118 @@
+<div class="section" id="abent-handelskladden-salg">
+  <div class="section-header">
+    <div class="section-icon">📂</div>
+    <h2>Åbn Værdipapirhandelskladden</h2>
+  </div>
+  <p>Klik på <strong>Værdipapirhandelskladder</strong> i Treasury-menuen i rollecentret. Vælg den kladdetype, der er oprettet til aktiehandel. Vinduet <strong>Værdipapirhandelskladder</strong> vises.</p>
+</div>
+
+<div class="section" id="udfyld-kladdelinjen-salg">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Udfyld kladdelinjen</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Vejledning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Handelsdato</strong></td>
+          <td>Angiv salgsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Udfyldes automatisk fra kladdenavnets nummerserie, eller angives manuelt, hvis nummerserien er tom.</td>
+        </tr>
+        <tr>
+          <td><strong>Bilagstype</strong></td>
+          <td>Vælg <strong>Salg</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Værdipapirnummer</strong></td>
+          <td>Vælg den aktie, der er solgt. Beskrivelse, valutakode og seneste kurs indsættes automatisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Beskrivelse</strong></td>
+          <td>Udfyldes automatisk. Kan redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakode</strong></td>
+          <td>Hentes automatisk fra aktiekortet. Tomt felt = regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Antal</strong></td>
+          <td>Angiv det antal enheder, der er solgt.</td>
+        </tr>
+        <tr>
+          <td><strong>Fondskurs</strong></td>
+          <td>Salgskursen. Foreslås automatisk fra ISIN-kurslisten, hvis en kurs er registreret. Kan overskrives.</td>
+        </tr>
+        <tr>
+          <td><strong>Omkostninger</strong></td>
+          <td>Angiv salgsomkostninger (kurtage, provisioner m.v.) som et <strong>negativt beløb</strong>, så de fratrækkes salgsprovenuet.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb</strong></td>
+          <td>Beregnes automatisk: <strong>Beløb = (Antal × Fondskurs) + Omkostninger</strong>. Da omkostninger angives negativt, giver formlen nettoprovenuet. Feltet kan overstyres manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb (RV)</strong></td>
+          <td>Beløbet i regnskabsvaluta. Beregnes ud fra valutafaktoren.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeholdningskode</strong></td>
+          <td>Det depot, aktierne fragår. Obligatorisk. Modkontotype og modkonto sættes automatisk fra depotopsætningen.</td>
+        </tr>
+        <tr>
+          <td><strong>Modkontotype</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+        <tr>
+          <td><strong>Modkontonr.</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="bogforing-salg">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Bogfør salget</h2>
+  </div>
+  <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>) for at bogføre linjen.</p>
+  <p>Programmet udfører inden bogføring følgende kontroller:</p>
+  <ul class="bullets">
+    <li>De samme kontroller som ved køb (Værdipapirnummer, Bogføringsdato, Bilagsnr., Antal, Depotbeholdningskode, Valutafaktor)</li>
+    <li>At værdipapirets bogføringsgruppe har Regnskabsprincip sat til Realisationsprincip eller Mark-to-Market. Andre værdier afvises med en fejl.</li>
+    <li>At der findes nok åbne kostprislots på værdipapiret til at dække det solgte antal</li>
+  </ul>
+</div>
+
+<div class="section" id="resultatet-bogforing-salg">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Hvad sker der ved bogføring</h2>
+  </div>
+  <p>Bogføringen forbruger åbne kostprislots og opretter poster baseret på avancemetoden på bogføringsgruppen — enten FIFO (ældste lot først) eller Gennemsnit (vægtet gennemsnitskostpris).</p>
+  <p>For hvert forbrugt lot oprettes:</p>
+  <ul class="bullets">
+    <li><strong>Detaljeret værdipapirpost:</strong> En forbrugs-post med negativt antal. Lottet's restantal nedskrives, og hvis det falder til 0 lukkes lottet.</li>
+    <li><strong>Avanceposter:</strong> Avancen beregnes som (Antal × Salgskurs) minus (Antal × Kostpris). Posterne adskiller salgsbeløb, kostbeløb og eventuelle valutakursforskelle.</li>
+  </ul>
+  <p>Derudover oprettes:</p>
+  <ul class="bullets">
+    <li><strong>Værdipapirpost:</strong> Én post med bilagstype Salg og det solgte antal (negativt).</li>
+    <li><strong>Depotbeholdsningspost:</strong> En depotpost der registrerer, at antallet er fragået depotet.</li>
+    <li><strong>Finansposter (værdipapirkonto):</strong> Beholdningskontoen krediteres med beløbet i regnskabsvaluta.</li>
+    <li><strong>Finanspost (modkonto):</strong> Bankmodkontoen debiteres med salgsprovenuet.</li>
+    <li><strong>Finanspost (avancekonto):</strong> Den realiserede netto-avance bogføres på avancekontoen. Gevinst krediterer kontoen, tab debiterer. Springes over hvis netto-avancen er 0.</li>
+  </ul>
+  <p>Alle poster knyttes til samme transaktionsnummer og registreres som audit trail.</p>
+</div>
