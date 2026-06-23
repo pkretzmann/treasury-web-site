@@ -23,32 +23,32 @@
    Company: PwC Security for Business Central
    ============================================================ */
    :root {
-    --brand-dark:    #5B431F;   /* primary — headers, primary       */
-    --brand-mid:     #946028;   /* buttons, links, table headers    */
-    --brand-light:   #B8884A;   /* accents, arrows, badges          */
-    --brand-pale:    #F5EAD5;   /* hover, decision boxes            */
-    --brand-subtle:  #FCF8EC;   /* step backgrounds                 */
-    --accent:        #C97A3F;   /* general accent                   */
+    --brand-dark:    #1a1a1a;   /* primary — headers, primary       */
+    --brand-mid:     #c0392b;   /* buttons, links, table headers    */
+    --brand-light:   #d96459;   /* accents, arrows, badges          */
+    --brand-pale:    #f7eceb;   /* hover, decision boxes            */
+    --brand-subtle:  #fafafa;   /* step backgrounds                 */
+    --accent:        #c0392b;   /* general accent                   */
   }
   
   /* ── System tokens (brand-neutral — usually leave as-is) ── */
   :root {
     --white:        #FFFFFF;
-    --gray-100:     #F4F6F8;   /* page background  */
-    --gray-200:     #E1E8EF;   /* borders          */
-    --gray-400:     #9BAFC0;
-    --gray-700:     #4A5C6A;   /* secondary text   */
-    --text:         #1A2A38;   /* primary text     */
-    --note-bg:      #FFF8E1;   /* warning/note bg  */
-    --note-border:  #F4A918;   /* warning/note border */
-    --success:      #1A7F4B;
-    --success-bg:   #E6F6EE;
-    --info:         #5A6E86;   /* neutral status text */
-    --info-bg:      #EAEEF4;   /* neutral status bg   */
-    --pending:      #B5611C;   /* in-progress text    */
-    --pending-bg:   #FBE7D5;   /* in-progress bg      */
-    --code-bg:      #0E2230;
-    --code-text:    #D6E7F2;
+    --gray-100:     #f6f5f3;   /* page background  */
+    --gray-200:     #e5e5e5;   /* borders          */
+    --gray-400:     #b3b3b3;
+    --gray-700:     #555555;   /* secondary text   */
+    --text:         #1a1a1a;   /* primary text     */
+    --note-bg:      #fafafa;   /* note bg (pastel amber) */
+    --note-border:  #1a1a1a;   /* warning/note border */
+    --success:      #2e7d52;
+    --success-bg:   #edf4ef;
+    --info:         #2874a6;   /* neutral status text */
+    --info-bg:      #eaf3f8;   /* neutral status bg   */
+    --pending:      #8a5a12;   /* in-progress text    */
+    --pending-bg:   #f5ecda;   /* in-progress bg      */
+    --code-bg:      #1a1a1a;
+    --code-text:    #e8e8e8;
   }
   
   /* ── Reset & base ── */
@@ -175,7 +175,7 @@
     border-radius: 12px;
     padding: 36px 40px;
     margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0,63,127,0.06);
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.07);
   }
   .section-header {
     display: flex;
@@ -421,7 +421,7 @@
     margin: 18px 0;
     font-size: 14px;
   }
-  .note strong { color: #B7770A; }
+  .note strong { color: #c0392b; }
   
   /* ── Info box ── */
   .info-box {
@@ -452,7 +452,7 @@
     width: 100%;
     color: var(--text);
     font-weight: 500;
-    box-shadow: 0 2px 6px rgba(0,63,127,0.1);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.12);
   }
   .fc-node code { white-space: normal; }
   .fc-node .fc-status {
@@ -534,7 +534,7 @@
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--brand-mid); color: #fff; border: none;
     font-size: 20px; line-height: 1; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,63,127,0.25);
+    box-shadow: 0 3px 10px rgba(26, 26, 26, 0.28);
     opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
     z-index: 50;
   }
@@ -696,12 +696,12 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     padding: 20px 22px;
-    box-shadow: 0 1px 3px rgba(91, 67, 31, 0.05);
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
   }
   .feature-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(91, 67, 31, 0.10);
+    box-shadow: 0 8px 20px rgba(26, 26, 26, 0.12);
     border-color: var(--brand-pale);
   }
   .feature-card .feature-icon {
@@ -752,7 +752,7 @@
     overflow: hidden;
   }
   .accordion details[open] {
-    box-shadow: 0 2px 10px rgba(91, 67, 31, 0.07);
+    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.08);
     border-color: var(--brand-pale);
   }
   .accordion summary {
@@ -834,10 +834,10 @@
     padding: 14px 22px;
     text-align: center;
     min-width: 260px;
-    box-shadow: 0 2px 6px rgba(91, 67, 31, 0.06);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.07);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(91, 67, 31, 0.10); }
+  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(26, 26, 26, 0.12); }
   .entity-card .entity-name { display: block; font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 3px; }
   .entity-card .entity-sub { font-size: 12px; color: var(--gray-700); }
   .entity-arrow { display: flex; flex-direction: column; align-items: center; margin: 6px 0; }
@@ -921,7 +921,9 @@
     .js-fx .section { opacity: 1 !important; transform: none !important; }
   }
   
-  </style>
+  /* Editorial theme — serif display headings */
+header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
+</style>
 </head>
 <body class="fx">
   <header>
@@ -936,8 +938,8 @@
       <ol>
         <li><a href="#bogfoering-overblik">Bogføringsgrupper — overblik</a></li>
         <li><a href="#bogfoering-fanebladet-generelt">Fanebladet Generelt</a></li>
-        <li><a href="#bogfoering-værdibogfoeringsgrupper">Fanebladet Værdibogføringsgrupper (Value Posting Groups)</a></li>
-        <li><a href="#bogfoering-avancebogfoeringsgrupper">Fanebladet Avancebogføringsgrupper (Profit Posting Groups)</a></li>
+        <li><a href="#bogfoering-værdibogfoeringsgrupper">Fanebladet Værdibogføringsgrupper</a></li>
+        <li><a href="#bogfoering-avancebogfoeringsgrupper">Fanebladet Avancebogføringsgrupper (Resultatbogføringsgrupper)</a></li>
         <li><a href="#bogfoering-tilknytning-værdipapirer">Tilknytning til værdipapirer</a></li>
       </ol>
     </nav>
@@ -953,7 +955,7 @@
   <h3>Sådan åbner du bogføringsgrupper</h3>
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Security Posting Groups</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+    <li>Klik på <strong>Værdipapirbogføringsgrupper</strong> i gruppen <strong>Opsætning af Treasury</strong>.</li>
     <li>Oversigtsvinduet viser alle oprettede bogføringsgrupper med kode, beskrivelse og regnskabsprincip. Klik på en kode for at åbne bogføringsgruppekortet.</li>
   </ol>
 </div>
@@ -985,26 +987,26 @@
         </tr>
         <tr>
           <td><strong>Skattemetode avance</strong></td>
-          <td>Fastlægger skattestemplet på avanceposter ved salg. Valgene er: <strong>Blank</strong> (ingen skatteoplysning), <strong>Taxable</strong> (Skattepligtig), <strong>Tax-Free</strong> (Skattefri) eller <strong>Holding Period Based</strong> (Ejertidsbestemt). Ved Ejertidsbestemt stemples avancen som skattepligtig, indtil ejertiden i feltet <strong>Metodeskift ejertid</strong> er opfyldt, herefter som skattefri.</td>
+          <td>Fastlægger skattestemplet på avanceposter ved salg. Valgene er: <strong>Blank</strong> (ingen skatteoplysning), <strong>Skattepligtig</strong>, <strong>Skattefri</strong> eller <strong>Ejertidsbestemt</strong>. Ved Ejertidsbestemt stemples avancen som skattepligtig, indtil ejertiden i feltet <strong>Metodeskift ejertid</strong> er opfyldt, herefter som skattefri.</td>
         </tr>
         <tr>
           <td><strong>Skattemetode afkast</strong></td>
-          <td>Fastlægger skattestemplet på afkastposter (renter, udbytter). Valgene er: <strong>Blank</strong>, <strong>Taxable</strong> eller <strong>Tax-Free</strong>.</td>
+          <td>Fastlægger skattestemplet på afkastposter (renter, udbytter). Valgene er: <strong>Blank</strong>, <strong>Skattepligtig</strong> eller <strong>Skattefri</strong>.</td>
         </tr>
         <tr>
           <td><strong>Avancemetode</strong></td>
-          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Valgene er: <strong>Average</strong> (Gennemsnit) eller <strong>FIFO</strong> (Aktie-for-aktie). Se nedenfor for eksempler.</td>
+          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Valgene er: <strong>Gennemsnit</strong> eller <strong>Aktie-for-aktie</strong> (FIFO). Se nedenfor for eksempler.</td>
         </tr>
         <tr>
           <td><strong>Metodeskift ejertid (år)</strong></td>
-          <td>Kun relevant ved Holding Period Based-avancemetode. Angiv det antal år, der skal forløbe, inden metodeskiftet aktiveres automatisk. Bemærk: automatisk skift er endnu ikke fuldt implementeret.</td>
+          <td>Kun relevant ved Ejertidsbestemt-avancemetode. Angiv det antal år, der skal forløbe, inden metodeskiftet aktiveres automatisk. Bemærk: automatisk skift er endnu ikke fuldt implementeret.</td>
         </tr>
         <tr>
           <td><strong>Udbytteskat pct.</strong></td>
           <td>Angiv beskatningsprocent for udbytte, hvis bogføringsgruppen bruges til aktier med udbytte. Procenten bruges af systemet til at beregne udbytteskatten ved oprettelse af afkastkladdelinjer.</td>
         </tr>
         <tr>
-          <td><strong>Trading Interest Account</strong></td>
+          <td><strong>Handelsrentekonto</strong></td>
           <td>Finanskonto til bogføring af handelsrente (i regnskabsvaluta) ved køb og salg af obligationer. Hvis feltet er blankt, bogføres ingen separat handelsrente — handelsrenten skal i så fald være indeholdt i handelskursen.</td>
         </tr>
       </tbody>
@@ -1013,15 +1015,15 @@
 
   <h3>Avancemetoder — forklaret</h3>
   <ul class="bullets">
-    <li><strong>Average (Gennemsnit):</strong> Anskaffelsessummen beregnes som et vægtet gennemsnit af alle åbne køb. Eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 100 kr. (250 − 150 gennemsnit).</li>
-    <li><strong>FIFO (Aktie-for-aktie):</strong> Ældste køb fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
+    <li><strong>Gennemsnit:</strong> Anskaffelsessummen beregnes som et vægtet gennemsnit af alle åbne køb. Eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 100 kr. (250 − 150 gennemsnit).</li>
+    <li><strong>Aktie-for-aktie (FIFO):</strong> Ældste køb fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
   </ul>
 </div>
 
 <div class="section" id="bogfoering-værdibogfoeringsgrupper">
   <div class="section-header">
     <div class="section-icon">💰</div>
-    <h2>Fanebladet Værdibogføringsgrupper (Value Posting Groups)</h2>
+    <h2>Fanebladet Værdibogføringsgrupper</h2>
   </div>
   <p>Her knytter du transaktionstyper til <strong>beholdningskonti</strong> (balance). For hver transaktionstype du ønsker at bogføre, skal der oprettes én linje med den tilhørende finanskonto.</p>
 
@@ -1033,7 +1035,7 @@
       <tbody>
         <tr>
           <td><strong>Bilagstype</strong></td>
-          <td>Transaktionstypen. Valgene er: <strong>Purchase</strong> (Køb), <strong>Sale</strong> (Salg), <strong>Yield</strong> (Afkast), <strong>Price Adjustment</strong> (Kursregulering), <strong>Transfer</strong> (Overførsel) eller <strong>Reversal</strong> (Tilbageføring).</td>
+          <td>Transaktionstypen. Valgene er: <strong>Køb</strong>, <strong>Salg</strong>, <strong>Afkast</strong>, <strong>Kursregulering</strong>, <strong>Overførsel</strong> eller <strong>Tilbageføring</strong>.</td>
         </tr>
         <tr>
           <td><strong>Finanskonto</strong></td>
@@ -1055,17 +1057,17 @@
       </thead>
       <tbody>
         <tr>
-          <td>Purchase</td>
+          <td>Køb</td>
           <td>60</td>
           <td>Værdipapirsbeholdning (debiteres ved køb)</td>
         </tr>
         <tr>
-          <td>Sale</td>
+          <td>Salg</td>
           <td>60</td>
           <td>Samme beholdningskonto (krediteres ved salg)</td>
         </tr>
         <tr>
-          <td>Price Adjustment</td>
+          <td>Kursregulering</td>
           <td>61</td>
           <td>Kursregulering på beholdningen</td>
         </tr>
@@ -1077,7 +1079,7 @@
 <div class="section" id="bogfoering-avancebogfoeringsgrupper">
   <div class="section-header">
     <div class="section-icon">📈</div>
-    <h2>Fanebladet Avancebogføringsgrupper (Profit Posting Groups)</h2>
+    <h2>Fanebladet Avancebogføringsgrupper (Resultatbogføringsgrupper)</h2>
   </div>
   <p>Her knytter du kombinationer af transaktionstype, avancetype og skattetype til <strong>resultatkonti</strong>. For hver kombination du ønsker at bogføre, oprettes én linje.</p>
 
@@ -1089,19 +1091,19 @@
       <tbody>
         <tr>
           <td><strong>Realiseringstype</strong></td>
-          <td><strong>Realized</strong> (Realiseret) — bruges til realiserede transaktioner som salg og udtræk. <strong>Unrealized</strong> (Urealiseret) — bruges til urealiserede kursreguleringer under lagerprincippet.</td>
+          <td><strong>Realiseret</strong> — bruges til realiserede transaktioner som salg og udtræk. <strong>Urealiseret</strong> — bruges til urealiserede kursreguleringer under lagerprincippet.</td>
         </tr>
         <tr>
           <td><strong>Bilagstype</strong></td>
-          <td>Transaktionstypen som i Værdibogføringsgrupper (Purchase, Sale, Yield osv.).</td>
+          <td>Transaktionstypen som i Værdibogføringsgrupper (Køb, Salg, Afkast osv.).</td>
         </tr>
         <tr>
           <td><strong>Avancetype</strong></td>
-          <td>Typen af avance eller tab. Valgene er: <strong>Price Adjustment</strong> (Fondskursavance/tab), <strong>Currency Adjustment</strong> (Valutakursavance/tab), <strong>Yield</strong> (Afkast), <strong>Dividend Tax</strong> (Udbytteskat) eller <strong>Transfer</strong> (Overførsel).</td>
+          <td>Typen af avance eller tab. Valgene er: <strong>Fondskursavance/tab</strong>, <strong>Valutakursavance/tab</strong>, <strong>Afkast</strong>, <strong>Udbytteskat</strong> eller <strong>Overførsel</strong>.</td>
         </tr>
         <tr>
           <td><strong>Skattetype</strong></td>
-          <td><strong>Blank</strong> — ingen skatteoplysning (bruges til afkast, udbytteskat, overførsler). <strong>Taxable</strong> (Skattepligtig) — avancen er fradragsberettiget ved tab eller beskattet ved gevinst. <strong>Tax-Free</strong> (Skattefri) — skattefri avance.</td>
+          <td><strong>Blank</strong> — ingen skatteoplysning (bruges til afkast, udbytteskat, overførsler). <strong>Skattepligtig</strong> — avancen er fradragsberettiget ved tab eller beskattet ved gevinst. <strong>Skattefri</strong> — skattefri avance.</td>
         </tr>
         <tr>
           <td><strong>Tilbageførsel</strong></td>
@@ -1127,17 +1129,17 @@
       </thead>
       <tbody>
         <tr>
-          <td>Realized</td>
-          <td>Sale</td>
-          <td>Price Adjustment</td>
-          <td>Taxable</td>
+          <td>Realiseret</td>
+          <td>Salg</td>
+          <td>Fondskursavance/tab</td>
+          <td>Skattepligtig</td>
           <td>6 (Fondskursgevinst, skattepligtig)</td>
         </tr>
         <tr>
-          <td>Realized</td>
-          <td>Sale</td>
-          <td>Price Adjustment</td>
-          <td>Tax-Free</td>
+          <td>Realiseret</td>
+          <td>Salg</td>
+          <td>Fondskursavance/tab</td>
+          <td>Skattefri</td>
           <td>8 (Skattefri fondskursgevinst)</td>
         </tr>
       </tbody>

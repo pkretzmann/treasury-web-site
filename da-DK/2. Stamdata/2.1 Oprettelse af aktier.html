@@ -23,32 +23,32 @@
    Company: PwC Security for Business Central
    ============================================================ */
    :root {
-    --brand-dark:    #5B431F;   /* primary — headers, primary       */
-    --brand-mid:     #946028;   /* buttons, links, table headers    */
-    --brand-light:   #B8884A;   /* accents, arrows, badges          */
-    --brand-pale:    #F5EAD5;   /* hover, decision boxes            */
-    --brand-subtle:  #FCF8EC;   /* step backgrounds                 */
-    --accent:        #C97A3F;   /* general accent                   */
+    --brand-dark:    #1a1a1a;   /* primary — headers, primary       */
+    --brand-mid:     #c0392b;   /* buttons, links, table headers    */
+    --brand-light:   #d96459;   /* accents, arrows, badges          */
+    --brand-pale:    #f7eceb;   /* hover, decision boxes            */
+    --brand-subtle:  #fafafa;   /* step backgrounds                 */
+    --accent:        #c0392b;   /* general accent                   */
   }
   
   /* ── System tokens (brand-neutral — usually leave as-is) ── */
   :root {
     --white:        #FFFFFF;
-    --gray-100:     #F4F6F8;   /* page background  */
-    --gray-200:     #E1E8EF;   /* borders          */
-    --gray-400:     #9BAFC0;
-    --gray-700:     #4A5C6A;   /* secondary text   */
-    --text:         #1A2A38;   /* primary text     */
-    --note-bg:      #FFF8E1;   /* warning/note bg  */
-    --note-border:  #F4A918;   /* warning/note border */
-    --success:      #1A7F4B;
-    --success-bg:   #E6F6EE;
-    --info:         #5A6E86;   /* neutral status text */
-    --info-bg:      #EAEEF4;   /* neutral status bg   */
-    --pending:      #B5611C;   /* in-progress text    */
-    --pending-bg:   #FBE7D5;   /* in-progress bg      */
-    --code-bg:      #0E2230;
-    --code-text:    #D6E7F2;
+    --gray-100:     #f6f5f3;   /* page background  */
+    --gray-200:     #e5e5e5;   /* borders          */
+    --gray-400:     #b3b3b3;
+    --gray-700:     #555555;   /* secondary text   */
+    --text:         #1a1a1a;   /* primary text     */
+    --note-bg:      #fafafa;   /* note bg (pastel amber) */
+    --note-border:  #1a1a1a;   /* warning/note border */
+    --success:      #2e7d52;
+    --success-bg:   #edf4ef;
+    --info:         #2874a6;   /* neutral status text */
+    --info-bg:      #eaf3f8;   /* neutral status bg   */
+    --pending:      #8a5a12;   /* in-progress text    */
+    --pending-bg:   #f5ecda;   /* in-progress bg      */
+    --code-bg:      #1a1a1a;
+    --code-text:    #e8e8e8;
   }
   
   /* ── Reset & base ── */
@@ -175,7 +175,7 @@
     border-radius: 12px;
     padding: 36px 40px;
     margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0,63,127,0.06);
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.07);
   }
   .section-header {
     display: flex;
@@ -421,7 +421,7 @@
     margin: 18px 0;
     font-size: 14px;
   }
-  .note strong { color: #B7770A; }
+  .note strong { color: #c0392b; }
   
   /* ── Info box ── */
   .info-box {
@@ -452,7 +452,7 @@
     width: 100%;
     color: var(--text);
     font-weight: 500;
-    box-shadow: 0 2px 6px rgba(0,63,127,0.1);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.12);
   }
   .fc-node code { white-space: normal; }
   .fc-node .fc-status {
@@ -534,7 +534,7 @@
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--brand-mid); color: #fff; border: none;
     font-size: 20px; line-height: 1; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,63,127,0.25);
+    box-shadow: 0 3px 10px rgba(26, 26, 26, 0.28);
     opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
     z-index: 50;
   }
@@ -696,12 +696,12 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     padding: 20px 22px;
-    box-shadow: 0 1px 3px rgba(91, 67, 31, 0.05);
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
   }
   .feature-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(91, 67, 31, 0.10);
+    box-shadow: 0 8px 20px rgba(26, 26, 26, 0.12);
     border-color: var(--brand-pale);
   }
   .feature-card .feature-icon {
@@ -752,7 +752,7 @@
     overflow: hidden;
   }
   .accordion details[open] {
-    box-shadow: 0 2px 10px rgba(91, 67, 31, 0.07);
+    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.08);
     border-color: var(--brand-pale);
   }
   .accordion summary {
@@ -834,10 +834,10 @@
     padding: 14px 22px;
     text-align: center;
     min-width: 260px;
-    box-shadow: 0 2px 6px rgba(91, 67, 31, 0.06);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.07);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(91, 67, 31, 0.10); }
+  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(26, 26, 26, 0.12); }
   .entity-card .entity-name { display: block; font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 3px; }
   .entity-card .entity-sub { font-size: 12px; color: var(--gray-700); }
   .entity-arrow { display: flex; flex-direction: column; align-items: center; margin: 6px 0; }
@@ -921,7 +921,14 @@
     .js-fx .section { opacity: 1 !important; transform: none !important; }
   }
   
-  </style>
+  /* Editorial theme — serif display headings */
+header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
+  /* Udfyldes-kolonne badges (jf. aktier_theme3_editorial) */
+  .udf{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.02em;}
+  .udf-t{background:#fce8e8;color:#c0392b;}
+  .udf-v{background:#f0f0f0;color:#555;}
+  .udf-p{background:#eaf3f8;color:#2874a6;}
+</style>
 </head>
 <body class="fx">
   <header>
@@ -959,69 +966,69 @@
       <tbody>
         <tr>
           <td><strong>No.</strong></td>
-          <td>V/T</td>
+          <td><span class="udf udf-v">V/T</span></td>
           <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret i Værdipapiropsætning. Er nummerserien tom, skal nummeret angives manuelt.</td>
         </tr>
         <tr>
-          <td><strong>Number Series</strong></td>
-          <td>T</td>
+          <td><strong>Nummerserie</strong></td>
+          <td><span class="udf udf-t">T</span></td>
           <td>Udfyldes automatisk fra Værdipapiropsætning ved oprettelse. Kan ændres via assisteret redigering på No.-feltet.</td>
         </tr>
         <tr>
-          <td><strong>Security Type</strong></td>
-          <td>T</td>
-          <td>Vælg <strong>Stock</strong> (Aktie). Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
+          <td><strong>Værdipapirtype</strong></td>
+          <td><span class="udf udf-t">T</span></td>
+          <td>Vælg <strong>Aktie</strong>. Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
         </tr>
         <tr>
-          <td><strong>Issuer Code</strong></td>
-          <td>V</td>
+          <td><strong>Udstederkode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv udsteder. Feltet er valgfrit for aktier.</td>
         </tr>
         <tr>
-          <td><strong>ISIN Code</strong></td>
-          <td>V</td>
+          <td><strong>ISIN-kode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv eller vælg ISIN-koden for aktien. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes i forvejen. Kan ikke ændres, når der eksisterer bogførte poster.</td>
         </tr>
         <tr>
-          <td><strong>Name</strong></td>
-          <td>V</td>
+          <td><strong>Navn</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv aktiens navn. Udfyldes manuelt — der er ikke automatisk navnhentning fra ISIN i den nuværende version.</td>
         </tr>
         <tr>
-          <td><strong>Search Name</strong></td>
-          <td>V</td>
-          <td>Udfyldes automatisk på baggrund af Name, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>.</td>
+          <td><strong>Søgenavn</strong></td>
+          <td><span class="udf udf-v">V</span></td>
+          <td>Udfyldes automatisk på baggrund af Navn, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>.</td>
         </tr>
         <tr>
-          <td><strong>Blocked</strong></td>
-          <td>V</td>
+          <td><strong>Spærret</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Markér for at spærre aktien. En spærret aktie kan hverken vælges på en kladdelinje eller bogføres.</td>
         </tr>
         <tr>
-          <td><strong>Currency Code</strong></td>
-          <td>V</td>
+          <td><strong>Valutakode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv valutakoden, hvis aktien handles i en anden valuta end regnskabsvalutaen. Lad feltet stå blankt, hvis aktien er noteret i regnskabsvalutaen (f.eks. DKK). Kan ikke ændres, når der eksisterer bogførte poster.</td>
         </tr>
         <tr>
-          <td><strong>Country Code</strong></td>
-          <td>V</td>
+          <td><strong>Lande-/områdekode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv landekode for aktien.</td>
         </tr>
         <tr>
-          <td><strong>Remaining Quantity</strong></td>
-          <td>P</td>
+          <td><strong>Resterende antal</strong></td>
+          <td><span class="udf udf-p">P</span></td>
           <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
         </tr>
         <tr>
-          <td><strong>Remaining Value</strong></td>
-          <td>P</td>
+          <td><strong>Resterende værdi</strong></td>
+          <td><span class="udf udf-p">P</span></td>
           <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h3>Undergruppe: Share Details</h3>
+  <h3>Undergruppe: Papirdetaljer</h3>
   <p>I denne undergruppe angiver du stykstørrelsen for aktien.</p>
 
   <div class="table-wrap">
@@ -1035,8 +1042,8 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Share Size</strong></td>
-          <td>V</td>
+          <td><strong>Stykstørrelse</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv aktiens stykstørrelse (nominel stykstørrelse pr. aktie). Feltet kan ikke redigeres, hvis der eksisterer åbne poster på aktien — ændringen skal i så fald foretages via Overførselskladden.</td>
         </tr>
       </tbody>
@@ -1066,28 +1073,28 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Posting Group</strong></td>
-          <td>T</td>
+          <td><strong>Bogføringsgruppe</strong></td>
+          <td><span class="udf udf-t">T</span></td>
           <td>Angiv eller vælg den bogføringsgruppe, der knytter aktien til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
         </tr>
         <tr>
-          <td><strong>Global Dimension 1 Code</strong></td>
-          <td>T</td>
+          <td><strong>Global dimension 1-kode</strong></td>
+          <td><span class="udf udf-t">T</span></td>
           <td>Angiv den primære dimensionsværdi (f.eks. afdeling). Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
         </tr>
         <tr>
-          <td><strong>Global Dimension 2 Code</strong></td>
-          <td>T</td>
+          <td><strong>Global dimension 2-kode</strong></td>
+          <td><span class="udf udf-t">T</span></td>
           <td>Angiv den sekundære dimensionsværdi. Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
         </tr>
         <tr>
-          <td><strong>Report Grouping Method</strong></td>
-          <td>V</td>
-          <td>Vælg grupperingsmetode til rapporter: <strong>Posting Group</strong>, <strong>Dimension Value</strong> eller <strong>Detailed information</strong>.</td>
+          <td><strong>Rapporteringsgruppemetode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
+          <td>Vælg grupperingsmetode til rapporter: <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Report Grouping Code</strong></td>
-          <td>V</td>
+          <td><strong>Rapporteringsgruppekode</strong></td>
+          <td><span class="udf udf-v">V</span></td>
           <td>Angiv den tilhørende gruppekode. Opslaget afhænger af metoden: bogføringsgruppe, dimensionsværdi eller detaljeret information.</td>
         </tr>
       </tbody>
@@ -1103,8 +1110,8 @@
   <p>Fra aktiekortet kan du navigere til relaterede data og udføre handlinger:</p>
 
   <ul class="bullets">
-    <li><strong>Investment Fund Prices</strong> — se kurshistorikken for den tilknyttede ISIN-kode og følg udviklingen i aktiens værdi over tid.</li>
-    <li><strong>Security Accounts</strong> — se hvilke depoter aktien er tilknyttet.</li>
+    <li><strong>Værdipapirkurser</strong> — se kurshistorikken for den tilknyttede ISIN-kode og følg udviklingen i aktiens værdi over tid.</li>
+    <li><strong>Depotbeholdninger</strong> — se hvilke depoter aktien er tilknyttet.</li>
     <li><strong>Comments</strong> — tilføj noter og kommentarer til aktien, fx for at dokumentere særlige aftaler eller observationer.</li>
   </ul>
 </div>
@@ -1118,31 +1125,31 @@
   <h3>Hvad skal du altid udfylde?</h3>
   <p>Start med de felter, der er markeret med <strong>T</strong> (Tvungen):</p>
   <ul class="bullets">
-    <li><strong>Security Type:</strong> Vælg <strong>Stock</strong>.</li>
-    <li><strong>Number Series:</strong> Udfyldes automatisk.</li>
-    <li><strong>Posting Group:</strong> Knyt aktien til en bogføringsgruppe.</li>
-    <li><strong>Global Dimension 1 Code og Global Dimension 2 Code:</strong> Fyld kun ud, hvis dimensioner er konfigureret i systemet.</li>
+    <li><strong>Værdipapirtype:</strong> Vælg <strong>Aktie</strong>.</li>
+    <li><strong>Nummerserie:</strong> Udfyldes automatisk.</li>
+    <li><strong>Bogføringsgruppe:</strong> Knyt aktien til en bogføringsgruppe.</li>
+    <li><strong>Global dimension 1-kode og Global dimension 2-kode:</strong> Fyld kun ud, hvis dimensioner er konfigureret i systemet.</li>
   </ul>
 
   <h3>Hvad kan du udfylde efter behov?</h3>
   <p>Felterne markeret med <strong>V</strong> (Valgfri) kan udfyldes efter behov:</p>
   <ul class="bullets">
-    <li><strong>ISIN Code:</strong> Hjælper med at identificere og linke til kurser.</li>
-    <li><strong>Name og Search Name:</strong> Gør det lettere at søge og finde aktien senere.</li>
-    <li><strong>Currency Code:</strong> Fyld ud, hvis aktien handles i en anden valuta end DKK.</li>
-    <li><strong>Share Size:</strong> Angiv, hvis aktien har en bestemt stykstørrelse.</li>
+    <li><strong>ISIN-kode:</strong> Hjælper med at identificere og linke til kurser.</li>
+    <li><strong>Navn og Søgenavn:</strong> Gør det lettere at søge og finde aktien senere.</li>
+    <li><strong>Valutakode:</strong> Fyld ud, hvis aktien handles i en anden valuta end DKK.</li>
+    <li><strong>Stykstørrelse:</strong> Angiv, hvis aktien har en bestemt stykstørrelse.</li>
   </ul>
 
   <h3>Hvad styres automatisk?</h3>
   <p>Felterne markeret med <strong>P</strong> (Programstyret) opdateres automatisk baseret på posteringer:</p>
   <ul class="bullets">
-    <li><strong>Remaining Quantity:</strong> Systemet beregner automatisk, hvor mange aktier du har tilbage.</li>
-    <li><strong>Remaining Value:</strong> Systemet beregner automatisk værdien af det resterende beholdning.</li>
-    <li><strong>Search Name:</strong> Oprettes automatisk fra Name, men kan ændres manuelt.</li>
+    <li><strong>Resterende antal:</strong> Systemet beregner automatisk, hvor mange aktier du har tilbage.</li>
+    <li><strong>Resterende værdi:</strong> Systemet beregner automatisk værdien af det resterende beholdning.</li>
+    <li><strong>Søgenavn:</strong> Oprettes automatisk fra Navn, men kan ændres manuelt.</li>
   </ul>
 
   <div class="note">
-    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Security Type</strong>, <strong>ISIN Code</strong> eller <strong>Currency Code</strong>. Plant disse oplysninger omhyggeligt fra starten.
+    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Værdipapirtype</strong>, <strong>ISIN-kode</strong> eller <strong>Valutakode</strong>. Plant disse oplysninger omhyggeligt fra starten.
   </div>
 </div>
   </div>

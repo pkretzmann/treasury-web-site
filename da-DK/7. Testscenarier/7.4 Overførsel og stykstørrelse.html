@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oprettelse af depoter · Værdipapirhandel</title>
+  <title>Overførsel og stykstørrelse · Værdipapirhandel</title>
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -923,117 +923,136 @@
   
   /* Editorial theme — serif display headings */
 header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
-</style>
+
+
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+  </style>
 </head>
 <body class="fx">
   <header>
-    <div class="header-badge">Opsætning</div>
-    <h1>Oprettelse af depoter</h1>
-    <p>Opret depoter (værdipapirkonti) og knyt dem til finans eller bank.</p>
-    <div class="header-pills"><span class="pill">Engangsopsætning</span></div>
+    <div class="header-badge">Testscenarier</div>
+    <h1>Overførsel og stykstørrelse</h1>
+    <p>Case 9–10: overførsel af værdipapirværdier (værdipapir → værdipapir) og stykstørrelsesregulering (1:2 split) på den resterende beholdning efter Case 8.</p>
+    <div class="header-pills"><span class="pill">Case 9–10</span></div>
   </header>
   <div class="container">
     <nav class="toc">
       <h2>På denne side</h2>
       <ol>
-        <li><a href="#depot-overblik">Depoter — hvad de er</a></li>
-        <li><a href="#depot-felter">Felter i depotkontolisten</a></li>
-        <li><a href="#depot-tilknytning-værdipapirer">Tilknytning af værdipapirer til depoter</a></li>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#metode">Metodenote</a></li>
+        <li><a href="#case9">Case 9 — Overførsel</a></li>
+        <li><a href="#case10">Case 10 — Stykstørrelse</a></li>
       </ol>
     </nav>
-<div class="section" id="depot-overblik">
-  <div class="section-header">
-    <div class="section-icon">🏦</div>
-    <h2>Depoter — hvad de er</h2>
-  </div>
-  <p>Et depot er en konto hvor du opbevarer værdipapirer. Det kan være et depot hos en bank, en mægler eller en internt administreret depot. Hvert depot kobles til en finanskonto eller bankkonto, som brugeges som modkonto ved bogføring.</p>
-  <p>I systemet kaldes depoter <strong>Depot</strong> (konto).</p>
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra eksempel-firmaets <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering) og <strong>Værdipapir-resultatbogføringsgruppe</strong> (resultatkonti). Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og de øvrige testscenarie-sider) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Værdipapirbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2640" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret resultat – pris</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1350" /></div>
+      <div class="acct-field"><label for="acct-fxResult">Resultat – valuta (urealiseret + realiseret residual)</label><input class="acct-input" id="acct-fxResult" data-acct="fxResult" type="text" value="1680" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret resultat – pris</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1670" /></div>
+      <div class="acct-field"><label for="acct-dividendIncome">Udbytteindtægt / afkast</label><input class="acct-input" id="acct-dividendIncome" data-acct="dividendIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-dividendTax">Udbytteskat</label><input class="acct-input" id="acct-dividendTax" data-acct="dividendTax" type="text" value="1455" /></div>
+  </div></div></details></div>
+</div>
 
-  <h3>Sådan åbner du depoter</h3>
+<div class="section" id="metode">
+  <div class="section-header"><div class="section-icon">🧭</div><h2>Metodenote — posteringsadfærd ved overførsel, split og tilbageførsel</h2></div>
+  <div class="info-box">Case 9–10 kører på de <strong>5 stk</strong> resterende beholdning efter Case 8 (Spor A).</div>
+  <p>Disse punkter er verificeret mod posteringskoden. Modellen følger Columbus-manualen §9.4: <strong>Overførsel af værdipapirværdier</strong> flytter beholdning fra ét værdipapir til et andet (sammenlægning/split/erstatning), og kun <strong>restbeholdningen pr. købsdato</strong> overføres — ikke hele historikken.</p>
   <ol class="steps">
-    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Depoter</strong>.</li>
-    <li>Listen viser alle oprettede depoter.</li>
+    <li><strong>Overførsel flytter til kostbasis.</strong> Afgangslinjen værdiansættes til lottets Indkøbspris ved købskursen, og tilgangslinjen åbner et nyt lot med samme kostbasis. Der dannes <strong>ingen Detaljeret Resultatpost</strong> — overførsel realiserer intet.</li>
+    <li><strong>Urealiserede marks følger ikke med til mål-værdipapiret.</strong> Overførslen hverken flytter, tilbagefører eller omposterer kildens urealiserede pris-/valuta-skiver; mål-værdipapiret får rene kostbasis-lots uden marks.</li>
+    <li><strong>Købsdato bevares</strong> via rapportens tilbagedatering: tilgangslinjens Handelsdato = lottets oprindelige købsdato, så FIFO/ejertid bevares.</li>
+    <li><strong>Depot-til-depot (Depotregulering, §9.4.3) er en separat funktion</strong> og er <span class="neg">ikke implementeret</span> i denne version. Case 9 dækker derfor værdipapir → værdipapir-overførslen, ikke en depotflytning.</li>
   </ol>
 </div>
 
-<div class="section" id="depot-felter">
-  <div class="section-header">
-    <div class="section-icon">📋</div>
-    <h2>Felter i depotkontolisten</h2>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Felt</th><th>Beskrivelse</th></tr>
-      </thead>
+<div class="section" id="case9">
+  <div class="section-header"><div class="section-icon">🔀</div><h2>Case 9 — Overførsel af værdipapirværdier <span class="case-badge transfer">Overførsel</span></h2></div>
+  <p><strong>Kladde:</strong> Overførselskladde, funktion <strong>Overfør værdipapirværdier</strong> &nbsp;|&nbsp; Bilagstype = Overførsel &nbsp;|&nbsp; Bogføringsdato 18-06-2026.</p>
+  <p>L'Oreal erstattes af et efterfølger-værdipapir (fx ved en fusion/ombytning). Rapporten foreslår ét linjepar pr. åbent lot pr. købsdato: en afgangslinje (Antal = −5) på kilden og en tilgangslinje (Antal = +5) på målet, tilbagedateret til lottets oprindelige købsdato 01-04-2026.</p>
+  <div class="summary-box">Kostbasis der flyttes = 2.000,00 EUR = <strong>14.945,20 DKK</strong> (lottets oprindelige kostpris ved købskurs 7,4726).<br>
+    <strong>Overførslen realiserer ingen gevinst/tab</strong> — kun restbeholdningen pr. købsdato flyttes til kostbasis; kildens urealiserede marks følger ikke med.</div>
+  <h3>Forudsætning (opsætning)</h3>
+  <ul class="bullets">
+    <li>Mål-værdipapiret oprettet (uden poster) med et standarddepot.</li>
+    <li><strong>Værdipapirbogføringsgruppe:</strong> række Bilagstype = Overførsel → beholdningskonto, for både kilde- og mål-bogføringsgruppe.</li>
+    <li><strong>Værdipapir-resultatbogføringsgruppe:</strong> række Realiseret / Overførsel / Overførsel → <strong>Realiseret Overførsel</strong>-mellemregningskontoen. Brug <strong>samme</strong> konto på tværs af bogføringsgrupperne, så værdien udlignes og går i nul.</li>
+  </ul>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Kode</strong></td>
-          <td>En unik kode for depotet (op til 20 tegn). Koden bruges som opslag fra kladdelinjer og værdipapirkort. Eksempel: <strong>NORDEA</strong> eller <strong>DANSKE-BANK</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Navn</strong></td>
-          <td>Et beskrivende navn på depotet, f.eks. <strong>Nordea Depot</strong> eller <strong>Interne aktier</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Depotkontonummer</strong></td>
-          <td>Depotets eget kontonummer hos banken eller mægleren (eksternt referencenummer). Feltet er valgfrit og bruges alene til information.</td>
-        </tr>
-        <tr>
-          <td><strong>Modkontotype</strong></td>
-          <td>Vælg <strong>Finanskonto</strong> for direkte bogføring i finansmodulet, eller <strong>Bankkonto</strong> for bogføring via bankmodulet.</td>
-        </tr>
-        <tr>
-          <td><strong>Modkontonummer</strong></td>
-          <td>Angiv det finanskontonummer eller bankkontonummer, der skal bruges som modkonto ved bogføring på dette depot. Indholdet af opslagslisten afhænger af valget i <strong>Modkontotype</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 1-kode</strong></td>
-          <td>Valgfri dimensionsværdi (f.eks. afdeling) der automatisk foreslås på kladdelinjer for dette depot.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 2-kode</strong></td>
-          <td>Valgfri dimensionsværdi (f.eks. projekt) der automatisk foreslås på kladdelinjer for dette depot.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <tr><td>Værdipapirpost (SLE)</td><td>2 nye poster: afgang på kilden (Bilagstype = Overførsel, Antal = −5) og tilgang på målet (Antal = +5, Åben = Ja, Restantal = 5). Begge bærer Overført fra værdipapirnr. = kilden.</td></tr>
+        <tr><td>Depotbeholdningspost</td><td>2 nye: kildens depot −5, målets depot +5</td></tr>
+        <tr><td>Detaljeret Værdipost (DVLE)</td><td>Kilde-lot forbruges (Restantal → 0) + nyt tilgangs-lot på målet (Åben = Ja, kostbasis og Købsdato bevaret = 01-04-2026).</td></tr>
+        <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — overførsel realiserer intet</td></tr>
+        <tr><td>Finanspost (G/L)</td><td>Pr. leg: <span class="acct" data-acct="holding">2640</span> (beholdning) + Realiseret Overførsel-modpost med modsat fortegn. Med samme mellemregningskonto netter hele overførslen til 0.</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Kostbasis = 5 × 400,00 × 7,4726 = 14.945,20 DKK. Beløbet flyttes uændret fra kilde- til mål-værdipapir; beholdnings-legs nedenfor netter til 0.</p>
+  <h3>Bogføring — finansposter (beholdnings-legs, netter til nul)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(afgang fra kilde-værdipapir (kostbasis))</span></td><td class="num"></td><td class="num">14.945,20</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(tilgang til mål-værdipapir (kostbasis))</span></td><td class="num">14.945,20</td><td class="num"></td></tr>
+      </tbody></table></div>
+  <h3>Kritisk verifikation</h3>
+  <ul class="bullets">
+    <li>Kilde-værdipapirets restbeholdning = 0; mål-værdipapiret = 5 stk.</li>
+    <li>Et senere salg fra målet bruger den oprindelige kostpris (400 EUR) og købsdato (01-04-2026) — begge bevaret.</li>
+  </ul>
 </div>
 
-<div class="section" id="depot-tilknytning-værdipapirer">
-  <div class="section-header">
-    <div class="section-icon">📎</div>
-    <h2>Tilknytning af værdipapirer til depoter</h2>
-  </div>
-  <p>Et værdipapir kan tilknyttes ét eller flere depoter. Tilknytningen administreres fra siden <strong>Værdipapirdepoter</strong>, som åbnes fra depotlisten via knappen <strong>Værdipapirdepoter</strong> øverst på siden.</p>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Felt</th><th>Beskrivelse</th></tr>
-      </thead>
+<div class="section" id="case10">
+  <div class="section-header"><div class="section-icon">✳️</div><h2>Case 10 — Stykstørrelsesregulering (1:2 split) <span class="case-badge transfer">Stykstørrelse</span></h2></div>
+  <p><strong>Kladde:</strong> Overførselskladde &nbsp;|&nbsp; Bilagstype = Stykstørrelsesregulering &nbsp;|&nbsp; Bogføringsdato 19-06-2026.</p>
+  <p>L'Oreal foretager et 1:2 aktiesplit på den resterende beholdning. Kladdelinjen snapshotter Aktuel aktiestørrelse = 1,00 og Aktuel beholdning = 5 stk. Sæt Ny aktie størrelse = 0,50 (eller indtast Antal = 10).</p>
+  <div class="summary-box">Rescale: Ny aktiestørrelse = Aktuel beholdning × Aktuel aktiestørrelse / Antal = 5 × 1,00 / 10 = <strong>0,50</strong>.<br>
+    <strong>Bogføringsværdi uændret:</strong> 5 × 400,00 = 10 × 200,00 = 2.000,00 EUR (kostbasis 14.945,20 DKK uændret).</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Depotkode</strong></td>
-          <td>Koden på det depot, der knyttes til værdipapiret.</td>
-        </tr>
-        <tr>
-          <td><strong>Standard</strong></td>
-          <td>Markér feltet på det depot, der skal foreslås som standard, når der oprettes en kladdelinje for det pågældende værdipapir.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p>Tilknytningen kan også ses og redigeres fra det enkelte værdipapirkort.</p>
-
-  <div class="note"><strong>Bemærk:</strong> Hvis depotet er koblet til en bankkonto, skal bankkontoens valutakode stemme overens med valutakoden på de værdipapirer, der handles via depotet. Systemet kontrollerer dette automatisk når du vælger et depot på en kladdelinje — er valutaerne ikke ens, afvises valget med en fejlbesked.</div>
+        <tr><td>Værdipapirpost (SLE)</td><td>2 nye: AFGANG (Antal = −5, Stykstørrelse = 1,00, Pris = 400,00) + TILGANG (Antal = +10, Stykstørrelse = 0,50, Pris = 200,00)</td></tr>
+        <tr><td>Detaljeret Værdipost (DVLE)</td><td>AFGANG-DVP lukker kilde-lottet (Restantal → 0) + TILGANG-DVP (Åben = Ja, Restantal = 10, Indkøbspris = 200,00, Købsdato bevaret = 01-04-2026)</td></tr>
+        <tr><td>Depotbeholdningspost</td><td>Pr. depot med åben beholdning: 1 AFGANG (−5) + 1 TILGANG (+10)</td></tr>
+        <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — split realiserer intet</td></tr>
+        <tr><td>Finanspost (G/L)</td><td><span class="zero">Ingen</span> — stykstørrelse rører ikke finansen; bogføringsværdien er bevaret</td></tr>
+        <tr><td>Værdipapir-kort</td><td>Stykstørrelse opdateres til 0,50</td></tr>
+      </tbody></table></div>
+  <div class="note">Reverse split testes ved at sætte Ny aktie størrelse &gt; aktuel (fx 10:1 → Ny = 10). Multi-valuta-lots afvises (<code>MultiCurrencyErr</code>); reguleringen kan ikke tilbageføres (se Case 11a på side 7.5).</div>
 </div>
+
   </div>
   <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
   <script>
+
 /* ============================================================
    html-guide — progressive enhancement layer
    The /html-guide command inlines this file verbatim into a
@@ -1261,6 +1280,23 @@ header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .ent
   }
 })();
 
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2640","bank":"2620","unrealPrice":"1350","fxResult":"1680","realPrice":"1670","dividendIncome":"1450","dividendTax":"1455"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
   </script>
 </body>
 </html>

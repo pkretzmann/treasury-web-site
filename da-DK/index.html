@@ -9,11 +9,11 @@
 <style>
   :root{
     /* === BRAND:START — auto-genereret af /update-website fra .website/styles.css. Rediger ikke manuelt. === */
-    --brand-dark:#5B431F; --brand-mid:#946028; --brand-light:#B8884A;
-    --brand-pale:#F5EAD5; --brand-subtle:#FCF8EC; --accent:#C97A3F;
+    --brand-dark:#1a1a1a; --brand-mid:#c0392b; --brand-light:#d96459;
+    --brand-pale:#f7eceb; --brand-subtle:#fafafa; --accent:#c0392b;
     /* === BRAND:END === */
-    --white:#FFFFFF; --gray-100:#F4F6F8; --gray-200:#E1E8EF;
-    --gray-400:#9BAFC0; --gray-700:#4A5C6A; --text:#1A2A38;
+    --white:#FFFFFF; --gray-100:#f6f5f3; --gray-200:#e5e5e5;
+    --gray-400:#b3b3b3; --gray-700:#555555; --text:#1a1a1a;
     --sidebar-w:300px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -136,6 +136,8 @@
     body.nav-open .scrim{display:block}
     .hamburger{display:inline-flex}
   }
+/* Editorial theme — serif display headings */
+header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
 </style>
 </head>
 <body>
@@ -224,6 +226,13 @@ const NAV = [
     { title: "Oprettelse af ekstra informationer", path: "6. Opsætning af Treasury/6.6 Oprettelse af ekstra informationer.html" },
     { title: "Oprettelse af kladdetyper", path: "6. Opsætning af Treasury/6.7 Oprettelse af kladdetyper.html" },
     { title: "Oprettelse af obligationsterminer", path: "6. Opsætning af Treasury/6.8 Oprettelse af obligationsterminer.html" },
+  ]},
+  { group: "7. Testscenarier", items: [
+    { title: "Oversigt og opsætning", path: "7. Testscenarier/7.1 Oversigt og opsætning.html" },
+    { title: "Køb og kursregulering", path: "7. Testscenarier/7.2 Køb og kursregulering.html" },
+    { title: "Udbytte og salg", path: "7. Testscenarier/7.3 Udbytte og salg.html" },
+    { title: "Overførsel og stykstørrelse", path: "7. Testscenarier/7.4 Overførsel og stykstørrelse.html" },
+    { title: "Korrektion og tilbageførsel", path: "7. Testscenarier/7.5 Korrektion og tilbageførsel.html" },
   ]},
   // === NAV:END ===
 ];

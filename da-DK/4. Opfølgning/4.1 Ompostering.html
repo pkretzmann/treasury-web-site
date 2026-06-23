@@ -23,32 +23,32 @@
    Company: PwC Security for Business Central
    ============================================================ */
    :root {
-    --brand-dark:    #5B431F;   /* primary — headers, primary       */
-    --brand-mid:     #946028;   /* buttons, links, table headers    */
-    --brand-light:   #B8884A;   /* accents, arrows, badges          */
-    --brand-pale:    #F5EAD5;   /* hover, decision boxes            */
-    --brand-subtle:  #FCF8EC;   /* step backgrounds                 */
-    --accent:        #C97A3F;   /* general accent                   */
+    --brand-dark:    #1a1a1a;   /* primary — headers, primary       */
+    --brand-mid:     #c0392b;   /* buttons, links, table headers    */
+    --brand-light:   #d96459;   /* accents, arrows, badges          */
+    --brand-pale:    #f7eceb;   /* hover, decision boxes            */
+    --brand-subtle:  #fafafa;   /* step backgrounds                 */
+    --accent:        #c0392b;   /* general accent                   */
   }
   
   /* ── System tokens (brand-neutral — usually leave as-is) ── */
   :root {
     --white:        #FFFFFF;
-    --gray-100:     #F4F6F8;   /* page background  */
-    --gray-200:     #E1E8EF;   /* borders          */
-    --gray-400:     #9BAFC0;
-    --gray-700:     #4A5C6A;   /* secondary text   */
-    --text:         #1A2A38;   /* primary text     */
-    --note-bg:      #FFF8E1;   /* warning/note bg  */
-    --note-border:  #F4A918;   /* warning/note border */
-    --success:      #1A7F4B;
-    --success-bg:   #E6F6EE;
-    --info:         #5A6E86;   /* neutral status text */
-    --info-bg:      #EAEEF4;   /* neutral status bg   */
-    --pending:      #B5611C;   /* in-progress text    */
-    --pending-bg:   #FBE7D5;   /* in-progress bg      */
-    --code-bg:      #0E2230;
-    --code-text:    #D6E7F2;
+    --gray-100:     #f6f5f3;   /* page background  */
+    --gray-200:     #e5e5e5;   /* borders          */
+    --gray-400:     #b3b3b3;
+    --gray-700:     #555555;   /* secondary text   */
+    --text:         #1a1a1a;   /* primary text     */
+    --note-bg:      #fafafa;   /* note bg (pastel amber) */
+    --note-border:  #1a1a1a;   /* warning/note border */
+    --success:      #2e7d52;
+    --success-bg:   #edf4ef;
+    --info:         #2874a6;   /* neutral status text */
+    --info-bg:      #eaf3f8;   /* neutral status bg   */
+    --pending:      #8a5a12;   /* in-progress text    */
+    --pending-bg:   #f5ecda;   /* in-progress bg      */
+    --code-bg:      #1a1a1a;
+    --code-text:    #e8e8e8;
   }
   
   /* ── Reset & base ── */
@@ -175,7 +175,7 @@
     border-radius: 12px;
     padding: 36px 40px;
     margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0,63,127,0.06);
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.07);
   }
   .section-header {
     display: flex;
@@ -421,7 +421,7 @@
     margin: 18px 0;
     font-size: 14px;
   }
-  .note strong { color: #B7770A; }
+  .note strong { color: #c0392b; }
   
   /* ── Info box ── */
   .info-box {
@@ -452,7 +452,7 @@
     width: 100%;
     color: var(--text);
     font-weight: 500;
-    box-shadow: 0 2px 6px rgba(0,63,127,0.1);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.12);
   }
   .fc-node code { white-space: normal; }
   .fc-node .fc-status {
@@ -534,7 +534,7 @@
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--brand-mid); color: #fff; border: none;
     font-size: 20px; line-height: 1; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,63,127,0.25);
+    box-shadow: 0 3px 10px rgba(26, 26, 26, 0.28);
     opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
     z-index: 50;
   }
@@ -696,12 +696,12 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     padding: 20px 22px;
-    box-shadow: 0 1px 3px rgba(91, 67, 31, 0.05);
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
   }
   .feature-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(91, 67, 31, 0.10);
+    box-shadow: 0 8px 20px rgba(26, 26, 26, 0.12);
     border-color: var(--brand-pale);
   }
   .feature-card .feature-icon {
@@ -752,7 +752,7 @@
     overflow: hidden;
   }
   .accordion details[open] {
-    box-shadow: 0 2px 10px rgba(91, 67, 31, 0.07);
+    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.08);
     border-color: var(--brand-pale);
   }
   .accordion summary {
@@ -834,10 +834,10 @@
     padding: 14px 22px;
     text-align: center;
     min-width: 260px;
-    box-shadow: 0 2px 6px rgba(91, 67, 31, 0.06);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.07);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(91, 67, 31, 0.10); }
+  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(26, 26, 26, 0.12); }
   .entity-card .entity-name { display: block; font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 3px; }
   .entity-card .entity-sub { font-size: 12px; color: var(--gray-700); }
   .entity-arrow { display: flex; flex-direction: column; align-items: center; margin: 6px 0; }
@@ -921,7 +921,9 @@
     .js-fx .section { opacity: 1 !important; transform: none !important; }
   }
   
-  </style>
+  /* Editorial theme — serif display headings */
+header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
+</style>
 </head>
 <body class="fx">
   <header>
@@ -957,8 +959,8 @@
   <ol class="steps">
     <li>Åbn <strong>Værdipapirposter</strong> under Treasury-menuen i rollecentret.</li>
     <li>Find den post du ønsker at ompostere. Du kan filtrere efter værdipapir, dato eller bilagsnummer.</li>
-    <li>Vælg posten og klik på handlingen <strong>Reverse Entry</strong>.</li>
-    <li>Systemet åbner et vindue hvor du vælger hvilken kladde og batch ompostberingen skal dannes i. Vælg en Værdipapirljedaldes batch af passende type (fx Journal Template = <strong>JOURNAL</strong>, Journal Batch = <strong>REVERSAL</strong>).</li>
+    <li>Vælg posten og klik på handlingen <strong>Tilbagefør post</strong>.</li>
+    <li>Systemet åbner et vindue hvor du vælger hvilken kladde og batch ompostberingen skal dannes i. Vælg en Værdipapirljedaldes batch af passende type (fx Kladdetype = <strong>JOURNAL</strong>, Kladdebatch = <strong>REVERSAL</strong>).</li>
     <li>Systemet danner automatisk en tilbageføringslinje i kladden med modsatte beløb og samme værdipapir, dato og øvrige felter.</li>
     <li>Åbn kladden og gennemse linjen. Du kan rette bogføringsdatoen hvis ompostberingen skal have anden dato end oprindelsen.</li>
     <li>Bogfør kladdelinjen ved at klikke <strong>Bogfør</strong> (F9).</li>
@@ -977,7 +979,7 @@
   <ul class="bullets">
     <li>Den <strong>oprindelige post</strong> markeres som omposteret.</li>
     <li>Der dannes en <strong>ny post</strong> med modsatte beløb — hvis oprindelsen var en indgang på +10, bliver ompostberingen −10.</li>
-    <li>Både oprindelig og tilbageføring får samme <strong>Reversed Entry No.</strong> så de kan linkes sammen.</li>
+    <li>Både oprindelig og tilbageføring får samme <strong>Tilbageført post-nr.</strong> så de kan linkes sammen.</li>
     <li>Generelle finansposter dannes på samme måde — hvis transaktionen påvirkede GL-kontiene, tilbageføres også disse.</li>
   </ul>
   <p>Kontroller altid de nye poster i <strong>Værdipapirposter</strong> for at sikre, at ompostberingen er korrekt bogført, og at depotets beholdning afspejler det forventede.</p>

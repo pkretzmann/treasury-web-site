@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oprettelse af depoter · Værdipapirhandel</title>
+  <title>Køb og kursregulering · Værdipapirhandel</title>
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -923,117 +923,249 @@
   
   /* Editorial theme — serif display headings */
 header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
-</style>
+
+
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+  </style>
 </head>
 <body class="fx">
   <header>
-    <div class="header-badge">Opsætning</div>
-    <h1>Oprettelse af depoter</h1>
-    <p>Opret depoter (værdipapirkonti) og knyt dem til finans eller bank.</p>
-    <div class="header-pills"><span class="pill">Engangsopsætning</span></div>
+    <div class="header-badge">Testscenarier</div>
+    <h1>Køb og kursregulering</h1>
+    <p>Case 1–6: køb af værdipapiret og de fem mark-to-market-varianter (kun valuta, begge, divergente og kun pris) — opbygning af de urealiserede pris- og valutamarks.</p>
+    <div class="header-pills"><span class="pill">Case 1–6</span></div>
   </header>
   <div class="container">
     <nav class="toc">
       <h2>På denne side</h2>
       <ol>
-        <li><a href="#depot-overblik">Depoter — hvad de er</a></li>
-        <li><a href="#depot-felter">Felter i depotkontolisten</a></li>
-        <li><a href="#depot-tilknytning-værdipapirer">Tilknytning af værdipapirer til depoter</a></li>
+        <li><a href="#case1">Case 1 — Køb</a></li>
+        <li><a href="#case2">Case 2 — Kun valuta</a></li>
+        <li><a href="#case3">Case 3 — Begge ændres</a></li>
+        <li><a href="#case3b">Case 3b — Delsalg (valgfri)</a></li>
+        <li><a href="#case4">Case 4 — Begge igen</a></li>
+        <li><a href="#case5">Case 5 — Pris op, FX ned</a></li>
+        <li><a href="#case6">Case 6 — Kun aktiekurs</a></li>
       </ol>
     </nav>
-<div class="section" id="depot-overblik">
-  <div class="section-header">
-    <div class="section-icon">🏦</div>
-    <h2>Depoter — hvad de er</h2>
-  </div>
-  <p>Et depot er en konto hvor du opbevarer værdipapirer. Det kan være et depot hos en bank, en mægler eller en internt administreret depot. Hvert depot kobles til en finanskonto eller bankkonto, som brugeges som modkonto ved bogføring.</p>
-  <p>I systemet kaldes depoter <strong>Depot</strong> (konto).</p>
-
-  <h3>Sådan åbner du depoter</h3>
-  <ol class="steps">
-    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Depoter</strong>.</li>
-    <li>Listen viser alle oprettede depoter.</li>
-  </ol>
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra eksempel-firmaets <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering) og <strong>Værdipapir-resultatbogføringsgruppe</strong> (resultatkonti). Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og de øvrige testscenarie-sider) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Værdipapirbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2640" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret resultat – pris</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1350" /></div>
+      <div class="acct-field"><label for="acct-fxResult">Resultat – valuta (urealiseret + realiseret residual)</label><input class="acct-input" id="acct-fxResult" data-acct="fxResult" type="text" value="1680" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret resultat – pris</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1670" /></div>
+      <div class="acct-field"><label for="acct-dividendIncome">Udbytteindtægt / afkast</label><input class="acct-input" id="acct-dividendIncome" data-acct="dividendIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-dividendTax">Udbytteskat</label><input class="acct-input" id="acct-dividendTax" data-acct="dividendTax" type="text" value="1455" /></div>
+  </div></div></details></div>
 </div>
 
-<div class="section" id="depot-felter">
-  <div class="section-header">
-    <div class="section-icon">📋</div>
-    <h2>Felter i depotkontolisten</h2>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Felt</th><th>Beskrivelse</th></tr>
-      </thead>
+<div class="section" id="case1">
+  <div class="section-header"><div class="section-icon">🛒</div><h2>Case 1 — Køb <span class="case-badge buy">Køb</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 01-04-2026 &nbsp;|&nbsp; EUR-kurs 7,4726 &nbsp;|&nbsp; Antal 10 stk &nbsp;|&nbsp; Pris 400,00 EUR.</p>
+  <p>Bogfør en Værdipapirjournalpost: Bilagstype = Køb.</p>
+  <div class="summary-box">Beløb EUR = 4.000,00 &nbsp;|&nbsp; <strong>Beløb (DKK) = 29.890,40</strong></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Kode</strong></td>
-          <td>En unik kode for depotet (op til 20 tegn). Koden bruges som opslag fra kladdelinjer og værdipapirkort. Eksempel: <strong>NORDEA</strong> eller <strong>DANSKE-BANK</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Navn</strong></td>
-          <td>Et beskrivende navn på depotet, f.eks. <strong>Nordea Depot</strong> eller <strong>Interne aktier</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Depotkontonummer</strong></td>
-          <td>Depotets eget kontonummer hos banken eller mægleren (eksternt referencenummer). Feltet er valgfrit og bruges alene til information.</td>
-        </tr>
-        <tr>
-          <td><strong>Modkontotype</strong></td>
-          <td>Vælg <strong>Finanskonto</strong> for direkte bogføring i finansmodulet, eller <strong>Bankkonto</strong> for bogføring via bankmodulet.</td>
-        </tr>
-        <tr>
-          <td><strong>Modkontonummer</strong></td>
-          <td>Angiv det finanskontonummer eller bankkontonummer, der skal bruges som modkonto ved bogføring på dette depot. Indholdet af opslagslisten afhænger af valget i <strong>Modkontotype</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 1-kode</strong></td>
-          <td>Valgfri dimensionsværdi (f.eks. afdeling) der automatisk foreslås på kladdelinjer for dette depot.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 2-kode</strong></td>
-          <td>Valgfri dimensionsværdi (f.eks. projekt) der automatisk foreslås på kladdelinjer for dette depot.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="section" id="depot-tilknytning-værdipapirer">
-  <div class="section-header">
-    <div class="section-icon">📎</div>
-    <h2>Tilknytning af værdipapirer til depoter</h2>
-  </div>
-  <p>Et værdipapir kan tilknyttes ét eller flere depoter. Tilknytningen administreres fra siden <strong>Værdipapirdepoter</strong>, som åbnes fra depotlisten via knappen <strong>Værdipapirdepoter</strong> øverst på siden.</p>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Felt</th><th>Beskrivelse</th></tr>
-      </thead>
+        <tr><td>Finanspost (G/L)</td><td>Debet <span class="acct" data-acct="holding">2640</span> (beholdning) 29.890,40 DKK; Kredit <span class="acct" data-acct="bank">2620</span> (bank/modkonto) 29.890,40 DKK. Finanspost har Kildekode = SECURITY-kladde + Værdipapirnr. = 12032 + Værdipapirpostnr.</td></tr>
+        <tr><td>Værdipapirpost (SLE)</td><td>1 ny post, Bilagstype = Køb, Antal = 10, Restantal = 10, Åben = Ja, Beløb = 4.000,00 EUR, Beløb (RV) = 29.890,40 DKK</td></tr>
+        <tr><td>Depotbeholdningspost</td><td>Bilagstype = Køb, Antal = 10, Modkonto = Bank/modkonto fra depotet</td></tr>
+        <tr><td>Detaljeret Værdipost (DVLE)</td><td>1 lot-række (FIFO-lot): Åben = Ja, Restantal = 10, Indkøbspris = 400,00 EUR/stk</td></tr>
+        <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — avance opstår først ved salg/regulering</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Beløb (RV) = antal × købspris × købskurs = 10 × 400,00 × 7,4726 = 29.890,40 DKK. Ingen split — købet aktiveres til kostbasis.</p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Depotkode</strong></td>
-          <td>Koden på det depot, der knyttes til værdipapiret.</td>
-        </tr>
-        <tr>
-          <td><strong>Standard</strong></td>
-          <td>Markér feltet på det depot, der skal foreslås som standard, når der oprettes en kladdelinje for det pågældende værdipapir.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p>Tilknytningen kan også ses og redigeres fra det enkelte værdipapirkort.</p>
-
-  <div class="note"><strong>Bemærk:</strong> Hvis depotet er koblet til en bankkonto, skal bankkontoens valutakode stemme overens med valutakoden på de værdipapirer, der handles via depotet. Systemet kontrollerer dette automatisk når du vælger et depot på en kladdelinje — er valutaerne ikke ens, afvises valget med en fejlbesked.</div>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning (kostbasis))</span></td><td class="num">29.890,40</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto <span class="muted">(betaling)</span></td><td class="num"></td><td class="num">29.890,40</td></tr>
+      </tbody></table></div>
 </div>
+
+<div class="section" id="case2">
+  <div class="section-header"><div class="section-icon">💱</div><h2>Case 2 — Kursregulering: kun valutakurs <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 14-04-2026 &nbsp;|&nbsp; EUR-kurs 7,4711 (ned fra 7,4726) &nbsp;|&nbsp; Aktiekurs uændret 400,00 EUR/stk.</p>
+  <p>Bogfør en Kursregulering-journalpost. Markedsværdi-princip skal være aktivt på posteringsgruppen.</p>
+  <div class="summary-box">Ny markedsværdi = 29.884,40 DKK &nbsp;|&nbsp; Bogført værdi før = 29.890,40 DKK<br>
+    <strong>Samlet urealiseret regulering = <span class="neg">-6,00</span> DKK</strong><br>
+    Split: Pris = <span class="zero">+0,00</span> DKK &nbsp;|&nbsp; FX = <span class="neg">-6,00</span> DKK</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Kursregulering, Antal = 0</td></tr>
+        <tr><td>DPLE — Pris</td><td><span class="zero">Ingen post</span> (pris uændret)</td></tr>
+        <tr><td>DPLE — Valuta</td><td>1 ny række: Realiseringstype = Urealiseret, Resultattype = Valutakursregulering, Beløb (RV) = <span class="neg">-6,00</span> DKK</td></tr>
+        <tr><td>Finanspost</td><td>Debet/Kredit på <span class="acct" data-acct="fxResult">1680</span> (urealiseret valuta) + <span class="acct" data-acct="holding">2640</span> (regulering), beløb = <span class="neg">-6,00</span> DKK (urealiseret tab)</td></tr>
+      </tbody></table></div>
+  <div class="note">Tester rent FX-scenarie: priskomponenten skal være 0, hele reguleringen er ren valuta.</div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted">Kumulativ pris = 10 × (400,00 − 400,00) × 7,4711 = 0,00 → minus udestående 0,00 = netto pris +0,00. Kumulativ FX = 10 × 400,00 × (7,4711 − 7,4726) = -6,00 → minus udestående 0,00 = netto FX -6,00.</p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num"></td><td class="num">6,00</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(urealiseret valuta)</span></td><td class="num">6,00</td><td class="num"></td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="case3">
+  <div class="section-header"><div class="section-icon">📈</div><h2>Case 3 — Kursregulering: begge ændres <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 28-04-2026 &nbsp;|&nbsp; EUR-kurs 7,4727 (op fra 7,4711) &nbsp;|&nbsp; Aktiekurs 410,00 EUR/stk (op fra 400,00).</p>
+  <div class="summary-box">Ny markedsværdi = 30.638,07 DKK &nbsp;|&nbsp; Bogført værdi før = 29.884,40 DKK<br>
+    <strong>Samlet urealiseret regulering = <span class="pos">+753,67</span> DKK</strong><br>
+    Split: Pris = <span class="pos">+747,27</span> DKK &nbsp;|&nbsp; FX = <span class="pos">+6,40</span> DKK</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny Kursregulering-post, Antal = 0</td></tr>
+        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="pos">+747,27</span> DKK</td></tr>
+        <tr><td>DPLE — Valuta</td><td>1 række: Urealiseret, Valutakursregulering, Beløb (RV) = <span class="pos">+6,40</span> DKK</td></tr>
+        <tr><td>Finanspost</td><td>To linjer på <span class="acct" data-acct="unrealPrice">1350</span> (pris) og <span class="acct" data-acct="fxResult">1680</span> (valuta) + modpost på <span class="acct" data-acct="holding">2640</span>, sum <span class="pos">+753,67</span> DKK</td></tr>
+      </tbody></table></div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted">Kumulativ pris = 10 × (410,00 − 400,00) × 7,4727 = 747,27 → minus udestående 0,00 = netto pris +747,27. Kumulativ FX = 10 × 400,00 × (7,4727 − 7,4726) = 0,40 → minus udestående -6,00 = netto FX +6,40.</p>
+  <div class="note">FX-komponenten posteres netto: den nye kumulative FX (lille, da kursen kun er 0,0001 over købskursen) <strong>plus</strong> tilbageførslen af Case 2's −6,00 → netto ≈ +6,40 på finansposten.</div>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num">753,67</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris <span class="muted">(urealiseret pris)</span></td><td class="num"></td><td class="num">747,27</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(urealiseret valuta)</span></td><td class="num"></td><td class="num">6,40</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="case3b">
+  <div class="section-header"><div class="section-icon">✂️</div><h2>Case 3b — Delsalg af 5 stk efter Case 3 <span class="case-badge sale">Salg</span> <span class="case-badge mt">Valgfri — Spor B</span></h2></div>
+  <div class="note">Spor A er valgt (behold alle 10 stk), så denne case er <strong>inaktiv</strong> i hovedforløbet. Den vises her som valgfri variant: sælges 5 stk umiddelbart efter Case 3, kører Case 4–8 videre med 5 stk i behold.</div>
+  <p><strong>Bogføringsdato</strong> 28-04-2026 (umiddelbart efter Case 3) &nbsp;|&nbsp; sælg 5 af 10 stk til kurs 7,4727, aktiekurs 410 EUR/stk.</p>
+  <div class="summary-box">Udestående urealiseret mark efter Case 3 (10 stk): Pris = <span class="pos">+747,27</span> DKK &nbsp;|&nbsp; FX = <span class="pos">+0,40</span> DKK<br>
+    Salget realiserer P/L på de solgte 5 stk: Realiseret pris = <span class="pos">+373,64</span> DKK &nbsp;|&nbsp; Realiseret FX = <span class="pos">+0,20</span> DKK<br>
+    … og tilbagefører proportionalt (50 %): Pris -373,64 DKK &nbsp;|&nbsp; FX -0,20 DKK<br>
+    <strong>Tilbage: 5 stk med halveret urealiseret baseline — Pris 373,64 DKK &nbsp;|&nbsp; FX 0,20 DKK</strong></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Salg, Antal = −5</td></tr>
+        <tr><td>DVLE</td><td>1 forbrugs-række mod købs-lot; lot-Restantal reduceres til 5</td></tr>
+        <tr><td>DPLE — realiseret</td><td>Realiseret pris <span class="pos">+373,64</span> DKK + realiseret FX <span class="pos">+0,20</span> DKK</td></tr>
+        <tr><td>DPLE — tilbageførsel (urealiseret, proportionalt)</td><td>Pris -373,64 DKK, FX -0,20 DKK</td></tr>
+      </tbody></table></div>
+  <div class="note">Da der sælges præcis til Case 3-marken, er realiseret P/L lig den tilbageførte urealiserede mark — en ren reklassifikation urealiseret → realiseret uden ny resultatpåvirkning.</div>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto <span class="muted">(salgssum (5 stk))</span></td><td class="num">15.319,04</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(kostbasis ud)</span></td><td class="num"></td><td class="num">14.945,20</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(tilbagef. ureal. pris)</span></td><td class="num"></td><td class="num">373,64</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(tilbagef. ureal. FX)</span></td><td class="num"></td><td class="num">0,20</td></tr>
+        <tr><td><span class="acct" data-acct="realPrice">1670</span></td><td>Realiseret resultat – pris <span class="muted">(realiseret pris)</span></td><td class="num"></td><td class="num">373,64</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(realiseret FX)</span></td><td class="num"></td><td class="num">0,20</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris <span class="muted">(nulstil ureal. pris)</span></td><td class="num">373,64</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(nulstil ureal. FX)</span></td><td class="num">0,20</td><td class="num"></td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="case4">
+  <div class="section-header"><div class="section-icon">📈</div><h2>Case 4 — Kursregulering: begge ændres igen <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 10-05-2026 &nbsp;|&nbsp; EUR-kurs 7,4748 (op) &nbsp;|&nbsp; Aktiekurs 425,00 EUR/stk (op fra 410,00) &nbsp;|&nbsp; Antal i behold 10 stk.</p>
+  <div class="summary-box">Ny markedsværdi = 31.767,90 DKK &nbsp;|&nbsp; Bogført værdi før = 30.638,07 DKK<br>
+    <strong>Samlet urealiseret regulering = <span class="pos">+1.129,83</span> DKK</strong><br>
+    Split: Pris = <span class="pos">+1.121,43</span> DKK &nbsp;|&nbsp; FX = <span class="pos">+8,40</span> DKK</div>
+  <div class="note">Akkumulerer endnu et urealiseret lag — gør tilbageførslen ved salg ikke-triviel.</div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted">Kumulativ pris = 10 × (425,00 − 400,00) × 7,4748 = 1.868,70 → minus udestående 747,27 = netto pris +1.121,43. Kumulativ FX = 10 × 400,00 × (7,4748 − 7,4726) = 8,80 → minus udestående 0,40 = netto FX +8,40.</p>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num">1.129,83</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris <span class="muted">(urealiseret pris)</span></td><td class="num"></td><td class="num">1.121,43</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(urealiseret valuta)</span></td><td class="num"></td><td class="num">8,40</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="case5">
+  <div class="section-header"><div class="section-icon">🔀</div><h2>Case 5 — Kursregulering: pris op, FX ned <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 29-05-2026 &nbsp;|&nbsp; EUR-kurs 7,4738 (NED fra 7,4748) &nbsp;|&nbsp; Aktiekurs 430,00 EUR/stk (op fra 425,00).</p>
+  <div class="summary-box">Ny markedsværdi = 32.137,34 DKK &nbsp;|&nbsp; Bogført værdi før = 31.767,90 DKK<br>
+    <strong>Samlet urealiseret regulering = <span class="pos">+369,44</span> DKK</strong><br>
+    Split: Pris = <span class="pos">+373,44</span> DKK &nbsp;|&nbsp; FX = <span class="neg">-4,00</span> DKK</div>
+  <div class="note">Tester modsatrettede bevægelser: positiv pris og negativ FX i samme regulering. Begge posteres som separate DPLE-rækker med korrekt fortegn.</div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted">Kumulativ pris = 10 × (430,00 − 400,00) × 7,4738 = 2.242,14 → minus udestående 1.868,70 = netto pris +373,44. Kumulativ FX = 10 × 400,00 × (7,4738 − 7,4726) = 4,80 → minus udestående 8,80 = netto FX -4,00.</p>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num">369,44</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris <span class="muted">(urealiseret pris)</span></td><td class="num"></td><td class="num">373,44</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) <span class="muted">(urealiseret valuta)</span></td><td class="num">4,00</td><td class="num"></td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="case6">
+  <div class="section-header"><div class="section-icon">🏷️</div><h2>Case 6 — Kursregulering: kun aktiekurs <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 04-06-2026 &nbsp;|&nbsp; EUR-kurs 7,4738 (UÆNDRET ift. 29-05) &nbsp;|&nbsp; Aktiekurs 435,00 EUR/stk (op fra 430,00).</p>
+  <div class="summary-box">Ny markedsværdi = 32.511,03 DKK &nbsp;|&nbsp; Bogført værdi før = 32.137,34 DKK<br>
+    <strong>Samlet urealiseret regulering = <span class="pos">+373,69</span> DKK</strong><br>
+    Split: Pris = <span class="pos">+373,69</span> DKK &nbsp;|&nbsp; FX = <span class="zero">0,00</span> DKK</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny Kursregulering-post</td></tr>
+        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="pos">+373,69</span> DKK</td></tr>
+        <tr><td>DPLE — Valuta</td><td><span class="zero">Ingen post (eller Beløb = 0)</span> — FX uændret</td></tr>
+        <tr><td>Finanspost</td><td>1 linje på <span class="acct" data-acct="unrealPrice">1350</span> (urealiseret pris) + modpost; <strong>ingen</strong> valuta-linje</td></tr>
+      </tbody></table></div>
+  <div class="note">Tester rent pris-scenarie: FX-komponenten skal være 0 / udeladt (kursen er uændret).</div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted">Kumulativ pris = 10 × (435,00 − 400,00) × 7,4738 = 2.615,83 → minus udestående 2.242,14 = netto pris +373,69. Kumulativ FX = 10 × 400,00 × (7,4738 − 7,4726) = 4,80 → minus udestående 4,80 = netto FX +0,00.</p>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num">373,69</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris <span class="muted">(urealiseret pris)</span></td><td class="num"></td><td class="num">373,69</td></tr>
+      </tbody></table></div>
+</div>
+
   </div>
   <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
   <script>
+
 /* ============================================================
    html-guide — progressive enhancement layer
    The /html-guide command inlines this file verbatim into a
@@ -1261,6 +1393,23 @@ header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .ent
   }
 })();
 
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2640","bank":"2620","unrealPrice":"1350","fxResult":"1680","realPrice":"1670","dividendIncome":"1450","dividendTax":"1455"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
   </script>
 </body>
 </html>

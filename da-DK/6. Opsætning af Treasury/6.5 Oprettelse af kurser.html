@@ -23,32 +23,32 @@
    Company: PwC Security for Business Central
    ============================================================ */
    :root {
-    --brand-dark:    #5B431F;   /* primary — headers, primary       */
-    --brand-mid:     #946028;   /* buttons, links, table headers    */
-    --brand-light:   #B8884A;   /* accents, arrows, badges          */
-    --brand-pale:    #F5EAD5;   /* hover, decision boxes            */
-    --brand-subtle:  #FCF8EC;   /* step backgrounds                 */
-    --accent:        #C97A3F;   /* general accent                   */
+    --brand-dark:    #1a1a1a;   /* primary — headers, primary       */
+    --brand-mid:     #c0392b;   /* buttons, links, table headers    */
+    --brand-light:   #d96459;   /* accents, arrows, badges          */
+    --brand-pale:    #f7eceb;   /* hover, decision boxes            */
+    --brand-subtle:  #fafafa;   /* step backgrounds                 */
+    --accent:        #c0392b;   /* general accent                   */
   }
   
   /* ── System tokens (brand-neutral — usually leave as-is) ── */
   :root {
     --white:        #FFFFFF;
-    --gray-100:     #F4F6F8;   /* page background  */
-    --gray-200:     #E1E8EF;   /* borders          */
-    --gray-400:     #9BAFC0;
-    --gray-700:     #4A5C6A;   /* secondary text   */
-    --text:         #1A2A38;   /* primary text     */
-    --note-bg:      #FFF8E1;   /* warning/note bg  */
-    --note-border:  #F4A918;   /* warning/note border */
-    --success:      #1A7F4B;
-    --success-bg:   #E6F6EE;
-    --info:         #5A6E86;   /* neutral status text */
-    --info-bg:      #EAEEF4;   /* neutral status bg   */
-    --pending:      #B5611C;   /* in-progress text    */
-    --pending-bg:   #FBE7D5;   /* in-progress bg      */
-    --code-bg:      #0E2230;
-    --code-text:    #D6E7F2;
+    --gray-100:     #f6f5f3;   /* page background  */
+    --gray-200:     #e5e5e5;   /* borders          */
+    --gray-400:     #b3b3b3;
+    --gray-700:     #555555;   /* secondary text   */
+    --text:         #1a1a1a;   /* primary text     */
+    --note-bg:      #fafafa;   /* note bg (pastel amber) */
+    --note-border:  #1a1a1a;   /* warning/note border */
+    --success:      #2e7d52;
+    --success-bg:   #edf4ef;
+    --info:         #2874a6;   /* neutral status text */
+    --info-bg:      #eaf3f8;   /* neutral status bg   */
+    --pending:      #8a5a12;   /* in-progress text    */
+    --pending-bg:   #f5ecda;   /* in-progress bg      */
+    --code-bg:      #1a1a1a;
+    --code-text:    #e8e8e8;
   }
   
   /* ── Reset & base ── */
@@ -175,7 +175,7 @@
     border-radius: 12px;
     padding: 36px 40px;
     margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0,63,127,0.06);
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.07);
   }
   .section-header {
     display: flex;
@@ -421,7 +421,7 @@
     margin: 18px 0;
     font-size: 14px;
   }
-  .note strong { color: #B7770A; }
+  .note strong { color: #c0392b; }
   
   /* ── Info box ── */
   .info-box {
@@ -452,7 +452,7 @@
     width: 100%;
     color: var(--text);
     font-weight: 500;
-    box-shadow: 0 2px 6px rgba(0,63,127,0.1);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.12);
   }
   .fc-node code { white-space: normal; }
   .fc-node .fc-status {
@@ -534,7 +534,7 @@
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--brand-mid); color: #fff; border: none;
     font-size: 20px; line-height: 1; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,63,127,0.25);
+    box-shadow: 0 3px 10px rgba(26, 26, 26, 0.28);
     opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s;
     z-index: 50;
   }
@@ -696,12 +696,12 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     padding: 20px 22px;
-    box-shadow: 0 1px 3px rgba(91, 67, 31, 0.05);
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.06);
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
   }
   .feature-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(91, 67, 31, 0.10);
+    box-shadow: 0 8px 20px rgba(26, 26, 26, 0.12);
     border-color: var(--brand-pale);
   }
   .feature-card .feature-icon {
@@ -752,7 +752,7 @@
     overflow: hidden;
   }
   .accordion details[open] {
-    box-shadow: 0 2px 10px rgba(91, 67, 31, 0.07);
+    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.08);
     border-color: var(--brand-pale);
   }
   .accordion summary {
@@ -834,10 +834,10 @@
     padding: 14px 22px;
     text-align: center;
     min-width: 260px;
-    box-shadow: 0 2px 6px rgba(91, 67, 31, 0.06);
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.07);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(91, 67, 31, 0.10); }
+  .entity-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(26, 26, 26, 0.12); }
   .entity-card .entity-name { display: block; font-size: 16px; font-weight: 700; color: var(--brand-dark); margin-bottom: 3px; }
   .entity-card .entity-sub { font-size: 12px; color: var(--gray-700); }
   .entity-arrow { display: flex; flex-direction: column; align-items: center; margin: 6px 0; }
@@ -921,7 +921,9 @@
     .js-fx .section { opacity: 1 !important; transform: none !important; }
   }
   
-  </style>
+  /* Editorial theme — serif display headings */
+header h1, h2, h3, h4, .stat-card .stat-num, .feature-card h3, .entity-card .entity-name { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.01em; }
+</style>
 </head>
 <body class="fx">
   <header>
@@ -959,7 +961,7 @@
   <h3>Sådan åbner du ISIN-koder</h3>
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>ISINs</strong>.</li>
+    <li>Klik på <strong>ISIN'er</strong>.</li>
   </ol>
 
   <h3>Felter</h3>
@@ -974,18 +976,18 @@
           <td>ISIN-koden for værdipapiret (op til 20 tegn). Bruges som opslag fra værdipapirkortet og som nøgle i fondskurslisten. Eksempel: <strong>DK0002537027</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Current Price</strong></td>
+          <td><strong>Nuværende pris</strong></td>
           <td>Den seneste registrerede kurs for ISIN-koden. Beregnes og opdateres automatisk fra fondskurslisten.</td>
         </tr>
         <tr>
-          <td><strong>Current Price Date</strong></td>
+          <td><strong>Dato for nuværende pris</strong></td>
           <td>Datoen for den seneste registrerede kurs. Beregnes automatisk.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <p>ISIN-koder oprettes manuelt — én linje per kode. Fra ISIN-listen kan du navigere direkte til fondskurslisten for den valgte kode via handlingen <strong>Investment Fund Prices</strong>.</p>
+  <p>ISIN-koder oprettes manuelt — én linje per kode. Fra ISIN-listen kan du navigere direkte til fondskurslisten for den valgte kode via handlingen <strong>Værdipapirkurser</strong>.</p>
 
   <div class="note"><strong>Bemærk:</strong> Automatisk import af ISIN-koder via kurslistefiler er endnu ikke implementeret.</div>
 </div>
@@ -1000,9 +1002,9 @@
   <h3>Sådan åbner du fondskurser</h3>
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Investment Fund Prices</strong>.</li>
+    <li>Klik på <strong>Værdipapirkurser</strong>.</li>
   </ol>
-  <p>Du kan også åbne siden filtreret på en valgt ISIN-kode via handlingen <strong>Investment Fund Prices</strong> fra ISIN-listen.</p>
+  <p>Du kan også åbne siden filtreret på en valgt ISIN-kode via handlingen <strong>Værdipapirkurser</strong> fra ISIN-listen.</p>
 
   <h3>Felter</h3>
   <div class="table-wrap">
@@ -1012,27 +1014,27 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>ISIN Code</strong></td>
+          <td><strong>ISIN-kode</strong></td>
           <td>ISIN-koden for det værdipapir, kursen gælder for. Opslag i ISIN-tabellen.</td>
         </tr>
         <tr>
-          <td><strong>Date</strong></td>
+          <td><strong>Dato</strong></td>
           <td>Den dato, kursen er gyldig fra. Der kan kun registreres én kurs pr. ISIN-kode pr. dato.</td>
         </tr>
         <tr>
-          <td><strong>Price</strong></td>
+          <td><strong>Kurs</strong></td>
           <td>Kursen for værdipapiret på den angivne dato.</td>
         </tr>
         <tr>
-          <td><strong>Name</strong></td>
+          <td><strong>Navn</strong></td>
           <td>Værdipapirets navn. Vises automatisk fra det tilknyttede værdipapir og kan ikke redigeres.</td>
         </tr>
         <tr>
-          <td><strong>Nominal Interest Rate %</strong></td>
+          <td><strong>Nominel rente %</strong></td>
           <td>Nominel rente i procent (relevant for obligationer). Valgfrit felt.</td>
         </tr>
         <tr>
-          <td><strong>Issuer</strong></td>
+          <td><strong>Udsteder</strong></td>
           <td>Udstederens navn som fritekst (uafhængigt af udstederlisten). Udfyldes primært ved kursimport.</td>
         </tr>
       </tbody>
@@ -1040,7 +1042,7 @@
   </div>
 
   <h3>Import og eksport</h3>
-  <p>Siden indeholder knapperne <strong>Import Prices</strong> og <strong>Export Prices</strong>. Disse funktioner er endnu ikke implementeret og kan bruges når de bliver tilgængelige.</p>
+  <p>Siden indeholder knapperne <strong>Importer kurser</strong> og <strong>Eksporter kurser</strong>. Disse funktioner er endnu ikke implementeret og kan bruges når de bliver tilgængelige.</p>
 </div>
 
 <div class="section" id="kurser-valuta">
@@ -1052,8 +1054,8 @@
 
   <h3>Sådan åbner du valutakurser</h3>
   <ol class="steps">
-    <li>Søg efter <strong>Currency Exchange Rates</strong> i søgefeltet, eller</li>
-    <li>Navigér via menuen <strong>Finance → Setup → Currencies</strong>.</li>
+    <li>Søg efter <strong>Valutakurser</strong> i søgefeltet, eller</li>
+    <li>Navigér via menuen <strong>Finans → Opsætning → Valutaer</strong>.</li>
   </ol>
 
   <p>Valutakurserne bruges automatisk af Treasury-systemet ved bogføring af transaktioner i udenlandsk valuta.</p>
@@ -1069,7 +1071,7 @@
   <h3>Sådan åbner du indekskurser</h3>
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Index Prices</strong>.</li>
+    <li>Klik på <strong>Indekskurser</strong>.</li>
   </ol>
 
   <h3>Felter</h3>
@@ -1080,12 +1082,12 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Starting Date</strong></td>
+          <td><strong>Startdato</strong></td>
           <td>Datoen, hvorfra indekskursen er gyldig (primærnøgle). Feltet er obligatorisk. Der kan kun oprettes én post pr. dato.</td>
         </tr>
         <tr>
-          <td><strong>Price</strong></td>
-          <td>Indekskursens værdi, gyldig fra Starting Date. Op til 20 decimaler er tilladt.</td>
+          <td><strong>Kurs</strong></td>
+          <td>Indekskursens værdi, gyldig fra Startdato. Op til 20 decimaler er tilladt.</td>
         </tr>
       </tbody>
     </table>
