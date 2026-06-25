@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Korrektion og tilbageførsel · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Testscenarier</div>
+    <h1>Korrektion og tilbageførsel</h1>
+    <p>Case 11: tilbageførsel via Korrektionskladden — overførsel, friske køb/salg/udbytte/kursregulering på dedikerede testværdipapirer — plus fejl-vagter og den afsluttende verifikation.</p>
+    <div class="header-pills"><span class="pill">Case 11</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#intro">Om tilbageførsel</a></li>
+        <li><a href="#c11a">11a — Split (negativ)</a></li>
+        <li><a href="#c11b">11b — Overførsel</a></li>
+        <li><a href="#c11c">11c — Køb</a></li>
+        <li><a href="#c11d">11d — Salg</a></li>
+        <li><a href="#c11e">11e — Afkast</a></li>
+        <li><a href="#c11f">11f — Kursregulering</a></li>
+        <li><a href="#c11g">11g — Fejl-vagter</a></li>
+        <li><a href="#verifikation">Verifikation efter alle cases</a></li>
+      </ol>
+    </nav>
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra eksempel-firmaets <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering) og <strong>Værdipapir-resultatbogføringsgruppe</strong> (resultatkonti). Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og de øvrige testscenarie-sider) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Værdipapirbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2640" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret resultat – pris</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1350" /></div>
+      <div class="acct-field"><label for="acct-fxResult">Resultat – valuta (urealiseret + realiseret residual)</label><input class="acct-input" id="acct-fxResult" data-acct="fxResult" type="text" value="1680" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret resultat – pris</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1670" /></div>
+      <div class="acct-field"><label for="acct-dividendIncome">Udbytteindtægt / afkast</label><input class="acct-input" id="acct-dividendIncome" data-acct="dividendIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-dividendTax">Udbytteskat</label><input class="acct-input" id="acct-dividendTax" data-acct="dividendTax" type="text" value="1455" /></div>
+  </div></div></details></div>
+</div>
+
+<div class="section" id="intro">
+  <div class="section-header"><div class="section-icon">↩️</div><h2>Om tilbageførsel <span class="case-badge reversal">Tilbageførsel</span></h2></div>
+  <p><strong>Kladde:</strong> Korrektionskladde &nbsp;|&nbsp; Bilagstype = Tilbageførsel.</p>
+  <p>En tilbageførsel <strong>spejler alle fem posttabeller</strong> med negerede beløb: den oprindelige post får Tilbageført = Ja + "Tilbageført af løbenr.", og spejl-posten beholder den <strong>oprindelige</strong> bilagstype (en tilbageført Køb posteres som Køb med negativt antal — ikke som "Tilbageførsel"). Tilbageførsel af et Salg <strong>genåbner det forbrugte købs-lot</strong>.</p>
+  <div class="note"><strong>LIFO-begrænsning:</strong> Tilbageførsel kan kun ramme den seneste ikke-tilbageførte post pr. værdipapir, og et stykstørrelses-split (Case 10) kan ikke tilbageføres. Derfor vises de isolerede varianter (11c–11f) på dedikerede friske værdipapirer (TEST-A/B/C/D).</div>
+</div>
+
+<div class="section" id="c11a">
+  <div class="section-header"><div class="section-icon">🚫</div><h2>11a — Forsøg på tilbageførsel af splittet <span class="case-badge reversal">Negativ test</span></h2></div>
+  <p>Forsøg at tilbageføre Case 10's TILGANG-VP. Bogføring afvises:</p>
+  <div class="err-box"><code>ShareSizeReversalNotSupportedErr</code> — "Reversal of Share Size Adjustment is not supported. Post a counter-adjusting Share Size Adjustment entry (with the original share size as the New Share Size) to undo the change."</div>
+  <p class="muted">Workaround: bogfør en ny Stykstørrelsesregulering med Ny aktie størrelse = den oprindelige (1) for at rulle splittet tilbage.</p>
+</div>
+
+<div class="section" id="c11b">
+  <div class="section-header"><div class="section-icon">🔁</div><h2>11b — Tilbageførsel af overførslen (Case 9) på L'Oreal</h2></div>
+  <p>Tilbagefør de to overførsels-VP'er. LIFO kræver at <strong>tilgangen tilbageføres først</strong>, derefter afgangen. Afgangs-tilbageførslen <strong>genåbner kilde-lottet</strong>.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>Værdipapirpost (SLE)</td><td>Tilgang-VP: Tilbageført = Ja; Afgang-VP: Tilbageført = Ja; 2 spejl-poster (Bilagstype = Overførsel, negerede antal)</td></tr>
+        <tr><td>Depotbeholdningspost</td><td>Spejlede mængder: DEPOT-2 −5, DEPOT-A +5 → DEPOT-A's beholdning = 5 igen</td></tr>
+        <tr><td>Detaljeret Værdipost</td><td>Tilgangs-lot lukkes; kilde-lot genåbnes (Åben = Ja, Restantal = 5)</td></tr>
+        <tr><td>Detaljeret Resultatpost</td><td><span class="zero">Ingen</span></td></tr>
+        <tr><td>Finanspost (G/L)</td><td>Spejlede <span class="acct" data-acct="holding">2640</span>-linjer (14.945,20 DKK frem og tilbage) — netto = 0</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="c11c">
+  <div class="section-header"><div class="section-icon">🛒</div><h2>11c — Tilbageførsel af et frisk Køb (TEST-A)</h2></div>
+  <p class="muted">Køb 1.000 stk @ 100 LCY på TEST-A. Kør Reverse → bogfør.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>Original: Tilbageført = Ja, Åben = Nej, Restantal = 0. Spejl: <strong>Bilagstype = Køb (ikke Tilbageførsel!)</strong>, Antal = −1.000, Beløb (RV) = +100.000</td></tr>
+        <tr><td>Depotbeholdningspost</td><td>2 — original + spejl (Antal = −1.000)</td></tr>
+        <tr><td>Detaljeret Værdipost</td><td>2 — original (Åben = Nej, Restantal = 0) + spejl (Antal = −1.000, Tilbageført = Ja)</td></tr>
+        <tr><td>Detaljeret Resultatpost</td><td><span class="zero">0</span> — køb danner ingen gevinstpost</td></tr>
+        <tr><td>Finanspost (G/L)</td><td>4 — spejlede beløb, netto = 0 på begge konti</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="c11d">
+  <div class="section-header"><div class="section-icon">🏦</div><h2>11d — Tilbageførsel af et Salg → genåbning af lot (TEST-C)</h2></div>
+  <p class="muted">TEST-C (EUR, FX 7,50): Køb 1.000 @ 50 EUR, Salg 600 @ 60 EUR (realiseret gevinst 600 × (60−50) × 7,50 = 45.000 LCY). Tilbagefør salget.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>Køb: <strong>Åben = Ja, Restantal = 1.000 (genåbnet!)</strong>; Salg: Tilbageført = Ja; + salgs-spejl</td></tr>
+        <tr><td>Detaljeret Værdipost</td><td>Købs-lot genåbnet (Restantal = 1.000); salgs-konsumption + dens spejl</td></tr>
+        <tr><td>Detaljeret Resultatpost</td><td>Realiseret gevinst (45.000) + spejl (−45.000) → netto = 0</td></tr>
+        <tr><td>Finanspost (G/L)</td><td>Salgs-finansposter spejlet — netto = 0</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="c11e">
+  <div class="section-header"><div class="section-icon">💰</div><h2>11e — Tilbageførsel af et Afkast (TEST-B)</h2></div>
+  <p class="muted">TEST-B: Afkast 5.000 LCY brutto, 27 % udbytteskat (1.350 LCY). Tilbagefør afkastet.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>Afkast: Tilbageført = Ja; Afkast-spejl (Antal = 0, Beløb (RV) = −5.000)</td></tr>
+        <tr><td>Detaljeret Resultatpost</td><td>Afkast-DPLE + spejl → netto = 0</td></tr>
+        <tr><td>Detaljeret Værdipost / lots</td><td><span class="zero">Uændret</span> — afkast har Antal = 0, rører ikke beholdning/lots</td></tr>
+        <tr><td>Finanspost (G/L)</td><td>Afkast (3 linjer: bank, skat, afkastkonto) spejlet (3) → netto = 0</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="c11f">
+  <div class="section-header"><div class="section-icon">📈</div><h2>11f — Tilbageførsel af en Kursregulering (TEST-D)</h2></div>
+  <p class="muted">TEST-D (EUR, FX 7,50→7,80, pris 100→110 EUR): én kursregulering deles i pris- og valutakomponent. Tilbagefør reguleringen.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>Kursregulering: Tilbageført = Ja; spejl (Antal = 0)</td></tr>
+        <tr><td>Detaljeret Værdipost</td><td>2 urealiserede skiver (pris + valuta) + 2 spejl-skiver (Tilbageført = Ja) — spejl beholder Urealiseret slot-markøren</td></tr>
+        <tr><td>Detaljeret Resultatpost</td><td>2 originale + 2 spejl → netto urealiseret = 0</td></tr>
+        <tr><td>Finanspost (G/L)</td><td>Kursregulering (4) + spejl (4) → netto på urealiserede konti = 0</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="c11g">
+  <div class="section-header"><div class="section-icon">🛡️</div><h2>11g — Fejl-vagter (negative tests) <span class="case-badge reversal">Fejl-vagter</span></h2></div>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Test</th><th>Handling</th><th>Forventet fejl</th></tr></thead>
+      <tbody>
+        <tr><td>E1 — forbrugt lot</td><td>Tilbagefør et Køb hvis lot er delvist solgt</td><td><code>PurchaseConsumedErr</code> — "Cannot reverse Purchase entry … the lot has been partially consumed … Reverse the sales that consumed it first."</td></tr>
+        <tr><td>E2 — ikke seneste post</td><td>Tilbagefør en post med en senere ikke-tilbageført post</td><td><code>NotLatestEntryErr</code> — "Cannot reverse Security Ledger Entry … a later unreversed entry … exists … Reverse later entries first."</td></tr>
+        <tr><td>E3 — allerede tilbageført</td><td>Tilbagefør en post der allerede er tilbageført</td><td><code>AlreadyReversedErr</code> — "Security Ledger Entry … has already been reversed."</td></tr>
+      </tbody></table></div>
+  <div class="note"><strong>FlowField-spotcheck:</strong> Filtrér hver liste på Tilbageført = Ja (hhv. Vp. tilbageført = Ja for finansposter) — kun de oprindelige poster må matche; spejl-rækkerne og urørte poster må ikke vises.</div>
+</div>
+
+<div class="section" id="verifikation">
+  <div class="section-header"><div class="section-icon">✅</div><h2>Verifikation efter alle cases</h2></div>
+  <ul class="bullets">
+    <li>Værdipapir-kortet: <strong>Restantal</strong> = 5 stk, Restværdi (RV) = sidste markedsværdi minus solgt andel, Investeringsfonds-pris hentet fra ISIN.</li>
+    <li>Værdipapirregister: <strong>8</strong> posteringskørsler, hver med SLE- og Depotbeholdningspost-intervaller.</li>
+    <li>Tilbageførsel: vælg salgs-SLE → Tilbagefør post → bekræft, at alle DPLE/DVLE/G/L spejl-rækker oprettes med Tilbageført = Ja, og at FIFO-lot åbnes igen.</li>
+    <li>Portfolio Overview (React add-in) på Depot → drill-down skal vise alle 8 SLE-poster med korrekt P/L-farvelægning (grøn/positiv, rød/negativ, grå/tilbageført).</li>
+  </ul>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2640","bank":"2620","unrealPrice":"1350","fxResult":"1680","realPrice":"1670","dividendIncome":"1450","dividendTax":"1455"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
+  </script>
+</body>
+</html>

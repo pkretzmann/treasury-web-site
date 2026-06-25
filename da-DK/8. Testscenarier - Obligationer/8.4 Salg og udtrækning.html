@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salg og udtrækning · Obligationer</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Testscenarier · Obligationer</div>
+    <h1>Salg og udtrækning</h1>
+    <p>Case 7–8: delsalg med modtaget handelsrente og realiseret kursgevinst, og udtrækning af restbeholdningen til kurs 100 — begge med proportional tilbageførsel af den urealiserede mark.</p>
+    <div class="header-pills"><span class="pill">Case 7–8</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#case7">Case 7 — Delsalg</a></li>
+        <li><a href="#case8">Case 8 — Udtrækning</a></li>
+      </ol>
+    </nav>
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra obligationens <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering), <strong>Værdipapir-resultatbogføringsgruppe</strong> (kurs- og renteresultat) samt opsætningen af handelsrentekontoen. Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Obligationsbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2650" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret kursresultat – obligationer</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1355" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret kursresultat – obligationer</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1675" /></div>
+      <div class="acct-field"><label for="acct-couponIncome">Renteindtægt (realiseret kupon)</label><input class="acct-input" id="acct-couponIncome" data-acct="couponIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-unrealInterest">Urealiseret renteindtægt (periodisering)</label><input class="acct-input" id="acct-unrealInterest" data-acct="unrealInterest" type="text" value="1455" /></div>
+      <div class="acct-field"><label for="acct-interestReceivable">Periodiseret rentetilgodehavende (balance)</label><input class="acct-input" id="acct-interestReceivable" data-acct="interestReceivable" type="text" value="2280" /></div>
+      <div class="acct-field"><label for="acct-tradingInterest">Handelsrente / vedhængende rente</label><input class="acct-input" id="acct-tradingInterest" data-acct="tradingInterest" type="text" value="1460" /></div>
+  </div></div></details></div>
+</div>
+
+<div class="section" id="case7">
+  <div class="section-header"><div class="section-icon">🏦</div><h2>Case 7 — Delsalg <span class="case-badge sale">Salg</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 15-10-2026 &nbsp;|&nbsp; salgskurs 99,10 % &nbsp;|&nbsp; sælger nominel 600.000 af 1.000.000 &nbsp;|&nbsp; handelsrente 107 dage.</p>
+  <p>Bogfør en handelskladdelinje: Bilagstype = Salg, Antal = 600.000, Pris = 99,10, Handelsrente = 3.566,67 DKK. FIFO forbruger det åbne købs-lot fra Case 1.</p>
+  <div class="summary-box">Salgssum (ren) = 594.600,00 DKK &nbsp;|&nbsp; Kostbasis (FIFO ved købskurs) = 592.500,00 DKK<br>
+    <strong>Realiseret kursgevinst = <span class="pos">+2.100,00</span> DKK</strong> &nbsp;|&nbsp; Handelsrente modtaget = 3.566,67 DKK<br>
+    Samlet bankafregning = 598.166,67 DKK &nbsp;|&nbsp; Tilbagefører urealiseret mark (60 %): <span class="neg">−3.900,00</span> DKK</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Salg, Antal = −600.000, Handelsrente = 3.566,67 DKK</td></tr>
+        <tr><td>DVLE</td><td>1 forbrugs-række mod købs-lottet; lot-Restantal reduceres til 400.000</td></tr>
+        <tr><td>DPLE — Realiseret pris</td><td>Beløb (RV) = <span class="pos">+2.100,00</span> DKK (salgsside − kostside)</td></tr>
+        <tr><td>DPLE — tilbageførsel (urealiseret, proportionalt 60 %)</td><td>Pris <span class="neg">−3.900,00</span> DKK</td></tr>
+        <tr><td>Finanspost</td><td>Se opstillingen nedenfor (banken modtager salgssum + handelsrente)</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Salgssum (ren) = solgt nominel × salgskurs ÷ 100 = 600.000 × 99,10 ÷ 100 = 594.600,00 DKK. Kostbasis (FIFO ved købskurs) = 600.000 × 98,75 ÷ 100 = 592.500,00 DKK. Realiseret kursgevinst = 594.600,00 − 592.500,00 = +2.100,00 DKK (konto <span class="acct" data-acct="realPrice">1675</span>). Handelsrente modtaget = 600.000 × 2 % × 107/360 = 3.566,67 DKK (afregnes med banken; ikke kursavance). Tilbageførsel af urealiseret opskrivning: 60 % × 6.500,00 = 3.900,00 DKK.</p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto <span class="muted">(salgssum + handelsrente)</span></td><td class="num">598.166,67</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="tradingInterest">1460</span></td><td>Handelsrente / vedhængende rente <span class="muted">(handelsrente modtaget)</span></td><td class="num"></td><td class="num">3.566,67</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(kostbasis ud (FIFO))</span></td><td class="num"></td><td class="num">592.500,00</td></tr>
+        <tr><td><span class="acct" data-acct="realPrice">1675</span></td><td>Realiseret kursresultat – obligationer <span class="muted">(realiseret kursgevinst)</span></td><td class="num"></td><td class="num">2.100,00</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(tilbagefør urealiseret mark)</span></td><td class="num"></td><td class="num">3.900,00</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1355</span></td><td>Urealiseret kursresultat – obligationer <span class="muted">(nulstil urealiseret kursresultat)</span></td><td class="num">3.900,00</td><td class="num"></td></tr>
+      </tbody></table></div>
+  <div class="note">Finansposterne balancerer: Debet 598.166,67 + 3.900,00 = 602.066,67 = Kredit 3.566,67 + 592.500,00 + 2.100,00 + 3.900,00. Handelsrenten posteres med modsat fortegn af købet (her kredit <span class="acct" data-acct="tradingInterest">1460</span>) via <code>PostTradingInterestToGL</code>.</div>
+</div>
+
+<div class="section" id="case8">
+  <div class="section-header"><div class="section-icon">🎯</div><h2>Case 8 — Udtrækning til kurs 100 <span class="case-badge sale">Udtrækning</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 15-12-2026 &nbsp;|&nbsp; udtrækningskurs 100,00 % &nbsp;|&nbsp; rest-nominel 400.000.</p>
+  <p>Markér feltet <strong>Drawing</strong> på kladdelinjen (synligt når kladdetypen har <em>Show Bond Columns</em>). Feltet validerer, at værdipapiret er en obligation, og sætter automatisk <strong>Pris = 100</strong>. Posteringsmæssigt behandles udtrækning som et salg.</p>
+  <div class="summary-box">Udtræksprovenu = rest-nominel × kurs 100 ÷ 100 = 400.000,00 DKK &nbsp;|&nbsp; Kostbasis = 395.000,00 DKK<br>
+    <strong>Realiseret gevinst = <span class="pos">+5.000,00</span> DKK</strong> &nbsp;|&nbsp; Tilbagefører resterende urealiseret mark (40 %): <span class="neg">−2.600,00</span> DKK<br>
+    <span class="muted">Beholdning herefter = 0.</span></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Salg, Drawing = Ja, Antal = −400.000</td></tr>
+        <tr><td>DVLE</td><td>Resterende lot lukkes (Restantal → 0, Åben = Nej)</td></tr>
+        <tr><td>DPLE — Realiseret pris</td><td>Beløb (RV) = <span class="pos">+5.000,00</span> DKK</td></tr>
+        <tr><td>DPLE — tilbageførsel (urealiseret, rest 40 %)</td><td>Pris <span class="neg">−2.600,00</span> DKK</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Udtræksprovenu = rest-nominel × kurs ÷ 100 = 400.000 × 100 ÷ 100 = 400.000,00 DKK. Kostbasis = 400.000 × 98,75 ÷ 100 = 395.000,00 DKK. Realiseret gevinst = 400.000,00 − 395.000,00 = +5.000,00 DKK. Tilbageførsel af resterende urealiseret opskrivning: 40 % × 6.500,00 = 2.600,00 DKK. Beholdning herefter = 0 (al urealiseret mark nu nulstillet: 3.900,00 + 2.600,00 = 6.500,00).</p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto <span class="muted">(udtræksprovenu (par))</span></td><td class="num">400.000,00</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(kostbasis ud)</span></td><td class="num"></td><td class="num">395.000,00</td></tr>
+        <tr><td><span class="acct" data-acct="realPrice">1675</span></td><td>Realiseret kursresultat – obligationer <span class="muted">(realiseret kursgevinst)</span></td><td class="num"></td><td class="num">5.000,00</td></tr>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(tilbagefør resterende mark)</span></td><td class="num"></td><td class="num">2.600,00</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1355</span></td><td>Urealiseret kursresultat – obligationer <span class="muted">(nulstil urealiseret kursresultat)</span></td><td class="num">2.600,00</td><td class="num"></td></tr>
+      </tbody></table></div>
+  <div class="note"><strong>Udtrækning vs. NAV:</strong> i modsætning til NAV sættes kursen ikke til 100 ved et almindeligt salg — det er <em>Drawing</em>-markeringen der gør det. Drawing kan kun sættes på en obligation; forsøges det på en aktie, afvises linjen.</div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2650","bank":"2620","unrealPrice":"1355","realPrice":"1675","couponIncome":"1450","unrealInterest":"1455","interestReceivable":"2280","tradingInterest":"1460"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
+  </script>
+</body>
+</html>

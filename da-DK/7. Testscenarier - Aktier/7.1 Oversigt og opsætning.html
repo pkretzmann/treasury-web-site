@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oversigt og opsætning · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Testscenarier</div>
+    <h1>Oversigt og opsætning</h1>
+    <p>Rammen om testscenarierne: eksempel-værdipapiret, valutakurserne, finanskontiene (kan tilpasses) og de to metoder bag opdelingen i pris og valuta.</p>
+    <div class="header-pills"><span class="pill">Foundation</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#intro">Om testscenarierne</a></li>
+        <li><a href="#fx">Valutakurser</a></li>
+        <li><a href="#finanskonti">Finanskonti — kan tilpasses</a></li>
+        <li><a href="#posteringsgrupper">Bogføringsgrupper — påkrævede rækker</a></li>
+        <li><a href="#parametre">Parametre (Spor A)</a></li>
+        <li><a href="#metode">Metode — pris vs. valuta</a></li>
+      </ol>
+    </nav>
+<div class="section" id="intro">
+  <div class="section-header"><div class="section-icon">🎯</div><h2>Om testscenarierne</h2></div>
+  <p>Disse sider gennemspiller en komplet handelslivscyklus for ét værdipapir og verificerer posteringerne på <strong>Værdipapirpost</strong> (SLE), <strong>Detaljeret Værdipost</strong> (DVLE), <strong>Detaljeret Resultatpost</strong> (DPLE) og <strong>Finansposter</strong> (G/L).</p>
+  <div class="info-box"><strong>Eksempel-værdipapir:</strong> L'Oreal (Nr. 12032, ISIN FR0000120321, valuta EUR, type Aktie, rapporteringsgruppe UDENL AKT). Regnskabsvaluta: <strong>DKK</strong>.</div>
+  <p>Forløbet dækker køb, kursregulering (kun valuta, kun aktiekurs, begge dele), udbytte, salg samt udvidelserne overførsel, stykstørrelsesregulering og tilbageførsel. Alle beløb er beregnet for <strong>Spor A</strong> (10 stk i behold gennem hele forløbet — intet delsalg undervejs).</p>
+  <div class="card-grid cols-2">
+    <div class="feature-card"><span class="feature-icon">🛒</span><h3>Køb &amp; kursregulering</h3><p>Case 1–6 — opbygning af urealiserede pris- og valutamarks. Se <strong>7.2</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">💰</span><h3>Udbytte &amp; salg</h3><p>Case 7–8 — realiseret afkast og realisering ved salg. Se <strong>7.3</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔀</span><h3>Overførsel &amp; stykstørrelse</h3><p>Case 9–10 — værdipapir → værdipapir og aktiesplit. Se <strong>7.4</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">↩️</span><h3>Korrektion &amp; tilbageførsel</h3><p>Case 11 — tilbageførsel og fejl-vagter. Se <strong>7.5</strong>.</p></div>
+  </div>
+</div>
+
+<div class="section" id="fx">
+  <div class="section-header"><div class="section-icon">💱</div><h2>Valutakurser (DKK pr. EUR)</h2></div>
+  <p>Kurserne nedenfor bruges gennem hele testforløbet.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Dato</th><th>Valuta</th><th class="num">DKK pr. EUR</th><th>Bemærkning</th></tr></thead>
+      <tbody>
+        <tr><td>01-04-2026</td><td>EUR</td><td class="num">7,4726</td><td>Købsdato (Case 1)</td></tr>
+        <tr><td>14-04-2026</td><td>EUR</td><td class="num">7,4711</td><td>Case 2 — kun valuta (ned)</td></tr>
+        <tr><td>28-04-2026</td><td>EUR</td><td class="num">7,4727</td><td>Case 3 (+ Case 3b)</td></tr>
+        <tr><td>10-05-2026</td><td>EUR</td><td class="num">7,4748</td><td>Case 4</td></tr>
+        <tr><td>29-05-2026</td><td>EUR</td><td class="num">7,4738</td><td>Case 5 (FX ned, pris op)</td></tr>
+        <tr><td>04-06-2026</td><td>EUR</td><td class="num">7,4738</td><td>Case 6 — uændret ift. 29-05</td></tr>
+        <tr><td>12-06-2026</td><td>EUR</td><td class="num">7,4735</td><td>Udbyttedato (Case 7)</td></tr>
+        <tr><td>17-06-2026</td><td>EUR</td><td class="num">7,4729</td><td>Salgsdato (Case 8)</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="finanskonti">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti — kan tilpasses</h2></div>
+  <p>Kontonumrene nedenfor stammer fra eksempel-firmaets <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering) og <strong>Værdipapir-resultatbogføringsgruppe</strong> (resultatkonti). Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og de øvrige testscenarie-sider) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details open><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Værdipapirbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2640" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret resultat – pris</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1350" /></div>
+      <div class="acct-field"><label for="acct-fxResult">Resultat – valuta (urealiseret + realiseret residual)</label><input class="acct-input" id="acct-fxResult" data-acct="fxResult" type="text" value="1680" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret resultat – pris</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1670" /></div>
+      <div class="acct-field"><label for="acct-dividendIncome">Udbytteindtægt / afkast</label><input class="acct-input" id="acct-dividendIncome" data-acct="dividendIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-dividendTax">Udbytteskat</label><input class="acct-input" id="acct-dividendTax" data-acct="dividendTax" type="text" value="1455" /></div>
+  </div></div></details></div>
+  <p style="margin-top:18px">Kontiene bruges sådan i scenarierne:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning / kursregulering (aktiv) — køb, alle kursreguleringer, salg (kostbasis + tilbageførsel)</td></tr>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto — køb (kredit), salg (debet), udbytte (netto)</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1350</span></td><td>Urealiseret resultat – pris — kursregulering (pris-komponent), salg (nulstilling)</td></tr>
+        <tr><td><span class="acct" data-acct="fxResult">1680</span></td><td>Resultat – valuta (urealiseret + realiseret residual) — kursregulering (FX-komponent), salg (FX-residual + nulstilling)</td></tr>
+        <tr><td><span class="acct" data-acct="realPrice">1670</span></td><td>Realiseret resultat – pris — salg (realiseret avance)</td></tr>
+        <tr><td><span class="acct" data-acct="dividendIncome">1450</span></td><td>Udbytteindtægt / afkast — udbytte (Case 7), krediteres bruttoafkastet</td></tr>
+        <tr><td><span class="acct" data-acct="dividendTax">1455</span></td><td>Udbytteskat — udbytte (Case 7), debiteres den indeholdte skat</td></tr>
+      </tbody></table></div>
+  <div class="info-box"><strong>Fortegn:</strong> en værdistigning <strong>debiterer</strong> aktivet (<span class="acct" data-acct="holding">2640</span>) og <strong>krediterer</strong> en resultatkonto (gevinst); et fald gør det modsatte. Mark-to-market-modellen tilbagefører hver periode den forrige mark og bogfører den nye kumulative — så finansposten netto bliver periodens bevægelse.</div>
+</div>
+
+<div class="section" id="posteringsgrupper">
+  <div class="section-header"><div class="section-icon">🧾</div><h2>Bogføringsgrupper — påkrævede rækker</h2></div>
+  <p>For at scenarierne kan bogføre, skal <strong>Værdipapirbogføringsgruppen</strong> (her <strong>UDENL AKT</strong>) indeholde de rækker, posteringsmotoren slår op. UDENL AKT bruger <strong>Lagerprincippet</strong> (markedsværdi / mark-to-market). Da både aktieavance og udbytte i dette eksempel er <strong>skattefri</strong>, sættes <strong>Skattemetode avance</strong> = Skattefri <em>og</em> <strong>Skattemetode afkast</strong> = Skattefri, og alle resultatrækker bruger Skattetype = Skattefri.</p>
+
+  <h3>Balance (beholdningskonti)</h3>
+  <p>Felter: <strong>Bilagstype → Finanskontonr.</strong> Mindste nødvendige sæt:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Bilagstype</th><th>Finanskonto (rolle)</th></tr></thead>
+      <tbody>
+        <tr><td>Køb</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
+        <tr><td>Salg</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
+        <tr><td>Kursregulering</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
+        <tr><td>Overførsel <span class="day-tag">kun ved Case 9</span></td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
+      </tbody></table></div>
+  <p class="note"><strong>Bemærk:</strong> rækker for <em>Afkast</em> og <em>Valutakursjustering</em> i Balance bruges ikke af motoren — de gør ingen skade, men er ikke nødvendige.</p>
+
+  <h3>Resultatopgørelse (resultatkonti)</h3>
+  <p>Felter: <strong>Realiseringstype · Bilagstype · Avancetype · Skattetype · Tilbageførsel → Finanskontonr.</strong> Mindste nødvendige sæt (alle med Tilbageførsel = Nej):</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Skattetype</th><th>Finanskonto (rolle)</th></tr></thead>
+      <tbody>
+        <tr><td>Urealiseret</td><td>Kursregulering</td><td>Gevinst</td><td>Skattefri</td><td><span class="acct" data-acct="unrealPrice">1350</span> — urealiseret pris</td></tr>
+        <tr><td>Urealiseret</td><td>Valutakursjustering</td><td>Tab</td><td>Skattefri</td><td><span class="acct" data-acct="fxResult">1680</span> — resultat valuta</td></tr>
+        <tr><td>Realiseret</td><td>Salg</td><td>Gevinst</td><td>Skattefri</td><td><span class="acct" data-acct="realPrice">1670</span> — realiseret pris</td></tr>
+        <tr><td>Realiseret</td><td>Salg</td><td>Tab</td><td>Skattefri</td><td><span class="acct" data-acct="fxResult">1680</span> — resultat valuta (residual)</td></tr>
+        <tr><td>Realiseret</td><td>Afkast</td><td>Udbytte</td><td>Skattefri</td><td><span class="acct" data-acct="dividendIncome">1450</span> — udbytteindtægt</td></tr>
+      </tbody></table></div>
+  <p class="note"><strong>Udbytteskat:</strong> den indeholdte udbytteskat er ikke længere en resultatrække. Sæt i stedet feltet <strong>Konto for udbytteskat</strong> på UDENL AKT (fanebladet Generelt) = <span class="acct" data-acct="dividendTax">1455</span>. Motoren posterer den indeholdte skat direkte på den konto.</p>
+
+  <div class="note"><strong>Vigtigt — “Avancetype” er ikke gevinst/tab her.</strong> Motoren udfylder Avancetype-feltet efter <em>komponent</em>, ikke efter om perioden gav gevinst eller tab: pris-komponenten slår altid op på <strong>Gevinst</strong>, valuta-komponenten på <strong>Tab</strong> og udbytte på <strong>Udbytte</strong>. Brug derfor præcis disse værdier — også når en kursregulering er et tab. (Indeholdt udbytteskat er ikke en avancetype — den posteres på feltet Konto for udbytteskat, se ovenfor.)</div>
+
+  <div class="info-box"><strong>Skattetype:</strong> motoren afleder skattetypen på salgs- og kursreguleringsrækker fra <strong>Skattemetode avance</strong>, og skattetypen på <strong>afkast</strong>-rækken (udbytte) fra <strong>Skattemetode afkast</strong>. Med “begge skattefri” får alle resultatrækkerne ovenfor Skattetype = <strong>Skattefri</strong>. Er Skattemetode afkast i stedet <strong>Skattepligtig</strong>, skal afkast-rækken oprettes med Skattetype = Skattepligtig.</div>
+
+  <div class="note" style="border-left-color:#c0392b"><strong>Kendt begrænsning — Overførsel (Case 9):</strong> mellemregningskontoen “Realiseret Overførsel” slås op med en Avancetype, som feltets liste ikke tilbyder, så <em>Resultatopgørelse-rækken kan ikke oprettes</em> i denne version. Overførsel kan derfor ikke bogføres, før det rettes i koden (samme gælder periodiseret obligationsrente). Beholdnings-rækken (Bilagstype = Overførsel) kan derimod godt oprettes.</div>
+</div>
+
+<div class="section" id="parametre">
+  <div class="section-header"><div class="section-icon">🎚️</div><h2>Parametre (Spor A)</h2></div>
+  <p>Beløbene på de øvrige sider er beregnet ud fra disse standardværdier:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th class="num">Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>Antal købt</td><td class="num">10 stk</td></tr>
+        <tr><td>Købspris</td><td class="num">400,00 EUR/stk</td></tr>
+        <tr><td>Aktiekurs 28-04 / 10-05 / 29-05 / 04-06</td><td class="num">410 / 425 / 430 / 435 EUR/stk</td></tr>
+        <tr><td>Udbytte 12-06</td><td class="num">4,00 EUR/aktie</td></tr>
+        <tr><td>Udbytteskat</td><td class="num">15 %</td></tr>
+        <tr><td>Salgspris 17-06</td><td class="num">445,00 EUR/stk</td></tr>
+        <tr><td>Antal solgt 17-06</td><td class="num">5 stk</td></tr>
+      </tbody></table></div>
+  <div class="note"><strong>Spor B (valgfrit):</strong> et delsalg af 5 stk umiddelbart efter Case 3. Det er beskrevet som en valgfri variant under Case 3b på side 7.2; alle hovedberegninger her følger Spor A.</div>
+</div>
+
+<div class="section" id="metode">
+  <div class="section-header"><div class="section-icon">⚖️</div><h2>Metode — hvordan avancen deles i “pris” og “valuta”</h2></div>
+  <p>Når <strong>både</strong> aktiekursen og valutakursen flytter sig, deles den samlede gevinst i en <strong>pris-del</strong> (<span class="acct" data-acct="unrealPrice">1350</span>/<span class="acct" data-acct="realPrice">1670</span>) og en <strong>valuta-del</strong> (<span class="acct" data-acct="fxResult">1680</span>). Der opstår altid et lille overlap — <strong>krydsleddet</strong> = aktiekursændring × valutakursændring — som kan lægges i enten den ene eller den anden del. Det samlede beløb er det samme; kun fordelingen ændrer sig. Modulet bruger bevidst to metoder.</p>
+  <h3>1) Urealiserede kursreguleringer (Case 2–6) — “FX på kostbasis”</h3>
+  <ul class="bullets">
+    <li>Valuta-delen regnes på den oprindelige <strong>kostpris</strong>: FX = antal × kostpris × (aktuel kurs − købskurs).</li>
+    <li>Pris-delen er resten — <strong>krydsleddet havner i prisen</strong>.</li>
+    <li><strong>Hvorfor:</strong> så en periode med <strong>uændret valutakurs</strong> giver præcis 0 i valuta (se Case 6). Ellers ville en ren prisændring udløse en falsk valuta-post.</li>
+  </ul>
+  <h3>2) Realiseret salg (Case 8) — “residual-plug”</h3>
+  <ul class="bullets">
+    <li>Realiseret pris regnes ved <strong>købskursen</strong> (ren prisgevinst): antal × (salgspris − kostpris) × købskurs.</li>
+    <li>Valuta-delen er <strong>residualet</strong> = faktisk salgssum (salgskurs) − salgsside (købskurs). Her havner krydsleddet i valutaen.</li>
+    <li><strong>Hvorfor:</strong> et salg bogfører finansposter der <strong>skal</strong> balancere til øren. Ved at lade valutaen være differencen er posterne garanteret at gå op.</li>
+  </ul>
+  <h3>Forskellen — konkret på salget i Case 8 (5 stk)</h3>
+  <p>Salgssum 16.627,20 − kostbasis 14.945,20 = <strong>samlet realiseret 1.682,00 DKK</strong> (ens i begge metoder). Kun fordelingen er forskellig:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Metode</th><th class="num">Realiseret pris (<span class="acct" data-acct="realPrice">1670</span>)</th><th class="num">Realiseret valuta (<span class="acct" data-acct="fxResult">1680</span>)</th><th class="num">I alt</th></tr></thead>
+      <tbody>
+        <tr><td>Cost-basis (som de urealiserede)</td><td class="num">1.681,40</td><td class="num">0,60</td><td class="num">1.682,00</td></tr>
+        <tr><td><strong>Residual-plug (det koden gør)</strong></td><td class="num">1.681,34</td><td class="num">0,66</td><td class="num">1.682,00</td></tr>
+        <tr><td>Forskel</td><td class="num">+0,06</td><td class="num">-0,06</td><td class="num">0,00</td></tr>
+      </tbody></table></div>
+  <div class="note">Krydsleddet (~0,06 DKK) flytter blot fra valuta-kontoen til pris-kontoen. <strong>Totalen, balancen og momsen er upåvirket</strong> — det er en ren omklassificering mellem to resultatkonti.</div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2640","bank":"2620","unrealPrice":"1350","fxResult":"1680","realPrice":"1670","dividendIncome":"1450","dividendTax":"1455"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
+  </script>
+</body>
+</html>

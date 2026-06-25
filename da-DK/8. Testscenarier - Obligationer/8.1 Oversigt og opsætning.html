@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oversigt og opsætning · Obligationer</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Testscenarier · Obligationer</div>
+    <h1>Oversigt og opsætning</h1>
+    <p>Rammen om obligations-testscenarierne: eksempel-obligationen, kuponplanen, finanskontiene (kan tilpasses) og de tre ting der adskiller en obligation fra en aktie — ren kurs + handelsrente, kuponrente og kursregulering uden valuta i DKK.</p>
+    <div class="header-pills"><span class="pill">Foundation</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#intro">Om testscenarierne</a></li>
+        <li><a href="#konvention">Kurskonvention for obligationer</a></li>
+        <li><a href="#kuponplan">Kuponplan (terminskode 4T)</a></li>
+        <li><a href="#finanskonti">Finanskonti — kan tilpasses</a></li>
+        <li><a href="#posteringsgrupper">Bogføringsgrupper — påkrævede rækker</a></li>
+        <li><a href="#parametre">Parametre (Spor A)</a></li>
+        <li><a href="#metode">Metode — hvad er anderledes ved en obligation?</a></li>
+        <li><a href="#uhensigt">Kendte uhensigtsmæssigheder (prioriteret)</a></li>
+      </ol>
+    </nav>
+
+<div class="section" id="intro">
+  <div class="section-header"><div class="section-icon">🎯</div><h2>Om testscenarierne</h2></div>
+  <p>Disse sider gennemspiller en komplet handelslivscyklus for én obligation og verificerer posteringerne på <strong>Værdipapirpost</strong> (SLE), <strong>Detaljeret Værdipost</strong> (DVLE), <strong>Detaljeret Resultatpost</strong> (DPLE) og <strong>Finansposter</strong> (G/L). De er bygget i samme stil som aktie-testscenarierne (afsnit 7), men dækker det der er obligationsspecifikt.</p>
+  <div class="info-box"><strong>Eksempel-obligation:</strong> 2 % Nykredit 2NYK01E 2037 (Nr. 979864, ISIN DK0009798647, valuta DKK, type Obligation, bogføringsgruppe DK OBL). Nominel beholdning: <strong>1.000.000</strong>. Regnskabsvaluta: <strong>DKK</strong>.</div>
+  <p>Forløbet dækker køb med handelsrente, renteperiodisering (urealiseret), kuponbetaling (realiseret) med tilbageførsel af periodiseringen, fondskursregulering (mark-to-market — ren pris, da DKK), delsalg og udtrækning til kurs 100. Alle beløb følger <strong>Spor A</strong> (hele nominellen i behold gennem rente- og kursreguleringsdelen; delsalg på 600.000 først i Case 7, og resten udtrækkes i Case 8).</p>
+  <div class="card-grid cols-2">
+    <div class="feature-card"><span class="feature-icon">🛒</span><h3>Køb &amp; renteperiodisering</h3><p>Case 1–2 — køb med vedhængende rente og urealiseret periodisering frem mod kuponen. Se <strong>8.2</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">🎟️</span><h3>Kupon &amp; kursregulering</h3><p>Case 3–5 — realiseret kupon (med tilbageførsel) og mark-to-market op/ned. Se <strong>8.3</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">🏦</span><h3>Salg &amp; udtrækning</h3><p>Case 7–8 — delsalg med handelsrente og udtrækning til kurs 100. Se <strong>8.4</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">↩️</span><h3>Korrektion &amp; tilbageførsel</h3><p>Tilbageførsel af obligationsposter og fejl-vagter. Se <strong>8.5</strong>.</p></div>
+  </div>
+</div>
+
+<div class="section" id="konvention">
+  <div class="section-header"><div class="section-icon">📐</div><h2>Kurskonvention for obligationer i BC</h2></div>
+  <p>Obligationskurser angives traditionelt som en <strong>procent af nominel værdi</strong> (kurs 98,75 = 98,75 % af nominelt). I modsætning til den oprindelige NAV-løsning dividerer Business Central nu <strong>automatisk med 100</strong> for værdipapirer af typen Obligation. Beløbsmotoren <code>CalcAmountBeforeCosts</code> beregner for en obligation:</p>
+  <pre><code>Beløb (før omk.) = Antal &times; Pris / 100
+  (indeksobligation: &times; Indekskurs)</code></pre>
+  <div class="info-box">Konventionen i testplanen er derfor <strong>direkte</strong>: <strong>Antal</strong> = den nominelle værdi (1.000.000), og <strong>Pris</strong> = den rene kurs som procent (98,75). Så bliver Beløb = 1.000.000 × 98,75 ÷ 100 = <strong>987.500 DKK</strong> (ren kursværdi), og kuponen = 1.000.000 × 2 % × 90/360 = 5.000 DKK — begge korrekte uden manuel skalering.</div>
+  <p class="note"><strong>Bemærk:</strong> en del ældre materiale (fx <code>testplannykredit.html</code> og dok. 7.2/7.3) beskriver en workaround fra før /100-divisionen blev lagt i koden, hvor man satte Pris = kurs ÷ 100. Den workaround er <strong>ikke længere nødvendig</strong> — brug den rene kurs (98,75) direkte. Se <a href="#uhensigt">uhensigtsmæssigheder</a> for de dokumenter der bør opdateres.</p>
+</div>
+
+<div class="section" id="kuponplan">
+  <div class="section-header"><div class="section-icon">🗓️</div><h2>Kuponplan (terminskode 4T)</h2></div>
+  <p>Obligationen følger betalingskoden <strong>4T</strong> (kvartårlig), hvor <strong>Number of Days in Year = 360</strong>. Terminsdatoerne (Payment Days) og terminsopsætningen (Payment Days Setup) afgør antal rentedage og realiseringstype pr. dato. Periodiseringsdatoen 31-05 er en frivilligt oprettet terminsdato med realiseringstype Urealiseret, så renten kan periodiseres frem mod kuponen 30-06.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Terminsdato</th><th>Rolle</th><th>Realiseringstype</th><th class="num">Rentedage</th><th>Bruges i</th></tr></thead>
+      <tbody>
+        <tr><td>31-03-2026</td><td>Kvartalskupon (uden for scope)</td><td>Realiseret</td><td class="num">90</td><td>—</td></tr>
+        <tr><td>31-05-2026</td><td>Periodiseringsdato (frivillig)</td><td>Urealiseret</td><td class="num">60</td><td>Case 2</td></tr>
+        <tr><td>30-06-2026</td><td>Kvartalskupon</td><td>Realiseret</td><td class="num">90</td><td>Case 3</td></tr>
+        <tr><td>30-09-2026</td><td>Kvartalskupon (uden for scope)</td><td>Realiseret</td><td class="num">90</td><td>—</td></tr>
+        <tr><td>31-12-2026</td><td>Kvartalskupon (uden for scope)</td><td>Realiseret</td><td class="num">90</td><td>—</td></tr>
+      </tbody></table></div>
+  <p class="muted">Renteberegningen kører via <code>report 79930 "Calculate Bond Interest"</code> (interval af terminsdatoer) eller <code>report 79927 "Interest Accrual Batch"</code> (én konkret terminsdato). Begge kalder <code>codeunit 79926 "Bond Interest Calc."</code> med formlen <code>Rente = Nom. rente % &times; Antal &times; Rentedage / Dage i år</code>.</p>
+</div>
+
+<div class="section" id="finanskonti">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti — kan tilpasses</h2></div>
+  <p>Kontonumrene nedenfor stammer fra obligationens <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering), <strong>Værdipapir-resultatbogføringsgruppe</strong> (kurs- og renteresultat) samt opsætningen af <strong>handelsrentekontoen</strong>. Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og de øvrige testscenarie-sider) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details open><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Obligationsbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2650" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret kursresultat – obligationer</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1355" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret kursresultat – obligationer</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1675" /></div>
+      <div class="acct-field"><label for="acct-couponIncome">Renteindtægt (realiseret kupon)</label><input class="acct-input" id="acct-couponIncome" data-acct="couponIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-unrealInterest">Urealiseret renteindtægt (periodisering)</label><input class="acct-input" id="acct-unrealInterest" data-acct="unrealInterest" type="text" value="1455" /></div>
+      <div class="acct-field"><label for="acct-interestReceivable">Periodiseret rentetilgodehavende (balance)</label><input class="acct-input" id="acct-interestReceivable" data-acct="interestReceivable" type="text" value="2280" /></div>
+      <div class="acct-field"><label for="acct-tradingInterest">Handelsrente / vedhængende rente</label><input class="acct-input" id="acct-tradingInterest" data-acct="tradingInterest" type="text" value="1460" /></div>
+  </div></div></details></div>
+  <p style="margin-top:18px">Kontiene bruges sådan i scenarierne:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle / brug</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering (aktiv) — køb, alle kursreguleringer, salg/udtrækning (kostbasis + tilbageførsel)</td></tr>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto — køb (kredit), kupon (debet), salg/udtrækning (debet)</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1355</span></td><td>Urealiseret kursresultat – obligationer — fondskursregulering (Case 4–5), nulstilling ved salg/udtrækning</td></tr>
+        <tr><td><span class="acct" data-acct="realPrice">1675</span></td><td>Realiseret kursresultat – obligationer — salg (Case 7), udtrækning (Case 8)</td></tr>
+        <tr><td><span class="acct" data-acct="couponIncome">1450</span></td><td>Renteindtægt (realiseret kupon) — kuponbetaling (Case 3)</td></tr>
+        <tr><td><span class="acct" data-acct="unrealInterest">1455</span></td><td>Urealiseret renteindtægt (periodisering) — renteperiodisering (Case 2), tilbageføres i Case 3</td></tr>
+        <tr><td><span class="acct" data-acct="interestReceivable">2280</span></td><td>Periodiseret rentetilgodehavende (balance) — modpost til urealiseret rente (Case 2), tilbageføres i Case 3</td></tr>
+        <tr><td><span class="acct" data-acct="tradingInterest">1460</span></td><td>Handelsrente / vedhængende rente — køb (debet), salg (kredit)</td></tr>
+      </tbody></table></div>
+  <div class="info-box"><strong>Fortegn:</strong> en værdistigning <strong>debiterer</strong> aktivet (<span class="acct" data-acct="holding">2650</span>) og <strong>krediterer</strong> en resultatkonto (gevinst); et fald gør det modsatte. Mark-to-market-modellen tilbagefører hver periode den forrige mark og bogfører den nye kumulative — så finansposten netto bliver periodens bevægelse.</div>
+</div>
+
+<div class="section" id="posteringsgrupper">
+  <div class="section-header"><div class="section-icon">🧾</div><h2>Bogføringsgrupper — påkrævede rækker</h2></div>
+  <p>For at scenarierne kan bogføre, skal <strong>Værdipapirbogføringsgruppen</strong> (her <strong>DK OBL</strong>) indeholde de rækker, posteringsmotoren slår op. DK OBL bruger <strong>Lagerprincippet</strong> (markedsværdi / mark-to-market). Da obligationen er i DKK, er der ingen valutakomponent — alle kursreguleringer er ren pris.</p>
+
+  <h3>Balance (beholdningskonti)</h3>
+  <p>Felter: <strong>Bilagstype → Finanskontonr.</strong> Mindste nødvendige sæt:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Bilagstype</th><th>Finanskonto (rolle)</th></tr></thead>
+      <tbody>
+        <tr><td>Køb</td><td><span class="acct" data-acct="holding">2650</span> — beholdning</td></tr>
+        <tr><td>Salg</td><td><span class="acct" data-acct="holding">2650</span> — beholdning</td></tr>
+        <tr><td>Kursregulering</td><td><span class="acct" data-acct="holding">2650</span> — beholdning</td></tr>
+      </tbody></table></div>
+
+  <h3>Handelsrentekonto</h3>
+  <p>På bogføringsgruppen sættes feltet <strong>Handelsrentekonto</strong> (<code>"Trading Interest Account"</code>) = <span class="acct" data-acct="tradingInterest">1460</span>. Når feltet er udfyldt, bogfører <code>PostTradingInterestToGL</code> handelsrenten separat (køb: debet 1460 / kredit bank; salg: kredit 1460 / debet bank). Er feltet <strong>blankt</strong>, registreres handelsrenten kun på Værdipapirposten, og banken posteres kun med den rene kursværdi — uændret adfærd.</p>
+
+  <h3>Resultatopgørelse (resultatkonti)</h3>
+  <p>Felter: <strong>Realiseringstype · Bilagstype · Avancetype · Skattetype · Tilbageførsel → Finanskontonr.</strong> Mindste nødvendige sæt:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Finanskonto (rolle)</th></tr></thead>
+      <tbody>
+        <tr><td>Urealiseret</td><td>Kursregulering</td><td>Gevinst</td><td><span class="acct" data-acct="unrealPrice">1355</span> — urealiseret kurs</td></tr>
+        <tr><td>Realiseret</td><td>Salg</td><td>Gevinst</td><td><span class="acct" data-acct="realPrice">1675</span> — realiseret kurs</td></tr>
+        <tr><td>Realiseret</td><td>Afkast</td><td>Rente</td><td><span class="acct" data-acct="couponIncome">1450</span> — renteindtægt (kupon)</td></tr>
+        <tr><td>Urealiseret</td><td>Afkast</td><td>Rente</td><td><span class="acct" data-acct="unrealInterest">1455</span> — urealiseret renteindtægt</td></tr>
+      </tbody></table></div>
+  <div class="note"><strong>Vigtigt — “Avancetype” er ikke gevinst/tab her.</strong> Motoren udfylder Avancetype-feltet efter <em>komponent</em>: pris-komponenten slår altid op på <strong>Gevinst</strong>, og renteafkast på <strong>Rente</strong> — også når en kursregulering er et tab. Brug derfor præcis disse værdier.</div>
+  <div class="info-box"><strong>Skattetype:</strong> skattetypen på <strong>Afkast</strong>-rækkerne (kupon) afledes af bogføringsgruppens <strong>Skattemetode afkast</strong>, mens salgs- og kursreguleringsrækker afledes af <strong>Skattemetode avance</strong>. Opret derfor Afkast-rækkerne med den skattetype, der svarer til Skattemetode afkast (her Skattefri).</div>
+  <div class="info-box"><strong>DKK = ingen valuta-række.</strong> Fordi obligationen er i regnskabsvaluta, oprettes der aldrig en valuta-DPLE, og du behøver ikke en resultatrække for Valutakursjustering. For en obligation i fremmed valuta gælder pris/valuta-splittet præcis som i aktie-testscenarierne (se 7.1).</div>
+</div>
+
+<div class="section" id="parametre">
+  <div class="section-header"><div class="section-icon">🎚️</div><h2>Parametre (Spor A)</h2></div>
+  <p>Beløbene på de øvrige sider er beregnet ud fra disse standardværdier:</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th class="num">Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>Nominel (Antal)</td><td class="num">1.000.000</td></tr>
+        <tr><td>Nominel rente</td><td class="num">2 % p.a.</td></tr>
+        <tr><td>Dage i renteår (4T)</td><td class="num">360</td></tr>
+        <tr><td>Købskurs 15-05 / handelsrente-dage</td><td class="num">98,75 % / 45 dage</td></tr>
+        <tr><td>Periodisering 31-05 / kupon 30-06</td><td class="num">60 / 90 rentedage</td></tr>
+        <tr><td>Kurs 31-07 / 31-08 (regulering)</td><td class="num">98,20 % / 99,40 %</td></tr>
+        <tr><td>Delsalg 15-10: kurs / nominel / rente-dage</td><td class="num">99,10 % / 600.000 / 107</td></tr>
+        <tr><td>Udtrækning 15-12: kurs / rest-nominel</td><td class="num">100,00 % / 400.000</td></tr>
+      </tbody></table></div>
+</div>
+
+<div class="section" id="metode">
+  <div class="section-header"><div class="section-icon">⚖️</div><h2>Metode — hvad er anderledes ved en obligation?</h2></div>
+  <p>En obligation adskiller sig fra en aktie på tre punkter, som disse testscenarier dækker:</p>
+  <h3>1) Ren kurs + handelsrente (vedhængende rente)</h3>
+  <ul class="bullets">
+    <li>Ved handel betales/modtages dels den <strong>rene kursværdi</strong> (nominel × ren kurs ÷ 100), dels den <strong>vedhængende rente</strong> (handelsrente) der er løbet op siden sidste kupon.</li>
+    <li>Kun den rene kursværdi indgår i <strong>kostbasis</strong> (Beløb før renter, <em>Amount B.I.</em>) og i avanceopgørelsen. Handelsrenten bogføres på en egen konto (<span class="acct" data-acct="tradingInterest">1460</span>) og indgår i bankafregningen — den er <strong>ikke</strong> kursavance.</li>
+  </ul>
+  <h3>2) Kuponrente — urealiseret periodisering og realiseret betaling</h3>
+  <ul class="bullets">
+    <li>Renten kan <strong>periodiseres urealiseret</strong> frem mod terminen (Case 2): indtægten føres på <span class="acct" data-acct="unrealInterest">1455</span> mod balancekontoen <span class="acct" data-acct="interestReceivable">2280</span>.</li>
+    <li>Ved kuponforfald <strong>realiseres</strong> renten (Case 3): banken modtager kuponen og renteindtægten føres på <span class="acct" data-acct="couponIncome">1450</span>. Samtidig <strong>tilbageføres</strong> den udestående urealiserede periodisering, så indtægten ikke dobbelttælles.</li>
+  </ul>
+  <h3>3) Kun pris-komponent i kursreguleringen (DKK)</h3>
+  <ul class="bullets">
+    <li>Da obligationen er i <strong>DKK</strong>, er der ingen valutakomponent i fondskursreguleringen — hele reguleringen er ren <strong>pris</strong> (<span class="acct" data-acct="unrealPrice">1355</span> / <span class="acct" data-acct="realPrice">1675</span>). FX-splittet fra aktie-testscenarierne er derfor ikke relevant her.</li>
+  </ul>
+</div>
+
+<div class="section" id="uhensigt">
+  <div class="section-header"><div class="section-icon">🛠️</div><h2>Kendte uhensigtsmæssigheder (prioriteret)</h2></div>
+  <p>Følgende punkter er fundet ved at sammenholde Columbus-spec'en, dokumentationen (afsnit 7 og 9) og den faktiske AL-kode. Den centrale obligationslogik (køb med /100, handelsrente til finans, renteberegning, drawing til kurs 100, mark-to-market) er <strong>implementeret og bekræftet i koden</strong>. Status: <strong>punkt 1 er løst</strong> (resultatkonto-opslaget); <strong>punkt 2–3 er endnu ikke implementeret</strong>; <strong>punkt 4 er allerede implementeret</strong> (kun doc mangler rettelse); 5–7 er udskudt eller dokumentationsgæld.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>Prioritet</th><th>Uhensigtsmæssighed</th><th>Konsekvens &amp; anbefaling</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>1</td><td><span class="tag done">Løst</span></td>
+          <td><strong>Resultatkontoen blev slået op på den forkerte dimension.</strong> Posteringsmotoren (<code>GetProfitGLAccount</code>) sendte en <code>Transaction Type</code>-værdi ind i nøglefeltet <em>Avancetype</em> (Profit Type) i stedet for en ægte avancetype. Det virkede kun for gevinster (ordinal-sammenfald) og kunne hverken ramme Tab-kontoen eller oprette mellemregningerne til Overførsel og periodiseret rente.</td>
+          <td><strong>Løst i koden:</strong> resultatkontoen slås nu op på <strong>Bilagstype (Document Type) + Avancetype (Profit Type)</strong>, hvor Avancetype udledes af beløbet: gevinst→Gevinst, tab→Tab, udbytte→Udbytte, rente→Rente, mellemregning/offset→Blank. Overførsel = (Realiseret, Overførsel, Blank); renteperiodiseringens modpost = (Urealiseret, Afkast, Blank). <strong>Tabellen er uændret.</strong> <span class="muted">GL-routingen bør verificeres mod et opsat firma, og opsætningen kræver nye rækker (Tab-konti, Valutakursjustering gevinst/tab, Afkast Blank, Overførsel Blank). Udbytteskat (kun aktier) bogføres nu på det dedikerede felt <strong>Konto for udbytteskat</strong> på bogføringsgruppen — ikke længere via en legacy Rente-mapping.</span></td>
+        </tr>
+        <tr>
+          <td>2</td><td><span class="tag pending">Mellem</span></td>
+          <td><strong>Tilbageførselsmetode = “Straks” findes ikke som rapportparameter.</strong> Columbus' koncept (dan automatisk en tilbageførselslinje dagen efter terminsdatoen og tilbagefør tidligere ikke-tilbageførte urealiserede renter) er ikke 1:1 på <code>Calculate Bond Interest</code> / <code>Interest Accrual Batch</code>.</td>
+          <td>Urealiserede periodiseringer skal tilbageføres manuelt (eller realiseres) — i testscenarierne sker det automatisk ved kuponen via salgs-/yield-bogføringen. Anbefaling: tilføj <em>Tilbageførselsmetode</em> + tilbageførselsdatoer som anfordringsfelter.</td>
+        </tr>
+        <tr>
+          <td>3</td><td><span class="tag pending">Mellem</span></td>
+          <td><strong>Kun fuld (ikke proportional) tilbageførsel af urealiseret rente.</strong> Når en realiseret kupon bogføres, tilbageføres hele den udestående urealiserede periodisering — afkast har ingen mængde at fordele efter, så en værdibaseret andel (modtaget brutto / periodiseret brutto) er ikke implementeret.</td>
+          <td>For standardforløbet (én periodisering → én kupon) er resultatet korrekt. Ved flere delvise periodiseringer kan nettoresultatet blive forkert. Anbefaling: implementér værdibaseret proportional tilbageførsel, hvis delperiodiseringer skal understøttes.</td>
+        </tr>
+        <tr>
+          <td>4</td><td><span class="tag done">Allerede implementeret</span></td>
+          <td><strong>Indeksobligationer reguleres — påstanden var forældet.</strong> <code>Adjust Security Prices</code> (report 79945) router <em>Index Bond = Ja</em> til <code>ProcessIndexedBond</code>, som revaluerer som <code>Antal × Pris × Indeks / 100</code> (seneste indekskurs ≤ handelsdato).</td>
+          <td>Eneste reelle rest: <code>Index Price</code> er én global serie pr. dato — flere samtidige indeksserier ville kræve en <em>Index Code</em>-dimension (bevidst udskudt). <span class="muted">Bemærk: dok. 9.2.2 påstår stadig fejlagtigt, at det ikke er implementeret.</span></td>
+        </tr>
+        <tr>
+          <td>5</td><td><span class="tag info">Lav</span></td>
+          <td><strong>Bogføringsdato kan ikke adskilles fra handelsdato.</strong> Posting Date sættes automatisk = Trading Date og er skjult på siden.</td>
+          <td>Bevidst forenkling; kræver forretningsbeslutning. Lavt prioriteret.</td>
+        </tr>
+        <tr>
+          <td>6</td><td><span class="tag info">Lav</span></td>
+          <td><strong>Manglende TableRelation/ToolTip på batch-feltet</strong> i <code>report 79927</code> og <code>report 79930</code> (udkommenteret TODO).</td>
+          <td>Ingen opslag/validering på batchnavnet i anfordringsvinduet — ren UX. Anbefaling: aktivér <code>TableRelation = "Security Journal Batch"</code> og tilføj ToolTip.</td>
+        </tr>
+        <tr>
+          <td>7</td><td><span class="tag info">Lav</span></td>
+          <td><strong>Dokumentationsgæld.</strong> <code>testplannykredit.html</code> og dele af dok. 7.2/7.3 beskriver NAV-workarounden (Pris = kurs ÷ 100, Drawing på <em>Show Stock Columns</em>), som koden har overhalet: /100 sker nu automatisk, og Drawing/Index Price/Handelsrente er synlige på <em>Show Bond Columns</em>.</td>
+          <td>Ikke en kodefejl, men kilde til forvirring. Anbefaling: opdatér de gamle dokumenter, så de matcher den nuværende kurskonvention og kolonnesynlighed.</td>
+        </tr>
+      </tbody></table></div>
+  <div class="info-box"><strong>Bekræftet implementeret (ingen handling):</strong> /100-division for obligationer (<code>CalcAmountBeforeCosts</code>), handelsrente til finans (<code>PostTradingInterestToGL</code>, ekskl. kostbasis via <em>Amount B.I.</em>), renteberegning (<code>codeunit 79926</code>, formel Antal × rente × dage/360), Drawing → kurs 100 + Bond-validering (felt 44), samt synlighed af Drawing / Index Price / Handelsrente på <em>Show Bond Columns</em>.</div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2650","bank":"2620","unrealPrice":"1355","realPrice":"1675","couponIncome":"1450","unrealInterest":"1455","interestReceivable":"2280","tradingInterest":"1460"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kupon og kursregulering · Obligationer</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .case-badge.transfer { background: var(--gray-700); }
+  .case-badge.reversal { background: #C0392B; }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+  .err-box code { background: #fff; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Testscenarier · Obligationer</div>
+    <h1>Kupon og kursregulering</h1>
+    <p>Case 3–5: realiseret kuponbetaling med automatisk tilbageførsel af periodiseringen, og to fondskursreguleringer (ned og op) — ren pris, da obligationen er i DKK.</p>
+    <div class="header-pills"><span class="pill">Case 3–5</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#case3">Case 3 — Kupon + tilbageførsel</a></li>
+        <li><a href="#case4">Case 4 — Kursregulering ned</a></li>
+        <li><a href="#case5">Case 5 — Kursregulering op</a></li>
+      </ol>
+    </nav>
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra obligationens <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering), <strong>Værdipapir-resultatbogføringsgruppe</strong> (kurs- og renteresultat) samt opsætningen af handelsrentekontoen. Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Obligationsbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2650" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret kursresultat – obligationer</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1355" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret kursresultat – obligationer</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1675" /></div>
+      <div class="acct-field"><label for="acct-couponIncome">Renteindtægt (realiseret kupon)</label><input class="acct-input" id="acct-couponIncome" data-acct="couponIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-unrealInterest">Urealiseret renteindtægt (periodisering)</label><input class="acct-input" id="acct-unrealInterest" data-acct="unrealInterest" type="text" value="1455" /></div>
+      <div class="acct-field"><label for="acct-interestReceivable">Periodiseret rentetilgodehavende (balance)</label><input class="acct-input" id="acct-interestReceivable" data-acct="interestReceivable" type="text" value="2280" /></div>
+      <div class="acct-field"><label for="acct-tradingInterest">Handelsrente / vedhængende rente</label><input class="acct-input" id="acct-tradingInterest" data-acct="tradingInterest" type="text" value="1460" /></div>
+  </div></div></details></div>
+</div>
+
+<div class="section" id="case3">
+  <div class="section-header"><div class="section-icon">🎟️</div><h2>Case 3 — Kuponbetaling + tilbageførsel <span class="case-badge yield">Afkast · Realiseret</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 30-06-2026 &nbsp;|&nbsp; kvartalskupon &nbsp;|&nbsp; 90 rentedage.</p>
+  <p>Kør <strong>Calculate Bond Interest</strong> (<code>report 79930</code>) for terminsdato 30-06 (Realiseringstype = Realiseret) og bogfør afkastlinjen.</p>
+  <div class="summary-box">Realiseret kupon = nominel × rente % × rentedage ÷ renteår = 1.000.000 × 2 % × 90/360 = <strong>5.000,00 DKK</strong><br>
+    Tilbagefører udestående urealiseret periodisering fra Case 2 = 3.333,33 DKK<br>
+    <span class="muted">Netto resultatpåvirkning = realiseret kupon (den urealiserede nulstilles).</span></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Afkast, Antal = 0, Realiseringstype = Realiseret, Afkast før skat = 5.000,00 DKK</td></tr>
+        <tr><td>DPLE — Afkast (realiseret)</td><td>1 række: Realiseringstype = Realiseret, Resultattype = Afkast, Beløb (RV) = 5.000,00 DKK</td></tr>
+        <tr><td>DPLE — tilbageførsel (urealiseret)</td><td>Tilbagefører Case 2-rækken: Beløb (RV) = −3.333,33 DKK, Tilbageført = Ja</td></tr>
+        <tr><td>Finanspost — realisering</td><td>Debet <span class="acct" data-acct="bank">2620</span> (bank) 5.000,00; Kredit <span class="acct" data-acct="couponIncome">1450</span> (renteindtægt) 5.000,00</td></tr>
+        <tr><td>Finanspost — tilbageførsel</td><td>Debet <span class="acct" data-acct="unrealInterest">1455</span> (urealiseret renteindtægt) 3.333,33; Kredit <span class="acct" data-acct="interestReceivable">2280</span> (rentetilgodehavende) 3.333,33</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Realiseret kupon = 1.000.000 × 2 % × 90/360 = 5.000,00 DKK (banken modtager kuponen, renteindtægt <span class="acct" data-acct="couponIncome">1450</span> krediteres). Samtidig tilbageføres den udestående urealiserede periodisering fra Case 2 (3.333,33 DKK): <span class="acct" data-acct="interestReceivable">2280</span> krediteres og <span class="acct" data-acct="unrealInterest">1455</span> debiteres — så indtægten ikke dobbelttælles. Netto resultatpåvirkning = 5.000,00 DKK.</p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="bank">2620</span></td><td>Bank / modkonto <span class="muted">(kupon modtaget)</span></td><td class="num">5.000,00</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="couponIncome">1450</span></td><td>Renteindtægt (realiseret kupon) <span class="muted">(realiseret renteindtægt)</span></td><td class="num"></td><td class="num">5.000,00</td></tr>
+        <tr><td><span class="acct" data-acct="unrealInterest">1455</span></td><td>Urealiseret renteindtægt (periodisering) <span class="muted">(tilbagefør urealiseret rente)</span></td><td class="num">3.333,33</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="interestReceivable">2280</span></td><td>Periodiseret rentetilgodehavende (balance) <span class="muted">(tilbagefør rentetilgodehavende)</span></td><td class="num"></td><td class="num">3.333,33</td></tr>
+      </tbody></table></div>
+  <div class="note">Tilbageførslen af periodiseringen er pt. <strong>fuld</strong> (hele den udestående urealiserede rente) — ikke proportional. For standardforløbet med én periodisering pr. kupon er det korrekt; se <a href="8.1 Oversigt og opsætning.html#uhensigt">uhensigtsmæssighed #3</a> ved flere delperiodiseringer.</div>
+</div>
+
+<div class="section" id="case4">
+  <div class="section-header"><div class="section-icon">📉</div><h2>Case 4 — Fondskursregulering: kurs ned <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 31-07-2026 &nbsp;|&nbsp; ren kurs 98,20 % (ned fra 98,75) &nbsp;|&nbsp; valuta DKK (ingen FX) &nbsp;|&nbsp; Antal i behold 1.000.000.</p>
+  <p>Kør <strong>Adjust Security Prices</strong> og bogfør reguleringslinjen. Markedsværdi-princippet skal være aktivt på bogføringsgruppen.</p>
+  <div class="summary-box">Ny markedsværdi = 982.000,00 DKK &nbsp;|&nbsp; Bogført værdi før = 987.500,00 DKK<br>
+    <strong>Samlet urealiseret regulering (kumulativ) = <span class="neg">−5.500,00</span> DKK</strong> &nbsp;|&nbsp; Netto for perioden = <span class="neg">−5.500,00</span> DKK<br>
+    Split: Pris-komponent = <span class="neg">−5.500,00</span> DKK &nbsp;|&nbsp; FX-komponent = <span class="zero">0,00</span> DKK (DKK)</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Kursregulering, Antal = 0</td></tr>
+        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="neg">−5.500,00</span> DKK</td></tr>
+        <tr><td>DPLE — Valuta</td><td><span class="zero">Ingen post</span> — DKK, ingen valutaeffekt</td></tr>
+        <tr><td>Finanspost</td><td>Kredit <span class="acct" data-acct="holding">2650</span> (beholdning/regulering) 5.500,00; Debet <span class="acct" data-acct="unrealPrice">1355</span> (urealiseret kursresultat) 5.500,00 (urealiseret tab)</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Ny markedsværdi = nominel × ny kurs ÷ 100 = 1.000.000 × 98,20 ÷ 100 = 982.000,00 DKK. Kumulativ regulering fra kostbasis = 982.000,00 − 987.500,00 = −5.500,00 DKK (rent kurs; ingen valuta, da DKK). Udestående urealiseret før = 0,00 → netto for perioden = −5.500,00 DKK.</p>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num"></td><td class="num">5.500,00</td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1355</span></td><td>Urealiseret kursresultat – obligationer <span class="muted">(urealiseret tab)</span></td><td class="num">5.500,00</td><td class="num"></td></tr>
+      </tbody></table></div>
+  <div class="note">Tester ren pris-regulering: da obligationen er i DKK, er FX-komponenten altid 0 — der oprettes ingen valuta-DPLE og ingen valuta-finanspost.</div>
+</div>
+
+<div class="section" id="case5">
+  <div class="section-header"><div class="section-icon">📈</div><h2>Case 5 — Fondskursregulering: kurs op <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p><strong>Bogføringsdato</strong> 31-08-2026 &nbsp;|&nbsp; ren kurs 99,40 % (op fra 98,20) &nbsp;|&nbsp; Antal i behold 1.000.000.</p>
+  <div class="summary-box">Ny markedsværdi = 994.000,00 DKK &nbsp;|&nbsp; Bogført værdi før = 982.000,00 DKK<br>
+    <strong>Samlet urealiseret regulering (kumulativ) = <span class="pos">+6.500,00</span> DKK</strong> &nbsp;|&nbsp; Netto for perioden = <span class="pos">+12.000,00</span> DKK</div>
+  <div class="note">Reverse-and-repost: den nye kumulative opskrivning bogføres, og Case 4's nedskrivning tilbageføres — finansposten bliver periodens nettobevægelse (+6.500 − (−5.500) = +12.000).</div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>SLE</td><td>1 ny Kursregulering-post, Antal = 0</td></tr>
+        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="pos">+12.000,00</span> DKK (netto)</td></tr>
+        <tr><td>DPLE — Valuta</td><td><span class="zero">Ingen post</span> — DKK</td></tr>
+        <tr><td>Finanspost</td><td>Debet <span class="acct" data-acct="holding">2650</span> 12.000,00; Kredit <span class="acct" data-acct="unrealPrice">1355</span> 12.000,00</td></tr>
+      </tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted">Ny markedsværdi = 1.000.000 × 99,40 ÷ 100 = 994.000,00 DKK. Kumulativ regulering fra kostbasis = 994.000,00 − 987.500,00 = +6.500,00 DKK. Netto for perioden = +6.500,00 − (−5.500,00) = +12.000,00 DKK. Den udestående urealiserede mark efter Case 5 er +6.500,00 DKK (på hele nominellen) — den tilbageføres proportionalt ved salg og udtrækning på side 8.4.</p>
+  <h3>Bogføring — finansposter (netto for perioden)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2650</span></td><td>Obligationsbeholdning / kursregulering <span class="muted">(beholdning reguleres)</span></td><td class="num">12.000,00</td><td class="num"></td></tr>
+        <tr><td><span class="acct" data-acct="unrealPrice">1355</span></td><td>Urealiseret kursresultat – obligationer <span class="muted">(urealiseret gevinst)</span></td><td class="num"></td><td class="num">12.000,00</td></tr>
+      </tbody></table></div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  
+  </script>
+  <script>
+  (function () {
+    var DEF = {"holding":"2650","bank":"2620","unrealPrice":"1355","realPrice":"1675","couponIncome":"1450","unrealInterest":"1455","interestReceivable":"2280","tradingInterest":"1460"};
+    var KEY = 'testscenarier.accounts';
+    function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function fill(a) { document.querySelectorAll('.acct').forEach(function (el) { var k = el.getAttribute('data-acct'); if (a[k] != null && a[k] !== '') el.textContent = a[k]; }); }
+    var acc = load();
+    fill(acc);
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; save(acc); fill(acc); });
+    });
+  })();
+  </script>
+</body>
+</html>
