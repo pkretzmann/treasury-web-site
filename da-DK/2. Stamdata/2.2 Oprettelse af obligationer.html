@@ -32,7 +32,7 @@
     <div class="section-icon">📋</div>
     <h2>Fanebladet Generelt</h2>
   </div>
-  <p>Når du opretter en ny obligation, starter du på fanebladet <strong>Generelt</strong>. Her angiver du obligationens grundoplysninger og lader systemet automatisk generere obligationens navn baseret på de værdier, du udfylder.</p>
+  <p>Når du opretter en ny obligation, starter du på fanebladet <strong>Generelt</strong>. Her angiver du obligationens grundoplysninger — og lader systemet hente eller danne navnet for dig.</p>
 
   <div class="table-wrap">
     <table>
@@ -45,54 +45,69 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>No.</strong></td>
-          <td><span class="udf udf-v">V/T</span></td>
-          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret. Er feltet tomt, angives nummeret manuelt.</td>
+          <td><strong>Nummer</strong></td>
+          <td>V/T</td>
+          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret. Er nummerserien tom, angives nummeret manuelt.</td>
+        </tr>
+        <tr>
+          <td><strong>Nummerserie</strong></td>
+          <td>P</td>
+          <td>Udfyldes automatisk fra Opsætning af Treasury ved oprettelse. Feltet vises ikke på kortet — du skifter nummerserie via assisteret redigering (opslagspilen) på <strong>Nummer</strong>.</td>
         </tr>
         <tr>
           <td><strong>Værdipapirtype</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Vælg <strong>Obligation</strong>. Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
+          <td>T</td>
+          <td>Vælg <strong>Obligation</strong>. Kan ikke ændres, når der eksisterer bogførte poster.</td>
         </tr>
         <tr>
           <td><strong>ISIN-kode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv eller vælg ISIN-koden. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes.</td>
+          <td>V</td>
+          <td>Angiv eller vælg ISIN-koden. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes. Kender systemet allerede koden og har den kurshistorik, hentes navn, udsteder og nominel rentesats fra den seneste værdipapirkurs.</td>
         </tr>
         <tr>
           <td><strong>Udstederkode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Vælg den relevante udsteder. Feltet er fremhævet som obligatorisk, når Værdipapirtype = Obligation. Benyttes i automatisk navnformatering. Se afsnittet om automatisk generering af navn nedenfor.</td>
+          <td>T</td>
+          <td>Vælg den relevante udsteder. Feltet er fremhævet som obligatorisk, når Værdipapirtype = Obligation, og markeringen betyder noget: en obligation uden udsteder kan gemmes, men <strong>ikke bogføres</strong> — bogføringen afviser handlen, og kortet viser en advarsel, så længe feltet er tomt. Udfyldes automatisk fra værdipapirkursens udsteder, når ISIN-koden valideres. Benyttes i automatisk navnformatering.</td>
         </tr>
         <tr>
           <td><strong>Navn</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv obligationens navn eller lad systemet generere det automatisk. Se afsnittet om automatisk generering af navn nedenfor.</td>
+          <td>V/P</td>
+          <td>Udfyldes automatisk fra værdipapirkursen, når den valgte ISIN-kode allerede har kurshistorik. Ellers skriver du selv navnet — eller lader systemet danne det ud fra navneskabelonen. Se afsnittet om automatisk generering af navn nedenfor.</td>
         </tr>
         <tr>
           <td><strong>Søgenavn</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Udfyldes automatisk fra Navn, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>. Feltet må ikke stå blankt.</td>
         </tr>
         <tr>
-          <td><strong>Valutakode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv valutakode, hvis obligationen ikke er noteret i regnskabsvalutaen. Lad feltet stå blankt ved DKK.</td>
-        </tr>
-        <tr>
-          <td><strong>Resterende antal</strong></td>
-          <td><span class="udf udf-p">P</span></td>
-          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
-        </tr>
-        <tr>
-          <td><strong>Resterende værdi</strong></td>
-          <td><span class="udf udf-p">P</span></td>
-          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
-        </tr>
-        <tr>
           <td><strong>Spærret</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Markér for at spærre obligationen. En spærret obligation kan hverken vælges på en kladdelinje eller bogføres.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakode</strong></td>
+          <td>V</td>
+          <td>Angiv valutakode, hvis obligationen ikke er noteret i regnskabsvalutaen. Lad feltet stå blankt ved DKK. Kan ikke ændres, når der eksisterer bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Lande-/områdekode</strong></td>
+          <td>V</td>
+          <td>Angiv landekode for obligationen.</td>
+        </tr>
+        <tr>
+          <td><strong>Restantal</strong></td>
+          <td>P</td>
+          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+        </tr>
+        <tr>
+          <td><strong>Markedsværdi</strong></td>
+          <td>P</td>
+          <td>Restantallet værdisat til den seneste værdipapirkurs, i handelsvalutaen.</td>
+        </tr>
+        <tr>
+          <td><strong>Restværdi (RV)</strong></td>
+          <td>P</td>
+          <td>Den bogførte værdi i regnskabsvaluta. Beregnes og opdateres automatisk.</td>
         </tr>
       </tbody>
     </table>
@@ -103,20 +118,20 @@
   </div>
 
   <h3>Automatisk generering af navn</h3>
-  <p>Systemet kan automatisk generere obligationens navn ud fra en skabelon. Hvis du har konfigureret <a href="../6.%20Ops%C3%A6tning%20af%20Treasury/6.1%20Ops%C3%A6tning%20af%20v%C3%A6rdipapirer.html#aabn-fanebladet-opdatering">formatering af obligationsnavn</a> (se Opsætning af værdipapirer), vil systemet automatisk formatere navnet første gang, når du udfylder de relevante felter.</p>
+  <p>Systemet kan automatisk danne obligationens navn ud fra en skabelon. Har du udfyldt <a href="../6.%20Ops%C3%A6tning%20af%20Treasury/6.1%20Ops%C3%A6tning%20af%20v%C3%A6rdipapirer.html#aabn-fanebladet-opdatering">formatering af obligationsnavn</a> (se Opsætning af Treasury), formateres navnet ved første udfyldelse.</p>
 
   <p>Skabelonen bruger følgende pladsholdere:</p>
   <ul class="bullets">
-    <li><strong>%1</strong> = Din egen tekst (hvad du selv skriver i Navn-feltet)</li>
-    <li><strong>%2</strong> = Udsteder (fra Udstederkode)</li>
-    <li><strong>%3</strong> = Nominel renteprocent (fra Nom. Interest Rate %)</li>
-    <li><strong>%4</strong> = Udløbsår (fra L. Coup. Terminsdato)</li>
+    <li><strong>%1</strong> = den tekst, du selv skriver i Navn</li>
+    <li><strong>%2</strong> = udsteder (fra Udstederkode)</li>
+    <li><strong>%3</strong> = nominel rentepct.</li>
+    <li><strong>%4</strong> = udløbsår (fra Sidste kuponbetalingstidspunkt)</li>
   </ul>
 
-  <p>Eksempel: Hvis skabelonen er "%1 %2 %3% %4" og du udfylder "Obl", udsteder "Danske Bank", rentesats "3,5%" og sidste kupondag "2030", genereres navnet automatisk til "Obl Danske Bank 3,5% 2030".</p>
+  <p>Eksempel: er skabelonen "%1 %2 %3% %4", og du skriver "Obl" med udsteder "Danske Bank", rente 3,5 og sidste kupondag i 2030, dannes navnet "Obl Danske Bank 3,5% 2030".</p>
 
   <div class="note">
-    <strong>Vigtigt — manuel ændring af navn:</strong> Når du først har oprettet obligationen med automatisk navn, vil senere manuelle ændringer af Navn-feltet <strong>ikke blive overskrevet</strong> af formateringen. Hvis du vil regenerere navnet på ny, skal du rydde Navn-feltet helt og udfylde det igen.
+    <strong>Vigtigt — manuel ændring af navn:</strong> Senere manuelle ændringer af Navn <strong>overskrives ikke</strong> af formateringen. Vil du danne navnet på ny, skal du rydde Navn-feltet helt og udfylde det igen.
   </div>
 </div>
 
@@ -138,34 +153,34 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Nom. Interest Rate %</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv den nominelle renteprocent. Bruges i renteberegning. Denne værdi kan også bruges i automatisk generering af navn (se %3 ovenfor).</td>
+          <td><strong>Nominel rente %</strong></td>
+          <td>V</td>
+          <td>Angiv den nominelle renteprocent. Bruges i renteberegning og i automatisk navngivning (se %3 ovenfor).</td>
         </tr>
         <tr>
           <td><strong>Terminskode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv terminskoden for obligationens rentebetalingsplan. Denne kode definerer, hvor ofte renter betales (f.eks. årligt, halvårligt osv.).</td>
+          <td>V</td>
+          <td>Angiv terminskoden for obligationens rentebetalingsplan. Koden definerer, hvor ofte der betales renter (f.eks. årligt eller halvårligt).</td>
         </tr>
         <tr>
-          <td><strong>F. Coup. Terminsdato</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td><strong>Første kuponbetalingstidspunkt</strong></td>
+          <td>V</td>
           <td>Angiv første kuponforfaldsdag — dvs. den første dato, hvor der udbetales renter på obligationen.</td>
         </tr>
         <tr>
-          <td><strong>L. Coup. Terminsdato</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv sidste kuponforfaldsdag (udtræksdato). Dette er obligationens slutdato, hvor den sidste rentebetaling og tilbagebetaling af hovedstolen sker. Denne værdi bruges også i automatisk generering af navn (se %4 ovenfor).</td>
+          <td><strong>Sidste kuponbetalingstidspunkt</strong></td>
+          <td>V</td>
+          <td>Angiv sidste kuponforfaldsdag (udtræksdato). Det er obligationens slutdato, hvor sidste rentebetaling og tilbagebetaling af hovedstolen sker. Bruges også i automatisk navngivning (se %4 ovenfor).</td>
+        </tr>
+        <tr>
+          <td><strong>Udelad renteberegning</strong></td>
+          <td>V</td>
+          <td>Markér, hvis obligationen skal udelades ved kørsel af renteberegningsbatchen — f.eks. hvis den er udløbet eller skal håndteres manuelt.</td>
         </tr>
         <tr>
           <td><strong>Indeksobligation</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Markér, hvis det er en indeksobligation. Indeksobligationer er obligationer, hvor renter eller hovedstol er knyttet til et indeks (f.eks. inflationsindeks).</td>
-        </tr>
-        <tr>
-          <td><strong>Excl. Interest Calculation</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Markér, hvis obligationen skal udelades ved kørsel af renteberegningsbatchen. Brug dette, hvis obligationen f.eks. er udløbet eller skal håndteres manuelt.</td>
+          <td>V</td>
+          <td>Markér, hvis det er en indeksobligation, dvs. en obligation hvor renter eller hovedstol er knyttet til et indeks.</td>
         </tr>
       </tbody>
     </table>
@@ -177,7 +192,7 @@
     <div class="section-icon">📊</div>
     <h2>Fanebladet Bogføring</h2>
   </div>
-  <p>På fanebladet <strong>Bogføring</strong> knytter du obligationen til finanskontoplanen og definerer bogføringsgrupper og dimensioner. Disse oplysninger styrer, hvordan posteringer på obligationen påvirker bogholderiet.</p>
+  <p>På fanebladet <strong>Bogføring</strong> knytter du obligationen til finanskontoplanen og angiver bogføringsgruppe og dimensioner. Disse oplysninger styrer, hvordan posteringer på obligationen påvirker bogholderiet.</p>
 
   <div class="table-wrap">
     <table>
@@ -191,32 +206,34 @@
       <tbody>
         <tr>
           <td><strong>Bogføringsgruppe</strong></td>
-          <td><span class="udf udf-t">T</span></td>
+          <td>T</td>
           <td>Angiv bogføringsgruppen, der knytter obligationen til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
         </tr>
         <tr>
-          <td><strong>Global dimension 1-kode</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Angiv den primære dimensionsværdi. Obligatorisk, hvis dimensioner er konfigureret.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 2-kode</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Angiv den sekundære dimensionsværdi.</td>
-        </tr>
-        <tr>
           <td><strong>Rapporteringsgruppemetode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Grupperingsmetode til rapporter: <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>.</td>
         </tr>
         <tr>
           <td><strong>Rapporteringsgruppekode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Tilhørende gruppekode — afhænger af valgt metode.</td>
+        </tr>
+        <tr>
+          <td><strong>Global dimension 1-kode</strong></td>
+          <td>V</td>
+          <td>Angiv den primære dimensionsværdi. Feltet er valgfrit. Værdien gemmes som standarddimension på obligationen.</td>
+        </tr>
+        <tr>
+          <td><strong>Global dimension 2-kode</strong></td>
+          <td>V</td>
+          <td>Angiv den sekundære dimensionsværdi. Samme regler som Global dimension 1-kode.</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="info-box"><strong>Om dimensioner:</strong> De to felter gemmes som standarddimensioner på obligationen og arves af kladdelinjen, når du vælger obligationen. Ud over de to globale dimensioner kan flere standarddimensioner sættes med handlingen <strong>Dimensioner</strong> på kortet. Hele kæden — arv, konflikt med depotets dimensioner, kontrol ved bogføring og hvor dimensionerne ender — er beskrevet under Stamdata → Dimensioner på værdipapirer og depoter.</div>
 </div>
 
 <div class="section" id="handlinger">
@@ -227,10 +244,19 @@
   <p>Fra obligationskortet kan du navigere til relaterede data og udføre handlinger:</p>
 
   <ul class="bullets">
-    <li><strong>Værdipapirkurser</strong> — se kurshistorikken for den tilknyttede ISIN-kode.</li>
-    <li><strong>Depotbeholdninger</strong> — se hvilke depoter obligationen er tilknyttet.</li>
-    <li><strong>Comments</strong> — tilføj noter og kommentarer til obligationen.</li>
+    <li><strong>Dimensioner</strong> — standarddimensioner for obligationen (Alt+D).</li>
+    <li><strong>Poster</strong> — gruppe med fem indgange: <strong>Værdipapirposter</strong>, <strong>Depotposter</strong>, <strong>Detaljerede værdiposter</strong>, <strong>Detaljerede avanceposter</strong> og <strong>Finansposter</strong>.</li>
+    <li><strong>Porteføljestatistik</strong> — nøgletal for obligationen (F7).</li>
+    <li><strong>Værdianalyse</strong> — alle værdiændringer over tid.</li>
+    <li><strong>Tilbagefør alle poster</strong> — danner tilbageførselslinjer i en kladde for alle ikke-tilbageførte poster.</li>
+    <li><strong>Værdipapirkurser</strong> — kurshistorikken for den tilknyttede ISIN-kode. Papiret skal have en ISIN-kode; er koden endnu ikke oprettet i ISIN-listen, bliver du spurgt, om den skal oprettes, inden kurslisten åbnes.</li>
+    <li><strong>Indekskurser</strong> — indekskurser til indeksobligationer.</li>
+    <li><strong>Værdipapirdepoter</strong> — de depoter, obligationen er tilknyttet.</li>
+    <li><strong>Detaljeret information</strong> — attributværdier på obligationen.</li>
+    <li><strong>Bemærkninger</strong> — noter og kommentarer.</li>
   </ul>
+
+  <p>Til højre på kortet viser infoboksen <strong>Detaljeret information</strong> de attributværdier, der er registreret på obligationen.</p>
 </div>
 
 <div class="section" id="vejledning-til-udfyldelse">
@@ -239,42 +265,43 @@
     <h2>Praktisk vejledning til oprettelse</h2>
   </div>
 
-  <h3>Trin-for-trin guide</h3>
+  <h3>Trin-for-trin</h3>
   <ol class="steps">
-    <li>Angiv <strong>Værdipapirtype</strong> som <strong>Obligation</strong> — fanebladet Obligationsdetaljer bliver nu synligt.</li>
-    <li>Udfyld <strong>Udstederkode</strong> — dette er obligatorisk for obligationer og bruges også til automatisk generering af navn.</li>
-    <li>Angiv obligationens grundlæggende egenskaber: <strong>Nom. Interest Rate %</strong>, <strong>F. Coup. Terminsdato</strong> og <strong>L. Coup. Terminsdato</strong>.</li>
-    <li>Lad Navn-feltet være og lade systemet automatisk generere navnet baseret på skabelonen — eller angiv selv navn, hvis ingen skabelon er konfigureret.</li>
-    <li>Tilknyt obligationen til finanskontoplanen via fanebladet <strong>Bogføring</strong> — udfyld <strong>Bogføringsgruppe</strong>, <strong>Global dimension 1-kode</strong> og <strong>Global dimension 2-kode</strong>.</li>
+    <li>Sæt <strong>Værdipapirtype</strong> til <strong>Obligation</strong> — fanebladet Obligationsdetaljer bliver nu synligt.</li>
+    <li>Angiv <strong>ISIN-kode</strong>. Kender systemet koden, hentes navn, udsteder og rentesats med det samme.</li>
+    <li>Kontrollér <strong>Udstederkode</strong> — obligationen kan ikke bogføres uden.</li>
+    <li>Udfyld obligationens egenskaber: <strong>Nominel rente %</strong>, <strong>Første</strong> og <strong>Sidste kuponbetalingstidspunkt</strong> samt <strong>Terminskode</strong>.</li>
+    <li>Kontrollér <strong>Navn</strong> — eller skriv din egen tekst og lad navneskabelonen formatere det.</li>
+    <li>Udfyld <strong>Bogføringsgruppe</strong> på fanebladet <strong>Bogføring</strong>, og angiv dimensioner efter behov.</li>
     <li>Gem obligationen.</li>
   </ol>
 
-  <h3>Hvad er obligatorisk?</h3>
+  <h3>Hvad skal du altid udfylde?</h3>
   <ul class="bullets">
     <li><strong>Værdipapirtype:</strong> Skal være <strong>Obligation</strong>.</li>
+    <li><strong>Udstederkode:</strong> Kræves, før obligationen kan bogføres.</li>
     <li><strong>Bogføringsgruppe:</strong> Knyt obligationen til en bogføringsgruppe.</li>
-    <li><strong>Global dimension 1-kode og Global dimension 2-kode:</strong> Fyld ud, hvis dimensioner er konfigureret.</li>
-    <li><strong>Udstederkode:</strong> Obligatorisk for obligationer.</li>
   </ul>
 
   <h3>Hvad kan du udfylde efter behov?</h3>
   <ul class="bullets">
-    <li><strong>Kuponer:</strong> Udfyld F. Coup. Terminsdato og L. Coup. Terminsdato, hvis du vil bruge systemets rentebetaling.</li>
+    <li><strong>Kuponer:</strong> Udfyld Første og Sidste kuponbetalingstidspunkt, hvis du vil bruge systemets renteberegning.</li>
     <li><strong>Terminskode:</strong> Definer betalingsplanen (årligt, halvårligt osv.).</li>
     <li><strong>Indeksobligation:</strong> Markér, hvis obligationen er indekseret.</li>
-    <li><strong>Excl. Interest Calculation:</strong> Markér, hvis obligationen skal udelades fra renteberegning.</li>
+    <li><strong>Udelad renteberegning:</strong> Markér, hvis obligationen skal udelades fra renteberegningen.</li>
+    <li><strong>Global dimension 1- og 2-kode:</strong> Fyld ud, hvis du bruger dimensioner.</li>
   </ul>
 
   <div class="note">
-    <strong>Vigtigt — ændring af navn:</strong> Hvis du ændrer Navn-feltet manuelt efter oprettelse, vil systemet ikke automatisk regenerere det ved næste gemning. Ryd Navn-feltet helt og udfyld det igen, hvis du vil have systemet til at anvende navnskabelonen på ny.
+    <strong>Vigtigt:</strong> Når du har bogført poster på en obligation, kan du ikke længere ændre <strong>Værdipapirtype</strong>, <strong>ISIN-kode</strong> eller <strong>Valutakode</strong>.
   </div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

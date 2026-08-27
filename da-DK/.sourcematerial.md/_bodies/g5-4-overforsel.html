@@ -15,22 +15,26 @@
 
   <h3>Sådan gøres det</h3>
   <ol class="steps">
-    <li>Vælg <strong>Overførselsbatch</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</li>
+    <li>Vælg <strong>Foreslå overførselslinjer for værdipapirer</strong> under
+    <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</li>
     <li>Udfyld anfordringsvinduet:
       <ul class="sub-steps">
-        <li><strong>Kilde værdipapir:</strong> Det papir beholdningen flyttes fra.</li>
-        <li><strong>Mål værdipapir:</strong> Det papir beholdningen flyttes til.</li>
+        <li><strong>Kladdetypenavn:</strong> Den kladdetype, linjerne dannes i. Feltet accepterer kun kladdetyper af typen <em>Overførsel</em>.</li>
+        <li><strong>Kladdenavn:</strong> Kladdenavnet under den valgte kladdetype. Opslaget er afgrænset til den valgte type, og skifter du type, ryddes navnet.</li>
         <li><strong>Bogføringsdato:</strong> Datoen for transaktionen.</li>
-        <li><strong>Kladde / Batch:</strong> Overførselsbatch hvor linjerne dannes.</li>
+        <li><strong>Bilagsnr.:</strong> Valgfrit. Lades feltet blankt, trækkes <strong>ét</strong> nummer fra kladdenavnets nummerserie til hele kørslen, så salgs- og købslinjerne deler bilagsnummer og dermed hører synligt sammen.</li>
+        <li><strong>1. kildeværdipapirnr.</strong> / <strong>2. kildeværdipapirnr.:</strong> De papirer, beholdningen flyttes fra. Det andet felt bruges, når to papirer lægges sammen.</li>
+        <li><strong>1. målværdipapirnr.</strong> / <strong>1. mål %</strong> / <strong>1. målkonto:</strong> Det første modtagende papir, dets andel og det depot, andelen lægges i.</li>
+        <li><strong>2. målværdipapirnr.</strong> / <strong>2. mål %</strong> / <strong>2. målkonto:</strong> Tilsvarende for et eventuelt andet modtagende papir — det er her en 75/25-fordeling angives.</li>
       </ul>
     </li>
-    <li>Systemet finder alle åbne køb på det gamle papir og opretter:
+    <li>Systemet gennemgår kildepapirernes åbne købspartier og opretter:
       <ul class="sub-steps">
-        <li>En <strong>sælgslinje</strong> på det gamle papir med negativt antal</li>
-        <li>En <strong>købslinje</strong> på det nye papir med tilsvarende positivt antal</li>
+        <li>En <strong>salgslinje</strong> på kildepapiret med negativt antal, i partiets eget depot</li>
+        <li>En <strong>købslinje</strong> pr. målpapir med den andel af antal og beløb, målets procent angiver</li>
       </ul>
     </li>
-    <li>Gennemse linjerne i kladden. Du kan foretage korrekturringer (fx for øreafrundinger).</li>
+    <li>Gennemse linjerne i kladden. Du kan foretage korrektioner (fx for øreafrundinger).</li>
     <li>Bogfør når summen af beløbene går i nul.</li>
   </ol>
   <div class="note">
@@ -82,6 +86,27 @@
     <li><strong>Tilgangspost:</strong> Positivt antal i den nye stykstørrelse (samme totalbeløb).</li>
     <li>Værdipapirets <strong>stykstørrelse</strong> opdateres på kortet, så alle fremtidige posteringer bruger den nye størrelse.</li>
   </ul>
+  <div class="note">
+    <strong>Antallet skal være positivt.</strong> <em>Antal</em> på en stykregulering er beholdningen
+    <strong>efter</strong> reguleringen, og bogføringen afviser et negativt tal — et minus ville give en
+    negativ <em>Ny stykstørrelse</em>, fordi de to felter er hinandens omvendte, og begge ben ville
+    komme til at pege forkert. Skal en allerede bogført stykregulering gøres om, bruger du en
+    <strong>tilbageførsel</strong>. Kontrollen gælder ikke sammenlægning og split ovenfor: dér er de to
+    ben netop kendetegnet ved hvert sit fortegn.
+  </div>
+
+  <h3>Sådan fortryder du en stykregulering</h3>
+  <p>Stil dig på <strong>tilgangsposten</strong> — den med det nye antal og den nye stykstørrelse — og
+  vælg <strong>Tilbagefør post</strong>. Der dannes én linje i omposteringskladden, og bogføringen af
+  den tager <strong>begge</strong> ben: begge poster markeres som tilbageførte, de omregnede lodder
+  lukkes, de oprindelige lodder åbnes igen med præcis det restantal og den anskaffelseskurs, de havde
+  før reguleringen, depoternes beholdning ruller tilbage, og <strong>stykstørrelsen</strong> på
+  værdipapirkortet sættes tilbage til den gamle værdi. Der bogføres intet i finans — der blev heller
+  ikke bogført noget, da reguleringen blev lavet.</p>
+  <p>Peger du i stedet på afgangsposten, afvises tilbageførslen med henvisning til tilgangspostens
+  løbenummer: den nyeste post skal tilbageføres først, og de to ben hører sammen. Er der solgt af
+  beholdningen efter reguleringen, skal salget tilbageføres først — ellers ville genåbningen af de
+  gamle lodder tælle beholdningen to gange.</p>
 </div>
 
 <div class="section" id="depotflytning">
@@ -112,4 +137,10 @@
     <li>Beholdningen på det nye depot øges.</li>
     <li>Værdipapirerne og deres værdi ændres ikke — det er kun en depotflytning.</li>
   </ul>
+
+  <h3>Sådan fortryder du en depotregulering</h3>
+  <p>Som ved stykreguleringen: stil dig på <strong>tilgangsposten</strong> — den på det modtagende
+  depot — og vælg <strong>Tilbagefør post</strong>. Én kladdelinje tager begge ben, begge depoter
+  kommer tilbage på deres oprindelige beholdning, de lodder, flytningen trak på, genåbnes i det
+  afgivende depot, og der bogføres intet i finans.</p>
 </div>

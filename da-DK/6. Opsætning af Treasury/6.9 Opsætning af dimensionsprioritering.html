@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opsætning af dimensionsprioritering · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Opsætning</div>
+    <h1>Opsætning af dimensionsprioritering</h1>
+    <p>Bestem om værdipapiret eller depotet vinder, når begge bærer samme dimension på kladdelinjen.</p>
+    <div class="header-pills"><span class="pill">Valgfri opsætning</span><span class="pill">Depotet vinder som standard</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#dimprio-overblik">Hvad prioriteringen styrer</a></li>
+        <li><a href="#dimprio-regler">Sådan afgøres konflikten</a></li>
+        <li><a href="#dimprio-opsaetning">Sådan sættes prioriteten op</a></li>
+        <li><a href="#dimprio-eksempel">Eksempel</a></li>
+        <li><a href="#dimprio-bemaerkninger">Godt at vide</a></li>
+      </ol>
+    </nav>
+<div class="section" id="dimprio-overblik">
+  <div class="section-header">
+    <div class="section-icon">🧭</div>
+    <h2>Hvad prioriteringen styrer</h2>
+  </div>
+  <p>En kladdelinje henter sine dimensioner fra <strong>to</strong> kilder: værdipapiret og depotet. Bærer begge den samme dimension — fx <em>Afdeling</em> — men med hver sin værdi, kan kun én af dem lande på linjen. Som standard vinder <strong>depotet</strong>, fordi det er den mere specifikke af de to kilder.</p>
+  <p>Det valg er kun en standard. Med Business Centrals side <strong>Standarddimensionsprioriteter</strong> kan du selv bestemme, hvem der vinder — uden kodeændring og pr. kladdetype. Denne side beskriver reglen og opsætningen; hele dimensionskæden — hvor dimensionerne sættes, og hvor de ender — står i <a href="../2. Stamdata/2.3 Dimensioner på værdipapirer og depoter.html">Dimensioner på værdipapirer og depoter</a>.</p>
+</div>
+
+<div class="section" id="dimprio-regler">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <h2>Sådan afgøres konflikten</h2>
+  </div>
+  <p>Prioriteterne sættes pr. <strong>kildekode</strong> — koden fra kladdetypens felt <em>Kildekode</em>, som står på hver kladdelinje. For hver kildekode kan hver tabel få et prioritetstal, og <strong>laveste tal vinder</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Opsætning for kildekoden</th><th>Hvem vinder?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ingen prioritetsrækker</td>
+          <td><strong>Depotet</strong> — standardadfærden</td>
+        </tr>
+        <tr>
+          <td>Række for både <em>Værdipapir</em> og <em>Depot</em></td>
+          <td>Tabellen med det <strong>laveste</strong> tal</td>
+        </tr>
+        <tr>
+          <td>Række for kun én af tabellerne</td>
+          <td>Tabellen <strong>med</strong> en række</td>
+        </tr>
+        <tr>
+          <td>Samme tal til begge</td>
+          <td><strong>Depotet</strong> — ved uafgjort gælder standarden</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><strong>Bemærk:</strong> Reglen gælder alle kladdelinjer — også dem, batchkørslerne danner (foreslå udbyttelinjer, kursregulering, renteberegning og overførsel). Alle linjer bærer kladdetypens kildekode, så prioriteten slår igennem overalt.</div>
+</div>
+
+<div class="section" id="dimprio-opsaetning">
+  <div class="section-header">
+    <div class="section-icon">🛠️</div>
+    <h2>Sådan sættes prioriteten op</h2>
+  </div>
+
+  <ol class="steps">
+    <li>Søg efter <strong>Standarddimensionsprioriteter</strong> via <em>Fortæl mig</em> (Alt+Q).</li>
+    <li>Vælg den <strong>kildekode</strong>, prioriteten skal gælde for, i feltet øverst.</li>
+    <li>Opret to rækker: slå <strong>Tabel-id</strong> op og vælg <strong>Værdipapir</strong> med <em>Prioritet</em> = <strong>1</strong>, og <strong>Depot</strong> med <em>Prioritet</em> = <strong>2</strong>. Kolonnen <em>Tabelnavn</em> viser navnet, så rækken er til at læse.</li>
+    <li>Gentag for de øvrige kildekoder, hvor værdipapiret skal vinde.</li>
+  </ol>
+
+  <p>Modulet bruger fem kildekoder — én pr. kladdetype. De sættes op i <strong>Kildekodeopsætning</strong> under overskriften <em>Værdipapir</em>:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt i Kildekodeopsætning</th><th>Kladde</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Værdipapirkladde</strong></td><td>Handelskladden</td></tr>
+        <tr><td><strong>Afkastkladde</strong></td><td>Afkastkladden (udbytte og rente)</td></tr>
+        <tr><td><strong>Kursreguleringskladde</strong></td><td>Kursreguleringskladden</td></tr>
+        <tr><td><strong>Overførselskladde</strong></td><td>Overførselskladden</td></tr>
+        <tr><td><strong>Omposteringskladde</strong></td><td>Omposteringskladden</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Skal værdipapiret vinde overalt, oprettes prioritetsrækkerne for alle fem kildekoder.</p>
+
+  <div class="note"><strong>Vigtigt:</strong> Prioriteten slås op på linjens kildekode. En kladdetype uden kildekode kan derfor ikke ramme opsætningen — dér vinder depotet altid. Kildekoden foreslås automatisk på kladdetypen, når <em>Kladdetypetype</em> vælges, se <a href="6.7 Oprettelse af kladdetyper.html">Oprettelse af kladdetyper</a>.</div>
+</div>
+
+<div class="section" id="dimprio-eksempel">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <h2>Eksempel</h2>
+  </div>
+  <p>Aktien <strong>NOVO</strong> bærer standarddimensionen <em>Afdeling</em> = <strong>INVEST</strong>. Depotet <strong>NORDNET</strong> bærer <em>Afdeling</em> = <strong>FINANS</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Opsætning</th><th>Afdeling på kladdelinjen</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ingen prioritetsrækker</td>
+          <td><strong>FINANS</strong> — depotet vinder</td>
+        </tr>
+        <tr>
+          <td>Værdipapir = 1, Depot = 2 for kildekoden</td>
+          <td><strong>INVEST</strong> — værdipapiret vinder</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Dimensionen følger derefter linjen ud på værdipapirposten og finansposten ved bogføring.</p>
+</div>
+
+<div class="section" id="dimprio-bemaerkninger">
+  <div class="section-header">
+    <div class="section-icon">💡</div>
+    <h2>Godt at vide</h2>
+  </div>
+  <ul>
+    <li><strong>Dimensionssættet dannes, når værdipapir eller depot vælges på linjen.</strong> Retter du prioritetsopsætningen, ændrer det ikke allerede dannede linjer — vælg værdipapiret igen, eller slet og genopret linjen.</li>
+    <li><strong>Manuelle rettelser til sidst.</strong> Sættet gendannes fra stamdataene, hver gang værdipapir eller depot vælges igen, så ret dimensionerne på linjen som det sidste — se <a href="../2. Stamdata/2.3 Dimensioner på værdipapirer og depoter.html">Dimensioner på værdipapirer og depoter</a>.</li>
+    <li><strong>Notifikation ved manglende opsætning.</strong> Har en kildekode ingen prioritetsrækker, kan Business Central vise en engangs-notifikation om, at der ikke er sat prioriteter op. Den kan afvises og blokerer ikke noget.</li>
+    <li><strong>Kun de to tabeller.</strong> Værdipapirmodulets kilder er <em>Værdipapir</em> og <em>Depot</em>. De øvrige tabeller i opslaget hører til standardmodulerne og har ingen virkning på værdipapirkladderne.</li>
+  </ul>
+</div>
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
+  <script>
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /website-build command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  </script>
+</body>
+</html>

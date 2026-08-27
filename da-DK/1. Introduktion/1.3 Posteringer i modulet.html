@@ -23,6 +23,7 @@
         <li><a href="#posteringer-overblik">Fra kladde til poster</a></li>
         <li><a href="#posteringer-tabeller">De fem slags poster</a></li>
         <li><a href="#posteringer-graf">Hvad danner hver transaktion?</a></li>
+        <li><a href="#posteringer-nav-afvigelser">Afvigelser fra NAV</a></li>
       </ol>
     </nav>
 <div class="section" id="posteringer-overblik">
@@ -64,17 +65,17 @@
       bilagstype, antal, beløb og reference til kladdelinjen.</p>
     </div>
     <div class="feature-card">
-      <h4>Depotbeholdningspost <span class="tag info">Depot</span></h4>
+      <h4>Depotpost <span class="tag info">Depot</span></h4>
       <p>Beholdningsbevægelse på det enkelte depot. Bruges til at vise aktuel beholdning og til
       afstemning mod depotinstituttet.</p>
     </div>
     <div class="feature-card">
-      <h4>Detaljeret værdipapirpost <span class="tag info">Værdidetalje</span></h4>
+      <h4>Detaljeret værdipost <span class="tag info">Værdidetalje</span></h4>
       <p>Holder styr på resterende antal og kostpris pr. købspost samt urealiserede kursreguleringer
       pr. købspost.</p>
     </div>
     <div class="feature-card">
-      <h4>Detaljeret afkastpost <span class="tag info">Afkastdetalje</span></h4>
+      <h4>Detaljeret avancepost <span class="tag info">Avancedetalje</span></h4>
       <p>Realiseret og urealiseret gevinst/tab — opdelt i kurs- og valutakurskomponent. Driver
       finansposterne for gevinst og tab.</p>
     </div>
@@ -104,7 +105,7 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1</span></div>
-          <div class="ledger-box miss"><span class="lbl">Afkastdetalje</span><span class="val">—</span></div>
+          <div class="ledger-box miss"><span class="lbl">Avancedetalje</span><span class="val">—</span></div>
         </div>
         <ul>
           <li><strong>Finans:</strong> Debet værdipapirkonto · Kredit modkonto (bank/finans).</li>
@@ -128,7 +129,7 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1 + reverseringer</span></div>
-          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">2–4</span></div>
+          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">2–4</span></div>
         </div>
         <ul>
           <li><strong>Finans:</strong> Salgsprovenu mod afgang fra værdipapirkontoen, plus realiseret
@@ -151,7 +152,7 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1 (antal = 0)</span></div>
           <div class="ledger-box miss"><span class="lbl">Værdidetalje</span><span class="val">—</span></div>
-          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">1</span></div>
+          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">1</span></div>
         </div>
         <ul>
           <li><strong>Uden skat:</strong> Debet bank · Kredit afkastkonto.</li>
@@ -177,7 +178,7 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">2 (kurs + valuta)</span></div>
-          <div class="ledger-box"><span class="lbl">Afkastdetalje</span><span class="val">2 + tilbageførsel</span></div>
+          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">2 + tilbageførsel</span></div>
         </div>
         <ul>
           <li>Den seneste regulering pr. købspost tilbageføres automatisk, før den nye bogføres — så
@@ -192,12 +193,55 @@
   <div class="note"><strong>Bemærk:</strong> Det præcise antal linjer afhænger af,
   om handlen er i fremmed valuta, og om der er udbytteskat.</div>
 </div>
+  
+
+<div class="section" id="posteringer-nav-afvigelser">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <h2>Afvigelser fra NAV</h2>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <p>Modulet afløser Columbus Treasury til Dynamics NAV, og bogføringen følger NAV's model, hvor den
+  kan. To steder gør Business Central noget <strong>andet</strong> end NAV — ikke ved en fejl, men
+  fordi NAV's fremgangsmåde gav et resultat, vi ikke ville stå inde for. Kender du NAV-løsningen, er
+  det de to steder, du skal være opmærksom på. Begge er gentaget i de afsnit, hvor de får virkning.</p>
+
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Fondsaktier fordeles forholdsmæssigt, ikke ligeligt</h4>
+    <span class="nav-says">NAV: <em>"Ved bogføring af fondsaktier fordeles antallet <strong>ligeligt</strong> mellem de åbne købsposter på aktien."</em></span>
+    <p>Business Central fordeler tildelingen <strong>forholdsmæssigt</strong> efter hvert lots
+    restbeholdning. Kun sådan beholder hvert lot sin anskaffelsessum i kroner, og gennemsnitskursen
+    bliver den samme, som hvis man ser på beholdningen under ét. En ligelig fordeling ville flytte
+    anskaffelsessum fra de store lots til de små, så to ens beholdninger — købt i henholdsvis én og
+    fem portioner — ville ende med hver sin anskaffelseskurs. Er alle åbne lots lige store, er de to
+    fordelinger identiske.</p>
+    <p><em>Får virkning i:</em> Aktiekøb (feltet <strong>Fondsaktie</strong>) og dermed i
+    anskaffelsessummen ved et senere salg.</p>
+  </div>
+
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Depotbeløbet omskriver ikke kursen</h4>
+    <span class="nav-says">NAV: <em>"Ved manuel ændring ændres Depotbeløb som igen bevirker ændring i <strong>Fondskursen</strong> for at få beløbene til at gå op."</em></span>
+    <p>I Business Central er <strong>Depotbeløb</strong> skrivebeskyttet og afledt af handlen. Der er
+    ingen vej tilbage fra depotbeløbet til <strong>Værdipapirkurs</strong>. Handlen er den eneste
+    kilde: kursen er den, papiret faktisk blev handlet til, og den må ikke ændre sig, fordi et afledt
+    beløb bliver afrundet — så ville man bagefter ikke kunne se, hvad der oprindeligt blev handlet
+    til. Skal beløbet være et andet, retter du antal, kurs eller omkostninger.</p>
+    <p><em>Får virkning i:</em> alle fire handelsafsnit, når depotets bankkonto føres i en anden
+    valuta end værdipapiret.</p>
+  </div>
+
+  <p>Dertil kommer en ren regnekonvention, som ikke er et valg: NAV opgør depotvalutafaktoren som
+  <em>depotbeløb i regnskabsvaluta divideret med depotbeløbet</em>, mens Business Central gennemgående
+  regner den anden vej. De to tal er hinandens omvendte, og feltet betyder det samme.</p>
+</div>
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

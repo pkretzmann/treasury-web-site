@@ -36,7 +36,7 @@
   <header>
     <div class="header-badge">Testscenarier</div>
     <h1>Korrektion og tilbageførsel</h1>
-    <p>Case 11: tilbageførsel via Korrektionskladden — overførsel, friske køb/salg/udbytte/kursregulering på dedikerede testværdipapirer — plus fejl-vagter og den afsluttende verifikation.</p>
+    <p>Case 11: tilbageførsel via Omposteringskladden — overførsel, friske køb/salg/udbytte/kursregulering på dedikerede testværdipapirer — plus fejl-vagter og den afsluttende verifikation.</p>
     <div class="header-pills"><span class="pill">Case 11</span></div>
   </header>
   <div class="container">
@@ -71,7 +71,7 @@
 
 <div class="section" id="intro">
   <div class="section-header"><div class="section-icon">↩️</div><h2>Om tilbageførsel <span class="case-badge reversal">Tilbageførsel</span></h2></div>
-  <p><strong>Kladde:</strong> Korrektionskladde &nbsp;|&nbsp; Bilagstype = Tilbageførsel.</p>
+  <p><strong>Kladde:</strong> Omposteringskladde &nbsp;|&nbsp; Bilagstype = Tilbageførsel.</p>
   <p>En tilbageførsel <strong>spejler alle fem posttabeller</strong> med negerede beløb: den oprindelige post får Tilbageført = Ja + "Tilbageført af løbenr.", og spejl-posten beholder den <strong>oprindelige</strong> bilagstype (en tilbageført Køb posteres som Køb med negativt antal — ikke som "Tilbageførsel"). Tilbageførsel af et Salg <strong>genåbner det forbrugte købs-lot</strong>.</p>
   <div class="note"><strong>LIFO-begrænsning:</strong> Tilbageførsel kan kun ramme den seneste ikke-tilbageførte post pr. værdipapir, og et stykstørrelses-split (Case 10) kan ikke tilbageføres. Derfor vises de isolerede varianter (11c–11f) på dedikerede friske værdipapirer (TEST-A/B/C/D).</div>
 </div>
@@ -90,7 +90,7 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>Værdipapirpost (SLE)</td><td>Tilgang-VP: Tilbageført = Ja; Afgang-VP: Tilbageført = Ja; 2 spejl-poster (Bilagstype = Overførsel, negerede antal)</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>Spejlede mængder: DEPOT-2 −5, DEPOT-A +5 → DEPOT-A's beholdning = 5 igen</td></tr>
+        <tr><td>Depotpost</td><td>Spejlede mængder: DEPOT-2 −5, DEPOT-A +5 → DEPOT-A's beholdning = 5 igen</td></tr>
         <tr><td>Detaljeret Værdipost</td><td>Tilgangs-lot lukkes; kilde-lot genåbnes (Åben = Ja, Restantal = 5)</td></tr>
         <tr><td>Detaljeret Resultatpost</td><td><span class="zero">Ingen</span></td></tr>
         <tr><td>Finanspost (G/L)</td><td>Spejlede <span class="acct" data-acct="holding">2640</span>-linjer (14.945,20 DKK frem og tilbage) — netto = 0</td></tr>
@@ -104,7 +104,7 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>SLE</td><td>Original: Tilbageført = Ja, Åben = Nej, Restantal = 0. Spejl: <strong>Bilagstype = Køb (ikke Tilbageførsel!)</strong>, Antal = −1.000, Beløb (RV) = +100.000</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>2 — original + spejl (Antal = −1.000)</td></tr>
+        <tr><td>Depotpost</td><td>2 — original + spejl (Antal = −1.000)</td></tr>
         <tr><td>Detaljeret Værdipost</td><td>2 — original (Åben = Nej, Restantal = 0) + spejl (Antal = −1.000, Tilbageført = Ja)</td></tr>
         <tr><td>Detaljeret Resultatpost</td><td><span class="zero">0</span> — køb danner ingen gevinstpost</td></tr>
         <tr><td>Finanspost (G/L)</td><td>4 — spejlede beløb, netto = 0 på begge konti</td></tr>
@@ -166,7 +166,7 @@
   <div class="section-header"><div class="section-icon">✅</div><h2>Verifikation efter alle cases</h2></div>
   <ul class="bullets">
     <li>Værdipapir-kortet: <strong>Restantal</strong> = 5 stk, Restværdi (RV) = sidste markedsværdi minus solgt andel, Investeringsfonds-pris hentet fra ISIN.</li>
-    <li>Værdipapirregister: <strong>8</strong> posteringskørsler, hver med SLE- og Depotbeholdningspost-intervaller.</li>
+    <li>Værdipapirregister: <strong>8</strong> posteringskørsler, hver med SLE- og Depotpost-intervaller.</li>
     <li>Tilbageførsel: vælg salgs-SLE → Tilbagefør post → bekræft, at alle DPLE/DVLE/G/L spejl-rækker oprettes med Tilbageført = Ja, og at FIFO-lot åbnes igen.</li>
     <li>Portfolio Overview (React add-in) på Depot → drill-down skal vise alle 8 SLE-poster med korrekt P/L-farvelægning (grøn/positiv, rød/negativ, grå/tilbageført).</li>
   </ul>

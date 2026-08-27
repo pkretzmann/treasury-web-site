@@ -207,7 +207,57 @@
   ul.bullets { margin: 0 0 14px 20px; }
   ul.bullets li { margin-bottom: 6px; }
   strong { font-weight: 600; }
-  
+
+  /* ── Screenshots ──
+     Markup:  <figure class="screenshot">
+                <a href="images/x.png" target="_blank" rel="noopener">
+                  <img src="images/x.png" alt="…" width="…" height="…" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>…</figcaption>       <- valgfri
+              </figure>
+     Billeder ligger i en images/-mappe i samme kapitelmappe som siden.
+     Tilføj klassen .narrow til smalle dialoger/udsnit, så de ikke strækkes ud
+     over hele tekstkolonnen.                                                   */
+  .screenshot {
+    margin: 22px 0 24px;
+  }
+  .screenshot.narrow {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .screenshot a {
+    display: block;
+    cursor: zoom-in;
+    border-radius: 12px;                /* så focus-ringen følger billedets hjørner */
+  }
+  .screenshot img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;                       /* bevarer højde-bredde-forholdet ved enhver skærmbredde */
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.07);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .screenshot a:hover img {
+    border-color: var(--brand-light);
+    box-shadow: 0 4px 16px rgba(26, 26, 26, 0.14);
+  }
+  .screenshot a:focus-visible {
+    outline: 2px solid var(--brand-mid);
+    outline-offset: 3px;
+  }
+  .screenshot figcaption {
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    text-align: center;
+  }
+
   /* ── Inline code & code blocks ── */
   code {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -413,6 +463,50 @@
   }
   .note strong { color: #c0392b; }
   
+  /* ── NAV deviation box ──
+     For the places where Business Central deliberately does something
+     ELSE than the NAV solution it replaces. Deliberately louder than
+     .note: readers must not mistake a considered choice for a bug, and
+     must not assume the NAV manual still applies. ── */
+  .nav-deviation {
+    background: var(--pending-bg);
+    border: 1px solid #d8bb84;
+    border-left: 6px solid var(--pending);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px 14px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .nav-deviation .nav-deviation-tag {
+    display: inline-block;
+    background: var(--pending);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .nav-deviation h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--pending);
+    margin: 0 0 6px;
+  }
+  .nav-deviation p { margin: 0 0 8px; }
+  .nav-deviation p:last-child { margin-bottom: 0; }
+  .nav-deviation strong { color: inherit; }
+  .nav-deviation .nav-says {
+    display: block;
+    border-left: 3px solid #d8bb84;
+    padding: 2px 0 2px 12px;
+    margin: 0 0 8px;
+    font-style: italic;
+    color: var(--gray-700);
+  }
+
   /* ── Info box ── */
   .info-box {
     background: var(--brand-pale);
@@ -909,6 +1003,18 @@
     .reading-progress, .doc-search, .faq-no-results { display: none !important; }
     .sysflow-wire .dot { display: none !important; }
     .js-fx .section { opacity: 1 !important; transform: none !important; }
+    /* Skærmbilleder: hold hvert billede samlet på én side, og begræns højden så
+       et bredt skærmprint ikke sprænger sidehøjden i PDF'en. */
+    .screenshot { page-break-inside: avoid; break-inside: avoid; }
+    .screenshot img {
+      box-shadow: none;
+      border: 1px solid #ccc;
+      max-height: 15cm;
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .screenshot a { cursor: default; }
   }
   
   /* Editorial theme — serif display headings */

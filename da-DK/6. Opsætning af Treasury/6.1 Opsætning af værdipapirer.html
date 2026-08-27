@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Opsætning af værdipapirer · Værdipapirhandel</title>
+  <title>Opsætning af Treasury · Værdipapirhandel</title>
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -12,7 +12,7 @@
 <body class="fx">
   <header>
     <div class="header-badge">Opsætning</div>
-    <h1>Opsætning af værdipapirer</h1>
+    <h1>Opsætning af Treasury</h1>
     <p>Globale indstillinger for værdipapirmodulet.</p>
     <div class="header-pills"><span class="pill">Engangsopsætning</span></div>
   </header>
@@ -32,14 +32,22 @@
     <div class="section-icon">⚙️</div>
     <h2>Grundlæggende opsætning</h2>
   </div>
-  <p>Før du kan arbejde med værdipapirer, skal du opsætte grundlæggende regler i <strong>Værdipapiropsætning</strong>. Her definerer du nummerserier, regnskabsprincipper og andre centrale indstillinger.</p>
+  <p>Før du kan arbejde med værdipapirer, skal du opsætte grundlæggende regler i <strong>Opsætning af Treasury</strong>. Her definerer du nummerserier, regnskabsprincipper og andre centrale indstillinger.</p>
 
-  <h3>Sådan åbner du Værdipapiropsætning</h3>
+  <h3>Sådan åbner du Opsætning af Treasury</h3>
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong> i navigationslinjen.</li>
     <li>Klik på <strong>Opsætning af Treasury</strong> i gruppen <strong>Opsætning af Treasury</strong>.</li>
   </ol>
-  <p>Alternativt kan du søge efter <strong>Opsætning af værdipapirer</strong> i søgefeltet.</p>
+  <p>Alternativt kan du søge efter <strong>Opsætning af Treasury</strong> i søgefeltet.</p>
+  <figure class="screenshot">
+    <a href="images/treasury-setup.png" target="_blank" rel="noopener">
+      <img src="images/treasury-setup.png"
+           alt="Siden Opsætning af Treasury med fanebladene Generelt, Nummerering og Opdatering"
+           width="1517" height="761" loading="lazy" decoding="async" />
+    </a>
+    <figcaption>Opsætning af Treasury med fanebladene Generelt, Nummerering og Opdatering. Klik på billedet for at se det i fuld størrelse.</figcaption>
+  </figure>
 </div>
 
 <div class="section" id="aabn-fanebladet-generelt">
@@ -56,16 +64,16 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Finanskontofilter for treasury</strong></td>
-          <td>Angiv et filter for, hvilke finanskonti der vedrører værdipapirerne. Filteret bestemmer, hvilke finanskonti der vises ved opslag i bogføringsopsætningen. Lades feltet blankt, vises alle finanskonti. Feltet er skjult som standard — klik på <strong>Vis mere</strong> for at se det.</td>
+          <td><strong>Finanskontofilter for Treasury</strong></td>
+          <td>Angiv et filter for, hvilke finanskonti der vedrører værdipapirerne. Filteret afgør, hvilke konti der vises i delen <strong>Finansafstemning</strong> nederst på <strong>Værdipapirstatistik</strong>. Lades feltet blankt, viser afstemningen i stedet de konti, det enkelte værdipapir rent faktisk er bogført på — ikke hele kontoplanen. Feltet er skjult som standard — klik på <strong>Vis mere</strong> for at se det.</td>
         </tr>
         <tr>
-          <td><strong>Rapportgrupperingsmetode</strong></td>
+          <td><strong>Rapporteringsgruppemetode</strong></td>
           <td>Vælg den grupperingsmetode, der skal indsættes på værdipapiret ved oprettelse. Valgene er: <strong>Blank</strong>, <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>. Valget påvirker, hvordan værdipapirerne grupperes på rapporter.</td>
         </tr>
         <tr>
           <td><strong>Regnskabsprincip</strong></td>
-          <td>Vælg det regnskabsprincip, der skal anvendes: <strong>Realisationsprincippet</strong>, <strong>Lagerprincippet</strong> eller <strong>Begge</strong>. Standardværdien er Realisationsprincippet. Valget bestemmer, hvilke muligheder der kan vælges i bogføringsgrupperne.</td>
+          <td>Vælg det regnskabsprincip, der skal anvendes: <strong>Realisationsprincippet</strong>, <strong>Lagerprincippet</strong> eller <strong>Begge</strong>. Standardværdien er Begge. Valget bestemmer, hvilke muligheder der kan vælges i bogføringsgrupperne: vælger du ét af de to principper, skal <strong>alle</strong> bogføringsgrupper bruge netop det, mens Begge lader den enkelte bogføringsgruppe vælge selv. Begge kan kun stå her — ikke på en bogføringsgruppe.</td>
         </tr>
         <tr>
           <td><strong>Brug ISIN-kode i rapporter</strong></td>
@@ -83,8 +91,10 @@
   <ul class="bullets">
     <li><strong>Realisationsprincippet:</strong> Tab og avancer opgøres og bogføres først ved salg. Urealiserede kursreguleringer medregnes ikke løbende.</li>
     <li><strong>Lagerprincippet:</strong> Beholdningen opgøres til markedsværdi, og urealiserede kursreguleringer medregnes løbende i regnskabet.</li>
-    <li><strong>Begge:</strong> Du kan anvende begge principper inden for samme regnskab på tværs af bogføringsgrupper.</li>
+    <li><strong>Begge:</strong> Du kan anvende begge principper inden for samme regnskab på tværs af bogføringsgrupper. Hver bogføringsgruppe skal stadig vælge ét af de to — <strong>Begge</strong> er ikke et princip, der kan bogføres efter, og kan derfor ikke vælges på selve bogføringsgruppen.</li>
   </ul>
+
+  <div class="info-box">Du kan altid skifte fra ét princip til <strong>Begge</strong>. Den modsatte vej er spærret, hvis der allerede findes en bogføringsgruppe med det princip, du fravælger: du får en fejl, der navngiver gruppen, og skal rette eller slette den, før opsætningen kan ændres.</div>
 </div>
 
 <div class="section" id="aabn-fanebladet-nummerering">
@@ -101,7 +111,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Værdipapirsnr.</strong></td>
+          <td><strong>Værdipapirnumre</strong></td>
           <td>Angiv den nummerserie, der bruges til at tildele nye værdipapirer et nummer automatisk. Ønsker du kun manuel nummerering — f.eks. den officielle fondskode — kan du lade feltet blankt.</td>
         </tr>
       </tbody>
@@ -123,7 +133,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Opdater aktienavn</strong></td>
+          <td><strong>Opdater værdipapirnavn ved import</strong></td>
           <td>Markér feltet, hvis værdipapirets navn skal opdateres automatisk, når det importeres fra en kurslistefil. Bemærk: denne funktion er endnu ikke fuldt implementeret.</td>
         </tr>
         <tr>
@@ -134,7 +144,7 @@
     </table>
   </div>
 
-  <div class="info-box"><strong>Tip:</strong> Værdipapiropsætningen gælder for både aktier og obligationer.</div>
+  <div class="info-box"><strong>Tip:</strong> Opsætningen af Treasury gælder for både aktier og obligationer.</div>
 </div>
 
 <div class="section" id="aabn-handlinger">
@@ -142,17 +152,17 @@
     <div class="section-icon">🔗</div>
     <h2>Handlinger og navigation</h2>
   </div>
-  <p>Fra Værdipapiropsætning kan du navigere direkte til:</p>
+  <p>Fra Opsætning af Treasury kan du navigere direkte til:</p>
   <ul class="bullets">
     <li><strong>Værdipapirbogføringsgrupper</strong> — her opretter du bogføringsgrupper, der knytter værdipapirer til finanskonti (se næste afsnit).</li>
   </ul>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

@@ -63,7 +63,7 @@
         </tr>
         <tr>
           <td><strong>Værdipapirnummer</strong></td>
-          <td>Vælg aktien. Systemet indsætter automatisk beskrivelse, valutakode og markedsværdiprincip fra værdipapirets bogføringsgruppe.</td>
+          <td>Vælg aktien. Systemet indsætter automatisk beskrivelse, valutakode og lagerprincip fra værdipapirets bogføringsgruppe.</td>
         </tr>
         <tr>
           <td><strong>Afkast før skat</strong></td>
@@ -71,14 +71,14 @@
         </tr>
         <tr>
           <td><strong>Udbytteskat</strong></td>
-          <td>Den indeholdte skat. Kan beregnes automatisk via batchfunktionen (se nedenfor) eller angives manuelt.</td>
+          <td>Den indeholdte skat. Foreslås ud fra <em>Udbytteskat %</em> på bogføringsgruppen, første gang <strong>Afkast før skat</strong> udfyldes — både på en linje, du taster selv, og på linjer fra batchfunktionen (se nedenfor). <strong>Retter du Afkast før skat bagefter, genberegnes skatten</strong> ud fra den <em>Udbytteskat %</em>, der står på linjen, så nettoen altid passer til bruttoen. Taster du selv et skattebeløb, bliver din sats brugt ved senere ændringer. Nulstiller du skatten til 0, kommer den ikke igen af sig selv.</td>
         </tr>
         <tr>
           <td><strong>Beløb</strong></td>
           <td>Beregnes automatisk som Afkast før skat − Udbytteskat. Ikke redigerbart.</td>
         </tr>
         <tr>
-          <td><strong>Depotbeholdningskode</strong></td>
+          <td><strong>Depotkode</strong></td>
           <td>Vælg hvilket depot udbyttet skal bogføres på. Modkonto fyldes automatisk fra depotopsætningen.</td>
         </tr>
       </tbody>
@@ -105,33 +105,47 @@
       <tbody>
         <tr>
           <td><strong>Bogføringsdato</strong></td>
-          <td>Bogføringsdato for de dannede linjer.</td>
+          <td>Bogføringsdato for de dannede linjer. Antallet på hver linje er den beholdning, depotet havde på denne dato, så kørslen kan også bruges bagudrettet.</td>
         </tr>
         <tr>
-          <td><strong>Bilagsnummer</strong></td>
-          <td>Kan også hentes fra kladdens nummerserie.</td>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Valgfrit. Lades feltet blankt, trækkes <strong>ét</strong> nummer fra kladdenavnets nummerserie til hele kørslen — et udbytte er én begivenhed, så alle linjer deler bilagsnummer. Udfylder du feltet, bruges dit nummer.</td>
         </tr>
         <tr>
-          <td><strong>Udbytte pr. aktie</strong></td>
-          <td>Det foreslåede udbyttebeløb pr. aktienhed.</td>
+          <td><strong>Afkast pr. stk.</strong></td>
+          <td>Bruttoudbyttet pr. stk. i værdipapirets valuta.</td>
         </tr>
         <tr>
-          <td><strong>Kladde / Batch</strong></td>
-          <td>Hvor linjerne skal dannes.</td>
+          <td><strong>Realiseringstype</strong></td>
+          <td>Realiseret eller Urealiseret. Samme værdi sættes på alle dannede linjer; ret den enkelte linje bagefter, hvor den afviger. Står som standard på Realiseret.</td>
+        </tr>
+        <tr>
+          <td><strong>Kladdetypenavn</strong></td>
+          <td>Den kladdetype, linjerne dannes i. Feltet accepterer <strong>kun</strong> kladdetyper af typen <em>Afkast</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>Kladdenavn</strong></td>
+          <td>Kladdenavnet under den valgte kladdetype. Opslaget er afgrænset til den valgte type, og skifter du type, ryddes navnet. Findes navnet ikke, afvises kørslen, inden der dannes linjer.</td>
+        </tr>
+        <tr>
+          <td><strong>Filter på Værdipapirtype</strong></td>
+          <td>Står som standard på Aktie, fordi udbytte er et aktiebegreb — en obligation får sin kuponrente af renteberegningen i stedet. Filteret kan ændres eller ryddes, hvis en obligation undtagelsesvis har en udbyttelignende udlodning.</td>
         </tr>
         <tr>
           <td><strong>Filter på Værdipapir</strong></td>
-          <td>Du kan begrænsning til ét eller flere værdipapirer.</td>
+          <td>Du kan begrænse til ét eller flere værdipapirer.</td>
         </tr>
       </tbody>
     </table>
   </div>
   <p>For hvert værdipapir og depot opretter systemet én linje hvor:</p>
   <ul class="bullets">
-    <li>Antallet hentes fra depotets nettobeholdning</li>
-    <li>Afkastet beregnes som Antal × Udbytte pr. aktie</li>
+    <li>Antallet er depotets nettobeholdning på bogføringsdatoen, opgjort ud fra depotposterne — et depot uden beholdning får ingen linje</li>
+    <li>Afkastet beregnes som Antal × Afkast pr. stk. og afrundes efter valutaens præcision</li>
     <li>Skatten beregnes ud fra skatteprocenten i værdipapirets bogføringsgruppe</li>
+    <li>Valutakode, valutakurs, modkonto og dimensioner kommer med, ligesom når du taster linjen selv</li>
   </ul>
+  <p>Efter kørslen fortæller en besked, hvor mange linjer der blev dannet. Blev der ingen, siger beskeden det og nævner de to grunde: intet værdipapir matchede filteret, eller ingen af dem, der gjorde, havde en beholdning på bogføringsdatoen.</p>
   <p>Gennemse derefter linjerne i kladden, foretag evt. rettelser, og bogfør.</p>
 </div>
 
@@ -144,13 +158,13 @@
   <ul class="bullets">
     <li>At værdipapirnummer er udfyldt</li>
     <li>At bogføringsdato og bilagsnummer er udfyldt</li>
-    <li>At afkastet ikke er nul</li>
+    <li>At linjen har et beløb — enten <strong>Afkast før skat</strong> eller <strong>Udbytteskat</strong> skal være udfyldt. En efterregulering af indeholdt skat uden bruttoafkast kan altså bogføres, mens en linje uden nogen af delene afvises</li>
     <li>At valutafaktoren er udfyldt (hvis værdipapiret er i fremmed valuta)</li>
   </ul>
   <p>Hvis alt er i orden, dannes der følgende posteringer:</p>
   <ul class="bullets">
     <li><strong>Værdipapirpost:</strong> En post med bilagstype Afkast. Antallet er 0 (da et udbytte ikke ændrer beholdningen), men beløbene registreres.</li>
-    <li><strong>Gevinstposter:</strong> En linje for det realiserede afkast og evt. en for skatten.</li>
+    <li><strong>Avanceposter:</strong> En linje for det realiserede afkast og evt. en for skatten.</li>
     <li><strong>Finansposter:</strong> Modkontoen (typisk bankkonto) debiteres med nettobeløbet. Afkastkontoen og skattkontoen posteres med de rette beløb.</li>
   </ul>
   <div class="info-box">
@@ -158,11 +172,11 @@
   </div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

@@ -71,7 +71,7 @@
 
 <div class="section" id="intro">
   <div class="section-header"><div class="section-icon">↩️</div><h2>Om tilbageførsel <span class="case-badge reversal">Tilbageførsel</span></h2></div>
-  <p><strong>Kladde:</strong> Korrektionskladde &nbsp;|&nbsp; handling: <strong>Tilbagefør post</strong> (<code>codeunit 79921 "Security Reversal"</code>).</p>
+  <p><strong>Kladde:</strong> Omposteringskladde &nbsp;|&nbsp; handling: <strong>Tilbagefør post</strong> (<code>codeunit 79921 "Security Reversal"</code>).</p>
   <p>En tilbageførsel <strong>spejler alle fem posttabeller</strong> med negerede beløb: den oprindelige post får Tilbageført = Ja + “Tilbageført af løbenr.”, og spejl-posten beholder den <strong>oprindelige</strong> bilagstype (en tilbageført Køb posteres som Køb med negativt antal — ikke som “Tilbageførsel”). For obligationer negeres også <strong>Handelsrente</strong>-feltet, så <span class="acct" data-acct="tradingInterest">1460</span> spejles korrekt. Tilbageførsel af et Salg <strong>genåbner det forbrugte købs-lot</strong>.</p>
   <div class="note"><strong>LIFO-begrænsning:</strong> Tilbageførsel kan kun ramme den seneste ikke-tilbageførte post pr. værdipapir. For at teste de enkelte posttyper isoleret, bogføres de på et frisk testværdipapir, så de ikke spærres af senere poster i hovedforløbet.</div>
 </div>
@@ -83,7 +83,7 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>SLE</td><td>Original: Tilbageført = Ja, Åben = Nej, Restantal = 0. Spejl: <strong>Bilagstype = Køb (ikke Tilbageførsel!)</strong>, Antal = −100.000, Beløb (RV) = +99.000, Handelsrente = −500,00</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>2 — original + spejl (Antal = −100.000)</td></tr>
+        <tr><td>Depotpost</td><td>2 — original + spejl (Antal = −100.000)</td></tr>
         <tr><td>Detaljeret Værdipost</td><td>2 — original (Åben = Nej, Restantal = 0) + spejl (Antal = −100.000, Tilbageført = Ja)</td></tr>
         <tr><td>Detaljeret Resultatpost</td><td><span class="zero">0</span> — køb danner ingen gevinstpost</td></tr>
         <tr><td>Finanspost (G/L)</td><td>Spejlede linjer på <span class="acct" data-acct="holding">2650</span>, <span class="acct" data-acct="tradingInterest">1460</span> og <span class="acct" data-acct="bank">2620</span> — netto = 0 på alle konti</td></tr>
@@ -159,7 +159,7 @@
   <div class="section-header"><div class="section-icon">✅</div><h2>Verifikation efter alle cases</h2></div>
   <ul class="bullets">
     <li>Obligationskortet: <strong>Restantal</strong> = 0 efter udtrækning (Case 8), <strong>Restværdi</strong> = 0.</li>
-    <li>Værdipapirregister: <strong>8</strong> posteringskørsler (Case 1–8, idet Case 6 ikke indgår i obligationsforløbet), hver med SLE- og Depotbeholdningspost-intervaller.</li>
+    <li>Værdipapirregister: <strong>8</strong> posteringskørsler (Case 1–8, idet Case 6 ikke indgår i obligationsforløbet), hver med SLE- og Depotpost-intervaller.</li>
     <li>Detaljerede Resultatposter: realiseret kursgevinst i alt = salg (+2.100,00) + udtrækning (+5.000,00) = <strong>+7.100,00 DKK</strong>; alle urealiserede kursmarks (6.500,00 DKK) og renteperiodiseringer (3.333,33 DKK) er tilbageført (netto 0 urealiseret).</li>
     <li>Renteindtægt i alt = realiseret kupon <strong>5.000,00 DKK</strong> (den urealiserede periodisering nulstilles ved kuponen).</li>
     <li>Handelsrente: nettobevægelse på <span class="acct" data-acct="tradingInterest">1460</span> = betalt ved køb (2.500,00) − modtaget ved salg (3.566,67) = −1.066,67 DKK (afhænger af rentedage; ikke kursavance).</li>

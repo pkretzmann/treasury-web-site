@@ -52,7 +52,7 @@
       <tbody>
         <tr>
           <td><strong>Handelsdato</strong></td>
-          <td>Angiv handelsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen.</td>
+          <td>Angiv handelsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen. Ændrer du handelsdatoen senere, hentes valutakursen for den nye dato på ny.</td>
         </tr>
         <tr>
           <td><strong>Bilagsnr.</strong></td>
@@ -63,12 +63,12 @@
           <td>Vælg <strong>Køb</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Værdipapirnummer</strong></td>
-          <td>Vælg den aktie, der er købt. Når feltet udfyldes, indsættes automatisk: beskrivelse, valutakode og seneste registrerede kurs (på eller før handelsdatoen) fra ISIN-kurslisten.</td>
+          <td><strong>Værdipapirnr.</strong></td>
+          <td>Vælg den aktie, der er købt. Når feltet udfyldes, indsættes automatisk beskrivelse, valutakode og – hvis kursforslaget er slået til – værdipapirkursen fra ISIN-kurslisten. Se noten om kursforslaget nedenfor.</td>
         </tr>
         <tr>
           <td><strong>Beskrivelse</strong></td>
-          <td>Udfyldes automatisk med bilagstype og værdipapirsnavn. Kan redigeres.</td>
+          <td>Udfyldes automatisk med bilagstype og værdipapirets navn. Kan redigeres.</td>
         </tr>
         <tr>
           <td><strong>Udtrækning</strong></td>
@@ -76,15 +76,15 @@
         </tr>
         <tr>
           <td><strong>Valutakode</strong></td>
-          <td>Hentes automatisk fra aktiekortet. Lad feltet stå tomt, hvis aktien er noteret i regnskabsvalutaen (DKK). Du kan ændre koden manuelt; klik på AssistButton for at se tilgængelige valutakoder.</td>
+          <td>Hentes automatisk fra aktiekortet og kan ikke ændres på linjen — valutaen tilhører værdipapiret. Feltet står tomt, hvis aktien er noteret i regnskabsvalutaen (DKK). Handles aktien i en anden valuta, ændres koden på <strong>aktiekortet</strong>. Selve <em>kursen</em> kan stadig overstyres pr. linje med <strong>Ret valutakurs</strong> i handlingsbåndet.</td>
         </tr>
         <tr>
           <td><strong>Antal</strong></td>
-          <td>Angiv det antal enheder, der er købt.</td>
+          <td>Angiv det antal enheder, der er købt. Antallet tastes <strong>positivt</strong> – fortegnsskiftet sker ved bogføringen, og bogføringen afviser et negativt tal. Skal en allerede bogført linje gøres om, bruger du en <strong>tilbageførsel</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Fondskurs</strong></td>
-          <td>Kursen foreslås automatisk fra ISIN-kurslisten, hvis der er registreret en kurs. Kursen kan overskrives manuelt.</td>
+          <td><strong>Værdipapirkurs</strong></td>
+          <td>Kursen pr. enhed. Foreslås automatisk fra ISIN-kurslisten, når der findes en kurs på handelsdatoen. Kursen kan altid overskrives manuelt.</td>
         </tr>
         <tr>
           <td><strong>Omkostninger</strong></td>
@@ -92,14 +92,14 @@
         </tr>
         <tr>
           <td><strong>Beløb</strong></td>
-          <td>Beregnes automatisk: <strong>Beløb = (Antal × Fondskurs) + Omkostninger</strong>. Feltet kan overstyres manuelt.</td>
+          <td>Beregnes automatisk: <strong>Beløb = (Antal × Værdipapirkurs) + Omkostninger</strong>. Feltet kan overstyres manuelt.</td>
         </tr>
         <tr>
           <td><strong>Beløb (RV)</strong></td>
           <td>Beløbet i regnskabsvaluta. Beregnes automatisk ud fra valutafaktoren.</td>
         </tr>
         <tr>
-          <td><strong>Depotbeholdningskode</strong></td>
+          <td><strong>Depotkode</strong></td>
           <td>Vælg det depot, aktien tilskrives. Feltet er obligatorisk. Når feltet udfyldes, sættes modkontotype og modkonto automatisk fra depotopsætningen, og dimensioner hentes fra depotet.</td>
         </tr>
         <tr>
@@ -112,10 +112,84 @@
         </tr>
         <tr>
           <td><strong>Handelsrenter</strong></td>
-          <td>Handelsrente – primært relevant ved obligationskøb. Registreres på posten.</td>
+          <td><strong>Kun obligationer.</strong> Feltet kan ikke bruges ved aktiehandel – taster du et beløb på en aktielinje, afvises det med en fejl. Se <em>Obligationskøb</em> om, hvordan handelsrenten behandles.</td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <h3>Skjulte kolonner</h3>
+  <p>Følgende kolonner findes på kladden, men vises ikke som standard. Du henter dem frem med <strong>Personalisér</strong> (tandhjulet → <em>Personalisér</em>):</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Vejledning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bogføringsdato</strong></td>
+          <td>Sættes automatisk lig med handelsdatoen. Hent kolonnen frem, hvis bogføringsdatoen undtagelsesvis skal afvige fra handelsdatoen.</td>
+        </tr>
+        <tr>
+          <td><strong>Fondsaktie</strong></td>
+          <td>Markér feltet, når købet er en tildeling af fondsaktier. Feltet nulstiller <strong>Værdipapirkurs</strong>, <strong>Omkostninger</strong> og <strong>Handelsrenter</strong>, og <strong>Beløb</strong> sættes til 0. Se noten nedenfor.</td>
+        </tr>
+        <tr>
+          <td><strong>Gratis</strong></td>
+          <td>Markér feltet, når aktierne modtages uden betaling. Feltet nulstiller <strong>Værdipapirkurs</strong> og <strong>Omkostninger</strong>, og <strong>Beløb</strong> tvinges til 0.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutafaktor</strong></td>
+          <td>Faktoren hentes automatisk ud fra handelsdatoen og valutakoden. Du kan ændre den manuelt via <strong>Ret valutakurs</strong> i handlingsbåndet.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotvalutakode</strong></td>
+          <td>Valutakoden på depotets modkonto, når modkontoen er en bankkonto. Udfyldes automatisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb før renter</strong></td>
+          <td>Handelsbeløbet uden handelsrente. Ved en aktie er det det samme som <strong>Beløb</strong>, fordi en aktielinje ikke kan have handelsrente.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeløb</strong> · <strong>Depotvalutafaktor</strong> · <strong>Depotbeløb (RV)</strong></td>
+          <td>Handelsbeløbet set fra depotets bankkonto: beløbet omregnet til depotets valuta, den kurs det er omregnet med, og beløbet i regnskabsvaluta. <strong>Depotbeløb</strong> beregnes automatisk og kan ikke tastes – handlen er den ene kilde, depotbeløbet følger den. <strong>Depotbeløb (RV)</strong> er altid det samme som <strong>Beløb (RV)</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <strong>Kursforslaget:</strong> Kursen foreslås kun, hvis der findes en kurs på <strong>præcis</strong> handelsdatoen i ISIN-kurslisten. Er der ingen kurs den dag, ændres feltet ikke – så du selv taster kursen frem for at arbejde videre på en forældet kurs. Er handelsdatoen endnu ikke udfyldt, bruges arbejdsdatoen som opslagsdato. Forslaget kan slås helt fra med <strong>Foreslå værdipapirkurs v. handel</strong> i <strong>Opsætning af Treasury</strong>. Den kurs, du taster, gemmes i ISIN-kurslisten ved bogføring.
+  </div>
+
+  <div class="note">
+    <strong>Handelsrenten er en obligationsting:</strong> Kolonnerne <strong>Handelsrenter</strong> og <strong>Udtrækning</strong> deler kladde med aktiehandlen, men hører til obligationer – det samme gør <strong>Indekskurs</strong>, der er skjult som standard. <strong>Handelsrenter</strong> og <strong>Indekskurs</strong> afvises på en aktielinje. Ved obligationskøb bogføres handelsrenten til sin egen finanskonto – feltet <strong>Handelsrentekonto</strong> på værdipapirbogføringsgruppen – og indgår ikke i anskaffelsesværdien. Se afsnit 3.3.
+  </div>
+  <div class="note">
+    <strong>Fondsaktier fordeles på beholdningen:</strong> En fondsaktietildeling er ikke et køb – du får flere stykker uden at betale for dem. Ved bogføring fordeles antallet derfor <strong>forholdsmæssigt over de åbne kostprislots</strong> på aktien efter deres restbeholdning. Hvert lot beholder sin anskaffelsessum i kroner og får flere stykker, så <strong>anskaffelseskursen pr. stk. falder</strong> – det er netop udvandingen. Fordelingen er den samme, uanset om bogføringsgruppen bruger <strong>Aktie-for-aktie</strong> eller <strong>Gennemsnit</strong>: hvert delsalg får sin andel med. Fordelingen kan ses i posterne som en detaljeret værdipost pr. berørt lot, og en ompostering ruller den tilbage. Har aktien ingen åben beholdning at fordele på, afvises linjen.
+  </div>
+
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Fordelingen er forholdsmæssig, ikke ligelig</h4>
+    <span class="nav-says">NAV: <em>"Ved bogføring af fondsaktier fordeles antallet <strong>ligeligt</strong> mellem de åbne købsposter på aktien, således at restbeholdning og fondskurs på disse ændres."</em></span>
+    <p><strong>Business Central fordeler forholdsmæssigt</strong> efter hvert lots restbeholdning – ikke samme antal til hvert lot uanset størrelse.</p>
+    <p><strong>Hvorfor:</strong> kun den forholdsmæssige fordeling lader hvert lot beholde sin anskaffelsessum i kroner og giver samme gennemsnitskurs, som hvis man så på beholdningen under ét. En ligelig fordeling ville flytte anskaffelsessum fra de store lots til de små, så to identiske beholdninger – købt i henholdsvis én og fem portioner – ville få forskellig anskaffelseskurs. Er alle åbne lots lige store, giver de to fordelinger samme resultat.</p>
+  </div>
+
+  <div class="note">
+    <strong>Depotet må føres i en anden valuta end aktien:</strong> Vælger du et depot, hvis bankkonto står i fx EUR til en aktie noteret i USD, får du en advarsel og kan gå videre. Handlen bogføres i <strong>aktiens</strong> valuta på beholdningskontoen, mens <strong>modkontoen bogføres i depotets valuta</strong> med <strong>Depotbeløb</strong> og <strong>Depotvalutafaktor</strong>. Advarslen står, fordi to forskellige valutaer oftest skyldes en fejl i opsætningen – ikke fordi det er forbudt.
+  </div>
+
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Depotbeløbet omskriver ikke kursen</h4>
+    <span class="nav-says">NAV: <em>"Ved manuel ændring ændres Depotbeløb som igen bevirker ændring i <strong>Fondskursen</strong> for at få beløbene til at gå op."</em></span>
+    <p><strong>I Business Central er Depotbeløb skrivebeskyttet</strong> og afledt af handlen. Der er ingen vej tilbage fra depotbeløbet til <strong>Værdipapirkurs</strong>.</p>
+    <p><strong>Hvorfor:</strong> handlen skal være den eneste kilde. <strong>Værdipapirkurs</strong> er den kurs, papiret faktisk blev handlet til, og den må ikke ændre sig, fordi et afledt beløb bliver afrundet – så ville man bagefter ikke kunne se, hvad der oprindeligt blev handlet til. Skal beløbet være et andet, retter du <strong>Antal</strong>, <strong>Værdipapirkurs</strong> eller <strong>Omkostninger</strong>; depotbeløbet følger med af sig selv.</p>
   </div>
 </div>
 
@@ -125,15 +199,32 @@
     <h2>Bogfør købet</h2>
   </div>
   <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>) for at bogføre linjen.</p>
+  <p>Vil du se resultatet, inden du bogfører, klikker du på <strong>Vis bogføring</strong> (genvejstast <strong>Ctrl+Alt+F9</strong>). Funktionen gennemfører bogføringen i en transaktion, der rulles tilbage bagefter, og viser samtlige poster, handlen ville danne – værdipapirposter, depotposter, detaljerede poster og finansposter. Bilagsnummeret simuleres, så en visning ikke bruger et nummer i nummerserien.</p>
+  <div class="note">
+    <strong>Bemærk:</strong> <em>Bogfør og udskriv</em> (Shift+F9) bogfører kladden og udskriver derefter værdipapirjournalen for de netop bogførte poster; handlingen <strong>Testrapport</strong> kontroludskriver kladdens linjer med eventuelle fejl inden bogføring. NAV's <em>Simuler</em> er dækket af <strong>Vis bogføring</strong>.
+  </div>
   <p>Programmet kontrollerer inden bogføring:</p>
   <ul class="bullets">
-    <li>At Værdipapirnummer er udfyldt</li>
-    <li>At Bogføringsdato er udfyldt</li>
-    <li>At Bilagsnr. er udfyldt</li>
-    <li>At Antal ikke er 0</li>
-    <li>At Depotbeholdningskode er udfyldt</li>
-    <li>At Valutafaktor er udfyldt, hvis der er angivet en fremmed valutakode og et beløb</li>
+    <li>At <strong>Værdipapirnr.</strong> er udfyldt</li>
+    <li>At <strong>Bogføringsdato</strong> er udfyldt</li>
+    <li>At <strong>Bilagsnr.</strong> er udfyldt</li>
+    <li>At <strong>Antal</strong> hverken er 0 eller negativt</li>
+    <li>At <strong>Beløb</strong> ikke er 0, medmindre <strong>Gratis</strong> eller <strong>Fondsaktie</strong> er markeret</li>
+    <li>At <strong>Depotkode</strong> er udfyldt</li>
+    <li>At aktien ikke er <strong>spærret</strong>, og at den har en <strong>Bogføringsgruppe</strong></li>
+    <li>At <strong>Valutafaktor</strong> er udfyldt, hvis der er angivet en fremmed valutakode og et beløb</li>
+    <li>At linjens <strong>Valutakode</strong> svarer til valutakoden på værdipapiret</li>
+    <li>At <strong>Handelsdato</strong> ikke ligger før handelsdatoen på den sidst bogførte post på værdipapiret</li>
   </ul>
+  <div class="note">
+    <strong>Antallets fortegn:</strong> Antallet tastes altid <strong>positivt</strong>, både ved køb og ved salg. Det er bogføringen, der giver det fortegnet: en salgspost får det negative antal, så beholdningen går ned. Taster du selv et minus, ville værdipapirposten pege den ene vej og forbruget af kostprislots den anden, og de to opgørelser af beholdningen ville aldrig kunne mødes igen. Bogføringen afviser derfor et negativt antal på <strong>Køb</strong>, <strong>Salg</strong> og <strong>Stykregulering</strong>. Skal en allerede bogført post gøres om, bruger du en <strong>tilbageførsel</strong> – ikke en linje med modsat fortegn. Tre bilagstyper er undtaget, fordi et negativt antal betyder noget bestemt på dem: <strong>Overførsel</strong> danner et par af linjer, hvor afgangsbenet har negativt antal og tilgangsbenet positivt; <strong>Tilbageførsel</strong> spejler den post, den fortryder, og arver dens fortegn; og <strong>Depotregulering</strong> har sin egen kontrol, der peger på, at man i stedet bytter om på de to depoter.
+  </div>
+  <div class="note">
+    <strong>Købet uden beløb:</strong> En handel kan ikke bogføres uden et beløb. Er <strong>Beløb</strong> 0, fordi kursen eller antallet blev glemt, stopper bogføringen med det samme – en linje uden beløb ville ellers danne en beholdning til kurs 0, og hele provenuet ved et senere salg ville blive bogført som avance. Skal aktierne rent faktisk modtages uden betaling, markerer du <strong>Gratis</strong> (eller <strong>Fondsaktie</strong> ved en fondsaktietildeling), og linjen bogføres.
+  </div>
+  <div class="note">
+    <strong>Bagudkontrollen:</strong> Den sidste kontrol er den hyppigste årsag til, at en bogføring stopper. Du kan ikke bogføre en handel bag om en allerede bogført post på det samme værdipapir – det ville underkende de avanceopgørelser og kursreguleringer, der bygger på den. Fejlbeskeden nævner handelsdatoen på den post, der spærrer. To undtagelser: <strong>afkastposter</strong> tæller ikke med, så en udbyttepost bogført sent på året spærrer ikke for et køb med en tidligere handelsdato, og et udbytte kan selv bogføres tilbage i tiden. <strong>Tilbageførselslinjer</strong> kontrolleres heller ikke – det er dem, du bruger til at rette en ældre post.
+  </div>
 </div>
 
 <div class="section" id="resultatet-bogforing">
@@ -153,35 +244,77 @@
       <tbody>
         <tr>
           <td><strong>Værdipapirpost</strong></td>
-          <td>En post med bilagstype Køb, antal, fondskurs, omkostninger og beløb. Posten markeres som åben.</td>
+          <td>En post med bilagstype Køb, antal, værdipapirkurs, omkostninger og beløb. Posten markeres som åben.</td>
         </tr>
         <tr>
-          <td><strong>Detaljeret værdipapirpost</strong></td>
-          <td>Én lot-post pr. køb. Den indeholder restantal og anskaffelseskurs der bruges til avanceopgørelse ved fremtidigt salg. Beløbet på lottet er beløb før handelsrenter.</td>
+          <td><strong>Detaljeret værdipost</strong></td>
+          <td>Én lot-post pr. køb. Den peger på sig selv via <em>Købspostløbenr.</em> og indeholder <em>Restantal</em> og <em>Købskurs</em>, der bruges til avanceopgørelse ved fremtidigt salg.</td>
         </tr>
         <tr>
-          <td><strong>Depotbeholdsningspost</strong></td>
+          <td><strong>Depotpost</strong></td>
           <td>En depotpost der registrerer, at antallet er tilgået depotet.</td>
         </tr>
         <tr>
           <td><strong>Finanspost (værdipapirkonto)</strong></td>
-          <td>Beholdningskontoen debiteres med beløbet i regnskabsvaluta.</td>
+          <td>Beholdningskontoen (rækken med bilagstype <strong>Beholdning</strong> i <strong>Værdipapirværdibogføringsgruppe</strong>) debiteres med beløbet i regnskabsvaluta.</td>
         </tr>
         <tr>
           <td><strong>Finanspost (modkonto)</strong></td>
-          <td>Modkontoen (bank, finanskonto eller anden type angivet i depotopsætningen) krediteres med det tilsvarende beløb.</td>
+          <td>Modkontoen (bank, finanskonto eller anden type angivet i depotopsætningen) krediteres med det tilsvarende beløb – i <strong>depotets</strong> valuta, hvis depotets bankkonto føres i en anden valuta end aktien.</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p>Alle poster knyttes til samme transaktionsnummer og registreres som audit trail. Du kan navigere til posterne fra Værdipapirposter via rollecentret. Det åbne lot benyttes automatisk når aktien senere sælges (FIFO eller gennemsnit).</p>
+  <p>Alle poster knyttes til samme transaktionsnummer og registreres i <strong>Værdipapirjournal</strong> som audit trail.</p>
+
+  <h3>Ved en fondsaktietildeling</h3>
+  <p>En linje med <strong>Fondsaktie</strong> danner ikke et nyt lot. I stedet oprettes:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Posteringstype</th>
+          <th>Beskrivelse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapirpost</strong></td>
+          <td>En post med bilagstype Køb, det tildelte antal og beløb 0, markeret som fondsaktie. Posten er ikke selv et lot.</td>
+        </tr>
+        <tr>
+          <td><strong>Detaljeret værdipost</strong></td>
+          <td>Én post pr. berørt købsparti med den andel, partiet fik tildelt, og beløb 0. Posten peger via <em>Købspostløbenr.</em> på det parti, andelen blev lagt til, og bærer <strong>det pågældende partis depot</strong> – ikke nødvendigvis kladdelinjens.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotpost</strong></td>
+          <td><strong>Én depotpost pr. berørt depot.</strong> Ligger beholdningen i flere depoter, får hvert depot netop den andel, dets egne købspartier fik tildelt.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Der dannes <strong>ingen finansposter</strong> – der er ikke betalt noget, og beholdningens værdi er uændret. Det, der ændrer sig, er anskaffelseskursen pr. stk. på de eksisterende købspartier.</p>
+
+  <div class="info-box">
+    <strong>Fondsaktier fordeles på tværs af depoter.</strong> Tildelingen er én handling på hele
+    beholdningen af aktien, præcis som i NAV: fordelingsnøglen er værdipapirets samlede åbne antal,
+    uanset hvilke depoter partierne ligger i. <strong>Depotkode</strong> på kladdelinjen skal stadig
+    udfyldes – den bruges som reserve for de købspartier, der ikke selv har et depot – men den afgør
+    ikke fordelingen. Det er modsat et <strong>salg</strong>, som kun må forbruge partier i linjens
+    eget depot (se afsnit 3.2). Du skal derfor kun taste <strong>én linje</strong>, også når aktien
+    ligger i flere depoter. <em>Eksempel:</em> aktien ligger med 100 stk. i DEPOT-A og 100 stk. i
+    DEPOT-B, og der tildeles 50 fondsaktier. Begge partier vokser til 125 stk., og der dannes to
+    depotposter – DEPOT-A 25 stk. og DEPOT-B 25 stk.
+  </div>
+
+  <p>Du kan navigere til posterne fra <strong>Værdipapirposter</strong> via rollecentret. Det åbne lot kan ses fra <strong>Detaljerede værdiposter</strong> og benyttes automatisk, når aktien senere sælges (<strong>Aktie-for-aktie</strong> eller <strong>Gennemsnit</strong>, jf. <em>Avancemetode</em> på bogføringsgruppen).</p>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

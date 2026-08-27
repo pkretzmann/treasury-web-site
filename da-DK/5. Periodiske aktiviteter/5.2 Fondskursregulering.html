@@ -24,6 +24,7 @@
         <li><a href="#saadan-kores">Sådan kører du reguleringen</a></li>
         <li><a href="#bogfoering">Bogføring af regulering</a></li>
         <li><a href="#lagerprincip">Lagerprincip vs. realisationsprincip</a></li>
+        <li><a href="#indeksering">Indeksregulerede obligationer</a></li>
       </ol>
     </nav>
 <div class="section" id="kursregulering-oversigt">
@@ -31,7 +32,15 @@
     <div class="section-icon">📈</div>
     <h2>Fondskursregulering — mark-to-market</h2>
   </div>
-  <p>Fondskursregulering bruges til at opskrive eller nedskrive porteføljens værdi til seneste markedskurs. Typisk gøres dette pr. kvartal eller ved årets afslutning. Reguleringen beregner automatisk ændringerne i fondskurs og valutakurs for hver åben beholdning.</p>
+  <p>Fondskursregulering bruges til at opskrive eller nedskrive porteføljens værdi til seneste markedskurs. Typisk gøres det pr. kvartal eller ved regnskabsårets afslutning.</p>
+  <p>Reguleringen består af to komponenter, som systemet beregner hver for sig pr. åben købspost:</p>
+  <ul class="bullets">
+    <li><strong>Fondskurseffekt</strong> — ændringen i selve kursen mellem købstidspunktet og reguleringstidspunktet.</li>
+    <li><strong>Valutakurseffekt</strong> — ændringen i valutafaktoren i samme periode. Kun relevant for værdipapirer i fremmed valuta.</li>
+  </ul>
+  <div class="info-box">
+    Kørslen kræver, at der findes kurser på de valgte værdipapirer på eller før den valgte dato. Findes der ingen kurs overhovedet, danner kørslen alligevel en linje, som du selv kan udfylde.
+  </div>
 </div>
 
 <div class="section" id="saadan-kores">
@@ -40,7 +49,7 @@
     <h2>Sådan kører du reguleringen</h2>
   </div>
   <h3>Åbn kørslen</h3>
-  <p>Vælg <strong>Reguler fondskurser</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</p>
+  <p>Åbn <strong>Kursreguleringskladder</strong> og vælg handlingen <strong>Reguler værdipapirkurser</strong>. Anfordringsvinduet åbnes med kladdetype og kladdenavn allerede udfyldt fra den kladde, du står i.</p>
 
   <h3>Udfyld anfordringsvinduet</h3>
   <div class="table-wrap">
@@ -53,46 +62,84 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Kladdetype</strong></td>
-          <td>Vælg <strong>Kursreguleringskladde</strong>.</td>
+          <td><strong>Treasurykladdetype</strong></td>
+          <td>Den kladdetype, linjerne dannes i — altid en af typen <em>Kursregulering</em>. Udfyldt på forhånd og kan ikke ændres her.</td>
         </tr>
         <tr>
-          <td><strong>Batch</strong></td>
-          <td>Kladdbatch hvor linjerne dannes.</td>
+          <td><strong>Treasurybilagsnavn</strong></td>
+          <td>Kladdenavnet under den valgte kladdetype. Også udfyldt på forhånd.</td>
         </tr>
         <tr>
-          <td><strong>Handelsdato</strong></td>
-          <td>Bogføringsdato for reguleringen. Bruges også som kursdato til at finde seneste fondskurs og valutakurs.</td>
+          <td><strong>Bogføringsdato</strong></td>
+          <td>Bruges som både handels- og bogføringsdato på de dannede linjer — og som kursdato, når seneste fondskurs, indekskurs og valutakurs slås op.</td>
         </tr>
         <tr>
-          <td><strong>Bilagsnummer</strong></td>
-          <td>Kan hentes automatisk fra batchens nummerserie.</td>
+          <td><strong>Bilagsnr.</strong></td>
+          <td>Lad feltet stå tomt, så hentes næste nummer fra kladdens nummerserie.</td>
         </tr>
         <tr>
-          <td><strong>Fundskurs-advarsel</strong></td>
-          <td>Hvis afkrydset, advares du hvis der ikke er en kurs på den eksakte dato. Ellers bruges seneste tilgængelige kurs.</td>
-        </tr>
-        <tr>
-          <td><strong>Valutakurs-advarsel</strong></td>
-          <td>Tilsvarende for valutakurser (relevant for værdipapirer i fremmed valuta).</td>
-        </tr>
-        <tr>
-          <td><strong>Filter på Værdipapir</strong></td>
-          <td>Du kan begrænsning til ét eller flere værdipapirer.</td>
+          <td><strong>Lagerprincip</strong></td>
+          <td>Lagerprincippet. Afkryds feltet ved regnskabsårets udløb, hvor beholdningen opgøres til kursværdi. Lad det stå tomt ved almindelige kursreguleringer i årets løb. Se afsnittet Lagerprincip vs. realisationsprincip.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
+  <h4>Kontrollér kursdato for</h4>
+  <p>De tre afkrydsningsfelter styrer kun, om du får en <strong>advarsel</strong>. Uden afkrydsning bruges blot seneste kurs frem til datoen — kørslen stopper ikke.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Bemærkning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fondskurs</strong></td>
+          <td>Advarer, når der ikke findes en fondskurs på præcis den valgte dato.</td>
+        </tr>
+        <tr>
+          <td><strong>Indekskurs</strong></td>
+          <td>Samme advarsel for indekskurser. Kun relevant for indeksobligationer.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutakurs</strong></td>
+          <td>Samme advarsel for valutakurser. Kun relevant for værdipapirer i fremmed valuta.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Du kan desuden afgrænse kørslen til ét eller flere værdipapirer med det almindelige filter øverst i anfordringsvinduet.</p>
+
   <h3>Hvad gør kørslen?</h3>
-  <p>For hvert værdipapir beregner systemet:</p>
+  <p>For hvert værdipapir med en åben beholdning:</p>
   <ol class="steps">
-    <li>Seneste fondskurs på eller før handelsdatoen.</li>
-    <li>Totalbeløbet for værdændringen i regnskabsvaluta — både fra kursændringer og valutaændringer.</li>
-    <li>For værdipapirer i fremmed valuta: opdeling i en kurskomponent og en valutakomponent.</li>
-    <li>Fordeling pr. depot efter beholdning og oprettelse af én reguleringslin pr. depot i kladden.</li>
+    <li>Finder seneste fondskurs på eller før datoen. Er kursen hentet fra en <strong>tidligere</strong> dato, markeres linjen som fremskrevet: kursen bruges til at værdiansætte, men skrives <em>ikke</em> tilbage i kurslisten ved bogføring, så der ikke opstår en kurs på en dag, hvor ingen har noteret én.</li>
+    <li>Findes der slet ingen kurs på eller før datoen, dannes linjen alligevel — med kurs 0 og nulbeløb — så du selv kan taste kursen inden bogføring. Den kurs, du taster, gemmes i kurslisten.</li>
+    <li>Beregner værdiændringen i regnskabsvaluta og deler den op i en kurskomponent og en valutakomponent.</li>
+    <li>Fordeler reguleringen pr. depot efter depotets beholdning og danner én linje pr. depot med bilagstype <strong>Kursregulering</strong> og realiseringstype <strong>Urealiseret</strong>.</li>
+    <li>Sætter <strong>Lagerprincip</strong> på linjerne ud fra afkrydsningsfeltet. Kørslen behandler kun værdipapirer, hvis bogføringsgruppe anvender lagerprincippet, så afkrydsningen slår igennem på alle de linjer, den danner.</li>
   </ol>
-  <p>Linjerne vises i kladden, hvor du kan gennemse dem før bogføring.</p>
+  <p>Til sidst viser kørslen, hvor mange kladdelinjer der blev dannet, og eventuelle advarsler om manglende kursdatoer. Linjerne står nu i kladden, klar til gennemsyn.</p>
+
+  <details class="tech">
+    <summary>Vis teknisk detalje</summary>
+    <div class="tech-body">
+      <p>Værdiændringen i regnskabsvaluta beregnes pr. åben købspost (lot) som forskellen mellem beholdningens værdi på reguleringsdatoen og dens bogførte anskaffelsesværdi:</p>
+      <pre><code>ΔRV = Σ over åbne lots:  Antal × NyKurs      / Valutafaktor(reguleringsdato)
+                       − Antal × Købskurs   / Valutafaktor(købsdato)</code></pre>
+      <p>Beløbet i handelsvaluta beregnes som <code>Σ Antal × (NyKurs − gennemsnitlig købskurs)</code>. Selve opdelingen mellem fondskurs- og valutakurskomponent udledes ved bogføringen af de åbne lots — ikke af beløbet på kladdelinjen.</p>
+      <table>
+        <thead><tr><th>Objekt</th><th>ID</th></tr></thead>
+        <tbody>
+          <tr><td>Rapport <em>Adjust Security Prices</em></td><td>79945</td></tr>
+          <tr><td>Side <em>Security Adjustment Journals</em></td><td>79942</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
 </div>
 
 <div class="section" id="bogfoering">
@@ -100,17 +147,65 @@
     <div class="section-icon">✓</div>
     <h2>Bogføring af regulering</h2>
   </div>
-  <p>Gennemse linjerne i kladden og foretag eventuelle rettelser (fx for afrundinger). Når du er parat, klik <strong>Bogfør</strong> (F9).</p>
+  <p>Gennemse linjerne i kladden og ret om nødvendigt kursen. Vil du se posteringerne på forhånd, vælg <strong>Vis bogføring</strong>. Når du er klar, vælg <strong>Bogfør</strong> (F9).</p>
 
-  <p>Ved bogføringen dannes:</p>
+  <p>Pr. bogført linje dannes:</p>
   <ul class="bullets">
-    <li><strong>Værdipapirpost:</strong> En post med bilagstype Fondskursregulering, antal = 0, beløb svarende til ændringen.</li>
-    <li><strong>Gevinstposter:</strong> Én for kursændringen (Kursregulering) og evt. én for valutaændringen, begge som urealiserede.</li>
-    <li><strong>Finansposter:</strong> Beholdningskontoen justeres med beløbet. En modpost dannes på gevinstkontoen.</li>
+    <li><strong>Værdipapirpost</strong> med bilagstype <strong>Kursregulering</strong>, antal 0 og beløbet svarende til depotets samlede værdiændring. Realiseringstype <strong>Urealiseret</strong>.</li>
+    <li><strong>Detaljerede avanceposter</strong> — én for fondskurseffekten og, for værdipapirer i fremmed valuta, én for valutakurseffekten. Begge urealiserede.</li>
+    <li><strong>Finansposter</strong> — beholdningen reguleres, og modposten lander på kontiene for urealiseret gevinst eller tab. Alle posteringer deles om samme transaktionsnummer.</li>
   </ul>
+
   <div class="note">
-    <strong>Vigtigt:</strong> Urealiserede gevinster fra reguleringer bliver automatisk tilbageført, når værdipapirerne senere sælges. Systemet handler korrekt uden manuel indgriben.
+    <strong>Vigtigt:</strong> Urealiserede reguleringer tilbageføres automatisk, når værdipapiret senere sælges — se Aktiesalg og Obligationssalg. Du skal ikke selv tilbageføre noget.
   </div>
+
+  <details class="tech">
+    <summary>Vis teknisk detalje</summary>
+    <div class="tech-body">
+      <table>
+        <thead>
+          <tr><th>Posteringstype</th><th>Indhold</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Værdipapirpost</td>
+            <td>Bilagstype <em>Price Adjustment</em>, antal = 0, beløb og beløb (RV) = depotets samlede mark-to-market-ændring, realiseringstype <em>Unrealized</em>.</td>
+          </tr>
+          <tr>
+            <td>Detaljeret avancepost (kurs)</td>
+            <td>Avancekomponent <em>Price Adjustment</em>. Beløb pr. åbent lot = <code>Restantal × (ny værdi pr. enhed − anskaffelseskurs) / Valutafaktor(købsdato)</code>.</td>
+          </tr>
+          <tr>
+            <td>Detaljeret avancepost (valuta)</td>
+            <td>Avancekomponent <em>Currency Adjustment</em>. Beløb = residualet <code>Restantal × ny værdi pr. enhed × (1/Valutafaktor(i dag) − 1/Valutafaktor(købsdato))</code>. Dannes kun i fremmed valuta.</td>
+          </tr>
+          <tr>
+            <td>Finanspost — modpost</td>
+            <td>Modkontoen fra værdipapirets værdibogføringsgruppe, i to linjer: fondsdel og valutadel. Kontoen afhænger af princippet på linjen — <em>Fondskursregulering</em> og <em>Valutakursregulering</em> uden, <em>Beholdning</em> med.</td>
+          </tr>
+          <tr>
+            <td>Finanspost — urealiseret avance</td>
+            <td>Avancekontoen fra avancebogføringsgruppen, opslået på realiseringstype <em>Unrealized</em> og avancekomponent <em>Price Adjustment</em> hhv. <em>Currency Adjustment</em>.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Bogføringen tilbagefører først den udestående regulering fra forrige periode og bogfører derefter den nye, så finansvirkningen bliver periodens ændring og ikke det akkumulerede beløb.</p>
+      <div class="note">
+        <strong>Sådan deles beløbet mellem fondskurs og valutakurs.</strong> Fondskursdelen måles med den
+        valutafaktor, beholdningen blev <strong>købt</strong> til, og valutadelen er resten. Krydsleddet
+        mellem kursændringen og valutakursændringen ligger dermed i valutakurslinjen. Er valutakursen
+        uændret i perioden, bliver valutadelen præcis 0. Det er samme opdeling, som et <strong>salg</strong>
+        bruger, når avancen realiseres — en gevinst rammer altså den samme konto, uanset om den står
+        urealiseret eller bliver realiseret.
+      </div>
+      <div class="note">
+        <strong>Kursen omregnes først til et beløb pr. enhed.</strong> Et lots anskaffelseskurs er gemt som
+        et beløb pr. enhed, ikke som en kurs, så en obligation noteret i kurs 98 regnes som 0,98 pr. enhed
+        — ganget med indekskursen, hvis papiret er en indeksobligation. Aktier er talmæssigt upåvirkede.
+      </div>
+    </div>
+  </details>
 </div>
 
 <div class="section" id="lagerprincip">
@@ -118,15 +213,117 @@
     <div class="section-icon">⚖️</div>
     <h2>Lagerprincip vs. realisationsprincip</h2>
   </div>
-  <p>Fondskursregulering bruges kun for værdipapirer der anvender <strong>lagerprincip</strong> eller <strong>begge principper</strong> i deres bogføringsgruppe. Værdipapirer med <strong>realisationsprincip</strong> indgår ikke — gevinster på disse bogføres først ved salg.</p>
-  <p>Systemet kontrollerer automatisk hvilket princip der gælder, så du behøver ikke angive det manuelt.</p>
+  <p>Alle værdipapirer med en åben beholdning kursreguleres — uanset hvilket regnskabsprincip bogføringsgruppen anvender. Reguleringen står som en <strong>urealiseret</strong> post, der vises særskilt og tilbageføres, når værdipapiret sælges.</p>
+  <p>Regnskabsprincippet afgør altså ikke <em>om</em> der reguleres, men hvordan den enkelte regulering behandles. Det styres af feltet <strong>Lagerprincip</strong> på kladdelinjen:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Lagerprincip</th><th>Hvad det betyder</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nej</strong></td>
+          <td>Den almindelige kursregulering i årets løb. Reguleringen står særskilt som urealiseret — modposten bogføres på kontiene <em>Fondskursregulering</em> og <em>Valutakursregulering</em> — og indgår ikke i beholdningens realiserede restværdi.</td>
+        </tr>
+        <tr>
+          <td><strong>Ja</strong></td>
+          <td>Lagerprincippet. Avancen markeres med skatteoplysninger, og beholdningen reguleres med den nye værdi — modposten bogføres på <em>Beholdningskontoen</em> i stedet for på reguleringskontiene, så reguleringen indgår i den realiserede restværdi. Avancekontoen er den samme som ved en almindelig regulering: realiseringstypen bliver ikke <em>Realiseret</em>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Kørslen sætter feltet ud fra afkrydsningsfeltet <strong>Lagerprincip</strong> i anfordringsvinduet. På en manuelt tastet linje sætter du det selv i kladden.</p>
+
+  <h3>Tre betingelser for at bruge lagerprincippet</h3>
+  <ol class="steps">
+    <li><strong>Kun på kursreguleringslinjer.</strong> Lagerprincippet hører til bilagstypen Kursregulering — ikke til køb, salg eller overførsel. På handels- og overførselskladden er feltet skrivebeskyttet og står altid til <strong>Nej</strong>, og en linje af enhver anden bilagstype afviser værdien <strong>Ja</strong>.</li>
+    <li><strong>Kun når bogføringsgruppen tillader det.</strong> Anvender bogføringsgruppen realisationsprincippet, afvises <strong>Ja</strong> ved bogføring. Omvendt er <strong>Nej</strong> altid lovligt: en gruppe på lagerprincippet må gerne have almindelige kursreguleringer i årets løb.</li>
+    <li><strong>Kun ved et periodeskifte.</strong> Der skal findes en regnskabsperiode, som starter dagen efter reguleringsdatoen. Kørslen kontrollerer det, før den danner en eneste linje, og bogføringen kontrollerer det igen pr. linje.</li>
+  </ol>
+
+  <div class="info-box">
+    Er du i tvivl, så lad <strong>Lagerprincip</strong> stå tomt. Reguleringen bogføres da som en almindelig urealiseret regulering, hvilket er det rigtige hele året undtagen ved regnskabsårets udløb.
+  </div>
+
+  <div class="note">
+    <strong>Vigtigt:</strong> Skattefri kursavance for værdipapirer, der har været ejet mere end et bestemt antal år, er endnu ikke fuldt understøttet. Kontrollér skattemarkeringen manuelt, hvis din bogføringsgruppe bruger ejertidsbestemt beskatning.
+  </div>
+</div>
+
+<div class="section" id="indeksering">
+  <div class="section-header">
+    <div class="section-icon">🔢</div>
+    <h2>Indeksregulerede obligationer</h2>
+  </div>
+  <p>En <strong>indeksobligation</strong> er en obligation, hvis værdi følger et prisindeks (typisk nettoprisindekset), så investeringen er beskyttet mod inflation. Værdien bestemmes derfor af <em>to</em> tal: fondskursen — som for enhver anden obligation — og indekset. Stiger indekset, stiger obligationens værdi, selv om kursen står stille.</p>
+  <p>Indekset angives som en <strong>faktor</strong>: 1,05 betyder, at indekset står 5&nbsp;% over grundniveauet. Markedsværdien regnes som <strong>Antal × Kurs × Indeks / 100</strong> — en beholdning på nominelt 100.000 til kurs 98 og indeks 1,05 er altså 102.900 kr. værd, hvor den uden indeks kun ville være 98.000 kr.</p>
+
+  <h3>Opsætning</h3>
+  <ol class="steps">
+    <li>Markér obligationen som <strong>Indeksobligation</strong> på værdipapirkortet (fanen med obligationsdetaljer).</li>
+    <li>Vedligehold indekset i kartoteket <strong>Indekskurser</strong> — én fælles serie pr. dato, angivet som faktor (skriv 1,05, ikke indekstallet 105).</li>
+  </ol>
+
+  <h3>Hvad gør kørslen?</h3>
+  <p>Du skal ikke sætte noget særskilt i gang — indeksobligationerne kommer med i den samme kursreguleringskørsel som resten af porteføljen. Kørslen finder den seneste indekskurs på eller før reguleringsdatoen, regner markedsværdien med både kurs og indeks og bogfører forskellen op til den bogførte værdi som en helt almindelig kursregulering.</p>
+  <p>For at du bagefter kan se, hvor meget af værdien der kommer fra kursen, og hvor meget der kommer fra indekset, skriver kørslen <strong>én kladdelinje pr. købsparti</strong> og udfylder fire kolonner, der følger med over på værdipapirposten ved bogføring:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Kolonne</th>
+          <th>Indhold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Indekskurs</strong></td>
+          <td>Dagens indeks, som reguleringen er regnet med.</td>
+        </tr>
+        <tr>
+          <td><strong>Indekskurs ved køb</strong></td>
+          <td>Det indeks, partiet blev købt til (hentet fra købsposten).</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb før indeks</strong></td>
+          <td>Partiets kostpris renset for købsindekset.</td>
+        </tr>
+        <tr>
+          <td><strong>Aktuel markedsværdi før indeks</strong></td>
+          <td>Partiets værdi til dagens kurs, men uden dagens indeks.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Eksempel</h3>
+  <p>Du køber nominelt 100.000 til kurs 98, mens indekset står i 1,05. Købet bogføres til 100.000 × 98/100 × 1,05 = <strong>102.900 kr.</strong></p>
+  <p>Ved næste kursregulering er kursen 99, og indekset er steget til 1,08. Markedsværdien er nu 100.000 × 99/100 × 1,08 = <strong>106.920 kr.</strong>, så kørslen danner en regulering på <strong>4.020 kr.</strong> Kladdelinjen viser samtidig:</p>
+  <ul>
+    <li><strong>Aktuel markedsværdi før indeks</strong> = 99.000 kr. — hvad beholdningen ville være værd til kurs 99 helt uden indeks.</li>
+    <li><strong>Beløb før indeks</strong> = 98.000 kr. — kostprisen renset for købsindekset (102.900 / 1,05).</li>
+    <li><strong>Indekskurs ved køb</strong> = 1,05 og <strong>Indekskurs</strong> = 1,08.</li>
+  </ul>
+  <p>Deraf kan du aflæse, at kursen alene kun har flyttet værdien 1.000 kr. (98.000 → 99.000) — resten af stigningen kommer fra indekset. Indeksets andel af dagens værdi er forskellen mellem <strong>Beløb</strong> (106.920 kr.) og <strong>Aktuel markedsværdi før indeks</strong> (99.000 kr.).</p>
+
+  <div class="info-box">
+    Kolonnerne er skjulte som standard og hentes frem med personalisering — både på kursreguleringskladden og på <strong>Værdipapirposter</strong>. De er kun udfyldt på kursreguleringslinjer for indeksobligationer; kolonnen <strong>Reguleret partis løbenr.</strong> udpeger det købsparti, linjen dækker.
+  </div>
+
+  <details class="tech">
+    <summary>Vis teknisk detalje</summary>
+    <div class="tech-body">
+      <p>Markedsværdien af en indeksobligation regnes som <code>Antal × Kurs × Indeks / 100</code>, både på købsdatoen og på reguleringsdatoen. Indekskurserne ligger i én global serie pr. dato, uafhængigt af ISIN. <em>Beløb før indeks</em> regnes som <code>Restantal × Købskurs / Købsindeks</code> (købskursen pr. enhed indeholder købsindekset), og <em>Aktuel markedsværdi før indeks</em> som <code>Restantal × Kurs / 100</code>.</p>
+      <p>Felterne hedder på engelsk <em>Amount B.I. (Before Index)</em>, <em>Current Index Price</em> og <em>Current Market Value B.I.</em> — B.I. betyder <em>Before Index</em>, som i NAV §9.2.2. Kolonnen for beløbet uden handelsrente hedder <em>Beløb før renter</em> (<em>Amount Excl. Trading Interest</em>).</p>
+    </div>
+  </details>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

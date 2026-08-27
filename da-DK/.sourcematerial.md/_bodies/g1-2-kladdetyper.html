@@ -11,8 +11,8 @@
     <div class="feature-card">
       <span class="feature-icon">💱</span>
       <h3>Handel</h3>
-      <p>Køb og salg af værdipapirer. Tilgang ved køb, afgang ved salg — og realiseret gevinst eller
-      tab, når der sælges.</p>
+      <p>Køb og salg af værdipapirer. Et køb åbner et købsparti; et salg forbruger de ældste
+      partier <strong>i salgets depot</strong> og bogfører realiseret gevinst eller tab.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">💰</span>
@@ -28,12 +28,12 @@
     <div class="feature-card">
       <span class="feature-icon">🔁</span>
       <h3>Overførsel</h3>
-      <p>Flytter beholdning mellem to depoter, uden at det betragtes som køb eller salg. Kostprisen
-      følger med.</p>
+      <p>Flytter værdi mellem værdipapirer eller depoter — og skalerer stykstørrelsen. Aldrig køb
+      eller salg; kostprisen følger med.</p>
     </div>
     <div class="feature-card">
       <span class="feature-icon">↩️</span>
-      <h3>Rettelse</h3>
+      <h3>Ompostering</h3>
       <p>Tilbagefører en tidligere bogført post. Den oprindelige post bliver stående, så
       sporbarheden bevares.</p>
     </div>
@@ -68,12 +68,15 @@
       </tr>
       <tr>
         <td><strong>Overførsel</strong></td>
-        <td>Flytter beholdning mellem depoter, så kostpris og historik følger med.</td>
-        <td>Flytning af en aktiepost fra et frit depot til et pensionsdepot.</td>
+        <td>Flytter værdi mellem værdipapirer (<em>Overførsel</em>), skalerer antal og kurs
+        (<em>Stykregulering</em>) eller flytter beholdning mellem depoter
+        (<em>Depotregulering</em>) — altid uden finansposter.</td>
+        <td>Fusion af to fonde; en aktiesplit 1:10; flytning af en aktiepost fra et frit depot til et pensionsdepot.</td>
       </tr>
       <tr>
-        <td><strong>Rettelse</strong></td>
-        <td>Tilbagefører en forkert bogført post med modsat fortegn.</td>
+        <td><strong>Ompostering</strong></td>
+        <td>Tilbagefører en forkert bogført post med modsat fortegn. Den nyeste post på et
+        værdipapir skal tilbageføres først.</td>
         <td>Annullering af et køb, der blev bogført med forkert beløb.</td>
       </tr>
     </tbody>

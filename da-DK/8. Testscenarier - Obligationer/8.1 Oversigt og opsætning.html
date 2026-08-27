@@ -88,7 +88,7 @@
         <tr><td>30-09-2026</td><td>Kvartalskupon (uden for scope)</td><td>Realiseret</td><td class="num">90</td><td>—</td></tr>
         <tr><td>31-12-2026</td><td>Kvartalskupon (uden for scope)</td><td>Realiseret</td><td class="num">90</td><td>—</td></tr>
       </tbody></table></div>
-  <p class="muted">Renteberegningen kører via <code>report 79930 "Calculate Bond Interest"</code> (interval af terminsdatoer) eller <code>report 79927 "Interest Accrual Batch"</code> (én konkret terminsdato). Begge kalder <code>codeunit 79926 "Bond Interest Calc."</code> med formlen <code>Rente = Nom. rente % &times; Antal &times; Rentedage / Dage i år</code>.</p>
+  <p class="muted">Renteberegningen kører via <code>report 79930 "Calculate Bond Interest"</code> over et interval af terminsdatoer — én konkret dato dækkes ved <em>Fra dato</em> = <em>Til dato</em>. Rapporten kalder <code>codeunit 79926 "Bond Interest Calc."</code> med formlen <code>Rente = Nom. rente % &times; Antal &times; Rentedage / Dage i år</code>, regnet pr. depot på beholdningen den pågældende terminsdato.</p>
 </div>
 
 <div class="section" id="finanskonti">
@@ -144,10 +144,10 @@
       <tbody>
         <tr><td>Urealiseret</td><td>Kursregulering</td><td>Gevinst</td><td><span class="acct" data-acct="unrealPrice">1355</span> — urealiseret kurs</td></tr>
         <tr><td>Realiseret</td><td>Salg</td><td>Gevinst</td><td><span class="acct" data-acct="realPrice">1675</span> — realiseret kurs</td></tr>
-        <tr><td>Realiseret</td><td>Afkast</td><td>Rente</td><td><span class="acct" data-acct="couponIncome">1450</span> — renteindtægt (kupon)</td></tr>
-        <tr><td>Urealiseret</td><td>Afkast</td><td>Rente</td><td><span class="acct" data-acct="unrealInterest">1455</span> — urealiseret renteindtægt</td></tr>
+        <tr><td>Realiseret</td><td>Afkast</td><td>Blank</td><td><span class="acct" data-acct="couponIncome">1450</span> — renteindtægt (kupon)</td></tr>
+        <tr><td>Urealiseret</td><td>Afkast</td><td>Blank</td><td><span class="acct" data-acct="unrealInterest">1455</span> — urealiseret renteindtægt</td></tr>
       </tbody></table></div>
-  <div class="note"><strong>Vigtigt — “Avancetype” er ikke gevinst/tab her.</strong> Motoren udfylder Avancetype-feltet efter <em>komponent</em>: pris-komponenten slår altid op på <strong>Gevinst</strong>, og renteafkast på <strong>Rente</strong> — også når en kursregulering er et tab. Brug derfor præcis disse værdier.</div>
+  <div class="note"><strong>Vigtigt — “Avancetype” er ikke gevinst/tab her.</strong> Motoren udfylder Avancetype-feltet efter <em>komponent</em>: pris-komponenten slår altid op på <strong>Gevinst</strong>, og renteafkast på <strong>Blank</strong> — afkast er en af de kombinationer, der ikke deles i tab og gevinst. Det gælder også, når en kursregulering er et tab. Brug derfor præcis disse værdier.</div>
   <div class="info-box"><strong>Skattetype:</strong> skattetypen på <strong>Afkast</strong>-rækkerne (kupon) afledes af bogføringsgruppens <strong>Skattemetode afkast</strong>, mens salgs- og kursreguleringsrækker afledes af <strong>Skattemetode avance</strong>. Opret derfor Afkast-rækkerne med den skattetype, der svarer til Skattemetode afkast (her Skattefri).</div>
   <div class="info-box"><strong>DKK = ingen valuta-række.</strong> Fordi obligationen er i regnskabsvaluta, oprettes der aldrig en valuta-DPLE, og du behøver ikke en resultatrække for Valutakursjustering. For en obligation i fremmed valuta gælder pris/valuta-splittet præcis som i aktie-testscenarierne (se 7.1).</div>
 </div>
@@ -175,7 +175,7 @@
   <h3>1) Ren kurs + handelsrente (vedhængende rente)</h3>
   <ul class="bullets">
     <li>Ved handel betales/modtages dels den <strong>rene kursværdi</strong> (nominel × ren kurs ÷ 100), dels den <strong>vedhængende rente</strong> (handelsrente) der er løbet op siden sidste kupon.</li>
-    <li>Kun den rene kursværdi indgår i <strong>kostbasis</strong> (Beløb før renter, <em>Amount B.I.</em>) og i avanceopgørelsen. Handelsrenten bogføres på en egen konto (<span class="acct" data-acct="tradingInterest">1460</span>) og indgår i bankafregningen — den er <strong>ikke</strong> kursavance.</li>
+    <li>Kun den rene kursværdi indgår i <strong>kostbasis</strong> (Beløb før renter, <em>Amount Excl. Trading Interest</em>) og i avanceopgørelsen. Handelsrenten bogføres på en egen konto (<span class="acct" data-acct="tradingInterest">1460</span>) og indgår i bankafregningen — den er <strong>ikke</strong> kursavance.</li>
   </ul>
   <h3>2) Kuponrente — urealiseret periodisering og realiseret betaling</h3>
   <ul class="bullets">
@@ -197,11 +197,11 @@
         <tr>
           <td>1</td><td><span class="tag done">Løst</span></td>
           <td><strong>Resultatkontoen blev slået op på den forkerte dimension.</strong> Posteringsmotoren (<code>GetProfitGLAccount</code>) sendte en <code>Transaction Type</code>-værdi ind i nøglefeltet <em>Avancetype</em> (Profit Type) i stedet for en ægte avancetype. Det virkede kun for gevinster (ordinal-sammenfald) og kunne hverken ramme Tab-kontoen eller oprette mellemregningerne til Overførsel og periodiseret rente.</td>
-          <td><strong>Løst i koden:</strong> resultatkontoen slås nu op på <strong>Bilagstype (Document Type) + Avancetype (Profit Type)</strong>, hvor Avancetype udledes af beløbet: gevinst→Gevinst, tab→Tab, udbytte→Udbytte, rente→Rente, mellemregning/offset→Blank. Overførsel = (Realiseret, Overførsel, Blank); renteperiodiseringens modpost = (Urealiseret, Afkast, Blank). <strong>Tabellen er uændret.</strong> <span class="muted">GL-routingen bør verificeres mod et opsat firma, og opsætningen kræver nye rækker (Tab-konti, Valutakursjustering gevinst/tab, Afkast Blank, Overførsel Blank). Udbytteskat (kun aktier) bogføres nu på det dedikerede felt <strong>Konto for udbytteskat</strong> på bogføringsgruppen — ikke længere via en legacy Rente-mapping.</span></td>
+          <td><strong>Løst i koden:</strong> resultatkontoen slås nu op på <strong>Bilagstype (Document Type) + Avancetype (Profit Type)</strong>, hvor Avancetype udledes af beløbet: gevinst→Gevinst, tab→Tab, og afkast/mellemregning/offset→Blank. Overførsel = (Realiseret, Overførsel, Blank); renteperiodiseringens modpost hentes fra balancesiden (Værdikomponent = <em>Afkastperiodisering</em>). <strong>Tabellen er uændret.</strong> <span class="muted">GL-routingen bør verificeres mod et opsat firma, og opsætningen kræver nye rækker (Tab-konti, Valutakursjustering gevinst/tab, Afkast Blank, Overførsel Blank). Udbytteskat (kun aktier) bogføres på rækken <strong>Realiseret / Udbytteskat / Blank / Blank</strong> — det dedikerede felt <em>Konto for udbytteskat</em> er udfaset.</span></td>
         </tr>
         <tr>
           <td>2</td><td><span class="tag pending">Mellem</span></td>
-          <td><strong>Tilbageførselsmetode = “Straks” findes ikke som rapportparameter.</strong> Columbus' koncept (dan automatisk en tilbageførselslinje dagen efter terminsdatoen og tilbagefør tidligere ikke-tilbageførte urealiserede renter) er ikke 1:1 på <code>Calculate Bond Interest</code> / <code>Interest Accrual Batch</code>.</td>
+          <td><strong>Tilbageførselsmetode = “Straks” findes ikke som rapportparameter.</strong> Columbus' koncept (dan automatisk en tilbageførselslinje dagen efter terminsdatoen og tilbagefør tidligere ikke-tilbageførte urealiserede renter) er ikke 1:1 på <code>Calculate Bond Interest</code>.</td>
           <td>Urealiserede periodiseringer skal tilbageføres manuelt (eller realiseres) — i testscenarierne sker det automatisk ved kuponen via salgs-/yield-bogføringen. Anbefaling: tilføj <em>Tilbageførselsmetode</em> + tilbageførselsdatoer som anfordringsfelter.</td>
         </tr>
         <tr>
@@ -221,7 +221,7 @@
         </tr>
         <tr>
           <td>6</td><td><span class="tag info">Lav</span></td>
-          <td><strong>Manglende TableRelation/ToolTip på batch-feltet</strong> i <code>report 79927</code> og <code>report 79930</code> (udkommenteret TODO).</td>
+          <td><strong>Manglende TableRelation/ToolTip på batch-feltet</strong> i <code>report 79930</code> (udkommenteret TODO).</td>
           <td>Ingen opslag/validering på batchnavnet i anfordringsvinduet — ren UX. Anbefaling: aktivér <code>TableRelation = "Security Journal Batch"</code> og tilføj ToolTip.</td>
         </tr>
         <tr>
@@ -230,7 +230,7 @@
           <td>Ikke en kodefejl, men kilde til forvirring. Anbefaling: opdatér de gamle dokumenter, så de matcher den nuværende kurskonvention og kolonnesynlighed.</td>
         </tr>
       </tbody></table></div>
-  <div class="info-box"><strong>Bekræftet implementeret (ingen handling):</strong> /100-division for obligationer (<code>CalcAmountBeforeCosts</code>), handelsrente til finans (<code>PostTradingInterestToGL</code>, ekskl. kostbasis via <em>Amount B.I.</em>), renteberegning (<code>codeunit 79926</code>, formel Antal × rente × dage/360), Drawing → kurs 100 + Bond-validering (felt 44), samt synlighed af Drawing / Index Price / Handelsrente på <em>Show Bond Columns</em>.</div>
+  <div class="info-box"><strong>Bekræftet implementeret (ingen handling):</strong> /100-division for obligationer (<code>CalcAmountBeforeCosts</code>), handelsrente til finans (<code>PostTradingInterestToGL</code>, ekskl. kostbasis via <em>Amount Excl. Trading Interest</em>), renteberegning (<code>codeunit 79926</code>, formel Antal × rente × dage/360), Drawing → kurs 100 + Bond-validering (felt 44), samt synlighed af Drawing / Index Price / Handelsrente på <em>Show Bond Columns</em>.</div>
 </div>
 
   </div>

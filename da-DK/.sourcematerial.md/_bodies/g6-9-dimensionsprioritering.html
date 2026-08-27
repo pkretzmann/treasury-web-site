@@ -1,0 +1,120 @@
+<div class="section" id="dimprio-overblik">
+  <div class="section-header">
+    <div class="section-icon">🧭</div>
+    <h2>Hvad prioriteringen styrer</h2>
+  </div>
+  <p>En kladdelinje henter sine dimensioner fra <strong>to</strong> kilder: værdipapiret og depotet. Bærer begge den samme dimension — fx <em>Afdeling</em> — men med hver sin værdi, kan kun én af dem lande på linjen. Som standard vinder <strong>depotet</strong>, fordi det er den mere specifikke af de to kilder.</p>
+  <p>Det valg er kun en standard. Med Business Centrals side <strong>Standarddimensionsprioriteter</strong> kan du selv bestemme, hvem der vinder — uden kodeændring og pr. kladdetype. Denne side beskriver reglen og opsætningen; hele dimensionskæden — hvor dimensionerne sættes, og hvor de ender — står i <a href="../2. Stamdata/2.3 Dimensioner på værdipapirer og depoter.html">Dimensioner på værdipapirer og depoter</a>.</p>
+</div>
+
+<div class="section" id="dimprio-regler">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <h2>Sådan afgøres konflikten</h2>
+  </div>
+  <p>Prioriteterne sættes pr. <strong>kildekode</strong> — koden fra kladdetypens felt <em>Kildekode</em>, som står på hver kladdelinje. For hver kildekode kan hver tabel få et prioritetstal, og <strong>laveste tal vinder</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Opsætning for kildekoden</th><th>Hvem vinder?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ingen prioritetsrækker</td>
+          <td><strong>Depotet</strong> — standardadfærden</td>
+        </tr>
+        <tr>
+          <td>Række for både <em>Værdipapir</em> og <em>Depot</em></td>
+          <td>Tabellen med det <strong>laveste</strong> tal</td>
+        </tr>
+        <tr>
+          <td>Række for kun én af tabellerne</td>
+          <td>Tabellen <strong>med</strong> en række</td>
+        </tr>
+        <tr>
+          <td>Samme tal til begge</td>
+          <td><strong>Depotet</strong> — ved uafgjort gælder standarden</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><strong>Bemærk:</strong> Reglen gælder alle kladdelinjer — også dem, batchkørslerne danner (foreslå udbyttelinjer, kursregulering, renteberegning og overførsel). Alle linjer bærer kladdetypens kildekode, så prioriteten slår igennem overalt.</div>
+</div>
+
+<div class="section" id="dimprio-opsaetning">
+  <div class="section-header">
+    <div class="section-icon">🛠️</div>
+    <h2>Sådan sættes prioriteten op</h2>
+  </div>
+
+  <ol class="steps">
+    <li>Søg efter <strong>Standarddimensionsprioriteter</strong> via <em>Fortæl mig</em> (Alt+Q).</li>
+    <li>Vælg den <strong>kildekode</strong>, prioriteten skal gælde for, i feltet øverst.</li>
+    <li>Opret to rækker: slå <strong>Tabel-id</strong> op og vælg <strong>Værdipapir</strong> med <em>Prioritet</em> = <strong>1</strong>, og <strong>Depot</strong> med <em>Prioritet</em> = <strong>2</strong>. Kolonnen <em>Tabelnavn</em> viser navnet, så rækken er til at læse.</li>
+    <li>Gentag for de øvrige kildekoder, hvor værdipapiret skal vinde.</li>
+  </ol>
+
+  <p>Modulet bruger fem kildekoder — én pr. kladdetype. De sættes op i <strong>Kildekodeopsætning</strong> under overskriften <em>Værdipapir</em>:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Felt i Kildekodeopsætning</th><th>Kladde</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Værdipapirkladde</strong></td><td>Handelskladden</td></tr>
+        <tr><td><strong>Afkastkladde</strong></td><td>Afkastkladden (udbytte og rente)</td></tr>
+        <tr><td><strong>Kursreguleringskladde</strong></td><td>Kursreguleringskladden</td></tr>
+        <tr><td><strong>Overførselskladde</strong></td><td>Overførselskladden</td></tr>
+        <tr><td><strong>Omposteringskladde</strong></td><td>Omposteringskladden</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Skal værdipapiret vinde overalt, oprettes prioritetsrækkerne for alle fem kildekoder.</p>
+
+  <div class="note"><strong>Vigtigt:</strong> Prioriteten slås op på linjens kildekode. En kladdetype uden kildekode kan derfor ikke ramme opsætningen — dér vinder depotet altid. Kildekoden foreslås automatisk på kladdetypen, når <em>Kladdetypetype</em> vælges, se <a href="6.7 Oprettelse af kladdetyper.html">Oprettelse af kladdetyper</a>.</div>
+</div>
+
+<div class="section" id="dimprio-eksempel">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <h2>Eksempel</h2>
+  </div>
+  <p>Aktien <strong>NOVO</strong> bærer standarddimensionen <em>Afdeling</em> = <strong>INVEST</strong>. Depotet <strong>NORDNET</strong> bærer <em>Afdeling</em> = <strong>FINANS</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Opsætning</th><th>Afdeling på kladdelinjen</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ingen prioritetsrækker</td>
+          <td><strong>FINANS</strong> — depotet vinder</td>
+        </tr>
+        <tr>
+          <td>Værdipapir = 1, Depot = 2 for kildekoden</td>
+          <td><strong>INVEST</strong> — værdipapiret vinder</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Dimensionen følger derefter linjen ud på værdipapirposten og finansposten ved bogføring.</p>
+</div>
+
+<div class="section" id="dimprio-bemaerkninger">
+  <div class="section-header">
+    <div class="section-icon">💡</div>
+    <h2>Godt at vide</h2>
+  </div>
+  <ul>
+    <li><strong>Dimensionssættet dannes, når værdipapir eller depot vælges på linjen.</strong> Retter du prioritetsopsætningen, ændrer det ikke allerede dannede linjer — vælg værdipapiret igen, eller slet og genopret linjen.</li>
+    <li><strong>Manuelle rettelser til sidst.</strong> Sættet gendannes fra stamdataene, hver gang værdipapir eller depot vælges igen, så ret dimensionerne på linjen som det sidste — se <a href="../2. Stamdata/2.3 Dimensioner på værdipapirer og depoter.html">Dimensioner på værdipapirer og depoter</a>.</li>
+    <li><strong>Notifikation ved manglende opsætning.</strong> Har en kildekode ingen prioritetsrækker, kan Business Central vise en engangs-notifikation om, at der ikke er sat prioriteter op. Den kan afvises og blokerer ikke noget.</li>
+    <li><strong>Kun de to tabeller.</strong> Værdipapirmodulets kilder er <em>Værdipapir</em> og <em>Depot</em>. De øvrige tabeller i opslaget hører til standardmodulerne og har ingen virkning på værdipapirkladderne.</li>
+  </ul>
+</div>

@@ -20,57 +20,177 @@
     <nav class="toc">
       <h2>På denne side</h2>
       <ol>
-        <li><a href="#overblik-statistik">Statistik og porteføljeovreblik</a></li>
-        <li><a href="#afstemmming">Afstemning mod finansregnskab</a></li>
-        <li><a href="#rapportering">Hyppigere rapportering</a></li>
+        <li><a href="#aabn-statistikken">Sådan åbner du statistikken</a></li>
+        <li><a href="#filtre">Filtre</a></li>
+        <li><a href="#beholdning">Beholdning</a></li>
+        <li><a href="#gevinst-tab">Gevinst / Tab</a></li>
+        <li><a href="#finansafstemning">Finansafstemning</a></li>
+        <li><a href="#saadan-afstemmer-du">Sådan afstemmer du</a></li>
       </ol>
     </nav>
-<div class="section" id="overblik-statistik">
+<div class="section" id="aabn-statistikken">
   <div class="section-header">
     <div class="section-icon">📊</div>
-    <h2>Statistik og porteføljeovreblik</h2>
+    <h2>Sådan åbner du statistikken</h2>
   </div>
-  <p>For at få overblik over hele værdipapirporteføljens værdier, beholdninger og gevinster kan du køre rapporten <strong>Værdipapirbeholdningsstatistik</strong>. Rapporten viser blandt andet:</p>
-  <ul class="bullets">
-    <li>Samlet antal enheder pr. værdipapir</li>
-    <li>Seneste kurs (fra investeringsfondspriser)</li>
-    <li>Anskaffelsesværdi (kostpris)</li>
-    <li>Markedsværdi (antal × seneste kurs)</li>
-    <li>Urealiserede gevinster eller tab</li>
-  </ul>
-</div>
-
-<div class="section" id="afstemmming">
-  <div class="section-header">
-    <div class="section-icon">🔍</div>
-    <h2>Afstemning mod finansregnskab</h2>
-  </div>
-  <p>For at kontrollere at værdipapirporteføljens beholdningsværdi stemmer med finanskontiene, kan du:</p>
+  <p><strong>Værdipapirstatistik</strong> samler alt, hvad ét værdipapir har kostet, indbragt og er
+  værd lige nu, på én side — og viser nederst de finanskonti, tallene skal stemme med. Siden er
+  stedet, du går hen, når du vil svare på "hvad står vi med i dette papir, og passer det med
+  regnskabet?"</p>
   <ol class="steps">
-    <li>Åbn rapporten <strong>Værdipapirbeholdningsstatistik</strong> under Treasury-menuen.</li>
-    <li>Notér den samlede markedsværdi for hele porteføljen.</li>
-    <li>Gå til finanskontoen for værdipapirdepotbeholdning og kontroller at saldoen matcher.</li>
-    <li>Hvis tallene ikke stemmer, gennemse værdipapirposternes bogføringsdatoer — der kan være forskel på, om du bruger handelsdato eller bogføringsdato til filtreringen.</li>
+    <li>Åbn <strong>Værdipapirkort</strong> for det værdipapir, du vil se på.</li>
+    <li>Vælg handlingen <strong>Porteføljestatistik</strong> — eller tryk <strong>F7</strong>.</li>
   </ol>
-  <div class="note">
-    <strong>Vigtigt:</strong> Detaljerede statistikker pr. værdipapir — såsom opdeling af beholdning efter købsdato, eller analyse af hvor meget hver enkelt køb bidrager til gevinsten — kræver manuel gennemgang af værdipapirposternes detaljer.
+  <p>Siden viser altid tallene for det værdipapir, du kom fra. Vil du se et andet papir, lukker du
+  siden og åbner statistikken fra det næste kort.</p>
+  <div class="info-box">
+    Rapporten <strong>Porteføljestatistik for værdipapirer</strong> er noget andet. Den giver et
+    overblik på tværs af hele porteføljen; denne side går i dybden med ét papir.
   </div>
 </div>
 
-<div class="section" id="rapportering">
+<div class="section" id="filtre">
+  <div class="section-header">
+    <div class="section-icon">🔎</div>
+    <h2>Filtre</h2>
+  </div>
+  <p>Øverst på siden ligger seks filtre. De virker på alle tal på siden — både beholdning, avance og
+  finansafstemningen — og de træder i kraft, så snart du forlader feltet.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Filter</th><th>Bruges til</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Afdelingsfilter</strong></td><td>Begræns til én global dimension 1-værdi. Tallene medregner kun de værdipapirposter, der bærer den dimension.</td></tr>
+      <tr><td><strong>Projektfilter</strong></td><td>Samme for global dimension 2.</td></tr>
+      <tr><td><strong>Datofilter</strong></td><td>Begræns til en periode, fx <code>01-01-26..31-03-26</code>. Bemærk, at afgrænsningen sker på <strong>bogføringsdato</strong>.</td></tr>
+      <tr><td><strong>Avancekomponentfilter</strong></td><td>Begræns avancetallene til én komponent — <em>Fondskursavance</em>, <em>Valutakursavance</em>, <em>Afkast</em> eller <em>Udbytteskat</em>.</td></tr>
+      <tr><td><strong>Skattypefilter</strong></td><td>Begræns til skattepligtige eller skattefri poster.</td></tr>
+      <tr><td><strong>Tilbageførselsfilter</strong></td><td>Vælg, om tilbageførte poster skal tælle med.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <strong>Om datofilteret:</strong> Et datofilter kan gøre beløbene svære at afstemme direkte mod
+    finansen, hvis der er forskel på bogføringsdato og handelsdato på nogle af posterne. Filtrér
+    begge steder på bogføringsdato, når du afstemmer.
+  </div>
+</div>
+
+<div class="section" id="beholdning">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <h2>Beholdning</h2>
+  </div>
+  <p>Gruppen <strong>Beholdning</strong> viser, hvad du har tilbage — opgjort på de åbne
+  købspartier.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Felt</th><th>Indhold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Antal</strong></td><td>Det samlede restantal på værdipapiret, altså summen af restantallet på alle åbne købspartier.</td></tr>
+      <tr><td><strong>Kostprisværdi (RV)</strong></td><td>Beholdningens anskaffelsesværdi i regnskabsvaluta: restantal × købskurs, lagt sammen for de åbne købspartier.</td></tr>
+      <tr><td><strong>Gns. kostpris</strong></td><td>Den vejede gennemsnitlige anskaffelseskurs, altså <strong>Kostprisværdi (RV)</strong> delt med <strong>Antal</strong>. Vises i værdipapirets valuta.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Tallene er <em>anskaffelsesværdier</em>, ikke markedsværdier. Kursstigninger og -fald står i
+  stedet i gruppen <strong>Gevinst / Tab</strong> som urealiserede beløb.</p>
+</div>
+
+<div class="section" id="gevinst-tab">
   <div class="section-header">
     <div class="section-icon">📈</div>
-    <h2>Hyppigere rapportering</h2>
+    <h2>Gevinst / Tab</h2>
   </div>
-  <p>Hvis du har behov for detaljeret rapportering med avanceopdelinger eller filtrering efter tidsperioder, kan du manuelt åbne tabellerne <strong>Værdipapirposter</strong>, <strong>Detaljerede værdiposter</strong> og <strong>Detaljerede gevinstposter</strong> og filtrere/sortere efter behov.</p>
-  <p>For mere specialiserede analyser — fx fortjenstmargin pr. salg eller sammenligning med tidligere år — kan du ved behov eksportere data til regneark.</p>
+  <p>Gruppen <strong>Gevinst / Tab</strong> deler resultatet op i de tre ting, der kan tjene eller
+  tabe penge på et værdipapir — <strong>fondskurs</strong>, <strong>valutakurs</strong> og
+  <strong>afkast</strong> — hver især vist både realiseret og urealiseret.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Felt</th><th>Indhold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Realiseret fondskursavance (RV)</strong></td><td>Gevinst eller tab på kursbevægelsen for de partier, der er <strong>solgt</strong>: salgsprovenuet målt til partiets egen købsvalutakurs, minus partiets kostpris.</td></tr>
+      <tr><td><strong>Realiseret valutakursavance (RV)</strong></td><td>Gevinst eller tab, fordi valutakursen har flyttet sig mellem købet og salget af de solgte partier.</td></tr>
+      <tr><td><strong>Realiseret afkast (RV)</strong></td><td>Modtagne renter og udbytter, opgjort <strong>før</strong> skat.</td></tr>
+      <tr><td><strong>Urealiseret fondskursavance (RV)</strong></td><td>Kursgevinst eller -tab på den beholdning, der stadig er i behold. Beløbet kommer fra kursreguleringerne.</td></tr>
+      <tr><td><strong>Urealiseret valutakursavance (RV)</strong></td><td>Samme for valutakursen på den åbne beholdning.</td></tr>
+      <tr><td><strong>Urealiseret afkast (RV)</strong></td><td>Periodiseret rente og udbytte, der endnu ikke er modtaget.</td></tr>
+      <tr><td><strong>Udbytteskat (RV)</strong></td><td>Den indeholdte udbytteskat, der er bogført på værdipapiret.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Opdelingen i realiseret og urealiseret er den samme sondring, som <strong>Realiseringstype</strong>
+  laver på den enkelte post — derfor er der ikke et særskilt realiseringstypefilter i filtergruppen;
+  opdelingen <em>er</em> allerede vist.</p>
+  <div class="note">
+    <strong>Om fortegn:</strong> De realiserede rækker viser en gevinst med <strong>negativt</strong>
+    fortegn (indkomsttegn, som i finansen), mens de urealiserede reguleringer viser en gevinst
+    <strong>positivt</strong>. Forskellen ligger i bogføringen, ikke på statistiksiden. Læg derfor
+    ikke de seks rækker sammen uden at tage højde for det.
+  </div>
+</div>
+
+<div class="section" id="finansafstemning">
+  <div class="section-header">
+    <div class="section-icon">🏦</div>
+    <h2>Finansafstemning</h2>
+  </div>
+  <p>Nederst på siden ligger delen <strong>Finansafstemning</strong> — et udsnit af kontoplanen med
+  netop de tal, værdipapiret har lagt på hver konto.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Kolonne</th><th>Indhold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Nr.</strong> og <strong>Navn</strong></td><td>Finanskontoen.</td></tr>
+      <tr><td><strong>Bevægelse på værdipapir</strong></td><td>Summen af finansposter på kontoen, der bærer dette værdipapirnummer, inden for <strong>Datofilter</strong>.</td></tr>
+      <tr><td><strong>Saldo på værdipapir</strong></td><td>Samme, men opgjort som saldo til og med datofilterets slutdato.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Klik på et beløb for at få de finansposter frem, det består af. Det er de samme poster, som
+  handlingen <strong>Finansposter</strong> på værdipapirkortet viser — blot afgrænset til én konto og
+  én periode.</p>
+  <div class="info-box">
+    <strong>Hvilke konti kommer med?</strong> Kontoudsnittet styres af feltet
+    <strong>Finanskontofilter for Treasury</strong> på siden <strong>Opsætning af Treasury</strong>.
+    Er feltet udfyldt, vises netop de konti. Er det blankt, viser listen i stedet de konti,
+    værdipapiret rent faktisk er bogført på — så du ikke får hele kontoplanen serveret. Er der
+    hverken filter eller bogføringer, er listen tom.
+  </div>
+  <p>Kontoudsnittet vælges <strong>uden</strong> dato- og dimensionsfiltrene. Rækkerne bliver derfor
+  stående, når du flytter datofilteret, og en periode uden bogføringer viser 0 i stedet for at
+  forsvinde fra listen.</p>
+</div>
+
+<div class="section" id="saadan-afstemmer-du">
+  <div class="section-header">
+    <div class="section-icon">✓</div>
+    <h2>Sådan afstemmer du</h2>
+  </div>
+  <ol class="steps">
+    <li>Sæt <strong>Datofilter</strong> til den periode, du vil afstemme — fx en måned eller et kvartal.</li>
+    <li>Sammenhold <strong>Kostprisværdi (RV)</strong> med <strong>Saldo på værdipapir</strong> på beholdningskontoen.</li>
+    <li>Stemmer de ikke, så klik på saldoen og gennemgå finansposterne. De hyppigste årsager er, at en
+    kursregulering mangler at blive bogført, eller at handelsdato og bogføringsdato ligger i hver sin
+    periode på en enkelt post.</li>
+    <li>Sammenhold de seks avancerækker med resultatkontiene i
+    <strong>Værdipapiravancebogføringsgruppe</strong>.</li>
+  </ol>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

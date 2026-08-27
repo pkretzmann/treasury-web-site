@@ -44,70 +44,75 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>No.</strong></td>
-          <td><span class="udf udf-v">V/T</span></td>
-          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret i Værdipapiropsætning. Er nummerserien tom, skal nummeret angives manuelt.</td>
+          <td><strong>Nummer</strong></td>
+          <td>V/T</td>
+          <td>Tildeles automatisk fra nummerserien, hvis denne er konfigureret i Opsætning af Treasury. Er nummerserien tom, skal nummeret angives manuelt.</td>
         </tr>
         <tr>
           <td><strong>Nummerserie</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Udfyldes automatisk fra Værdipapiropsætning ved oprettelse. Kan ændres via assisteret redigering på No.-feltet.</td>
+          <td>P</td>
+          <td>Udfyldes automatisk fra Opsætning af Treasury ved oprettelse. Feltet vises ikke på kortet — du skifter nummerserie via assisteret redigering (opslagspilen) på <strong>Nummer</strong>.</td>
         </tr>
         <tr>
           <td><strong>Værdipapirtype</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Vælg <strong>Aktie</strong>. Kan ikke ændres, når der eksisterer bogførte poster på værdipapir.</td>
-        </tr>
-        <tr>
-          <td><strong>Udstederkode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv udsteder. Feltet er valgfrit for aktier.</td>
+          <td>T</td>
+          <td>Vælg <strong>Aktie</strong>. Kan ikke ændres, når der eksisterer bogførte poster på værdipapiret.</td>
         </tr>
         <tr>
           <td><strong>ISIN-kode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Angiv eller vælg ISIN-koden for aktien. Oprettes automatisk som ny ISIN-kode, hvis koden ikke kendes i forvejen. Kan ikke ændres, når der eksisterer bogførte poster.</td>
         </tr>
         <tr>
+          <td><strong>Udstederkode</strong></td>
+          <td>V</td>
+          <td>Angiv udsteder. Feltet er valgfrit for aktier.</td>
+        </tr>
+        <tr>
           <td><strong>Navn</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv aktiens navn. Udfyldes manuelt — der er ikke automatisk navnhentning fra ISIN i den nuværende version.</td>
+          <td>V/P</td>
+          <td>Udfyldes automatisk fra værdipapirkursen, når den valgte ISIN-kode allerede har kurshistorik. Har koden ingen kurser — hvilket er tilfældet for en helt ny ISIN-kode — skriver du selv navnet. Navnet kan altid rettes bagefter.</td>
         </tr>
         <tr>
           <td><strong>Søgenavn</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Udfyldes automatisk på baggrund af Navn, men kan redigeres manuelt. Vises kun via <em>Vis mere</em>.</td>
         </tr>
         <tr>
           <td><strong>Spærret</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Markér for at spærre aktien. En spærret aktie kan hverken vælges på en kladdelinje eller bogføres.</td>
         </tr>
         <tr>
           <td><strong>Valutakode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Angiv valutakoden, hvis aktien handles i en anden valuta end regnskabsvalutaen. Lad feltet stå blankt, hvis aktien er noteret i regnskabsvalutaen (f.eks. DKK). Kan ikke ændres, når der eksisterer bogførte poster.</td>
         </tr>
         <tr>
           <td><strong>Lande-/områdekode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Angiv landekode for aktien.</td>
         </tr>
         <tr>
-          <td><strong>Resterende antal</strong></td>
-          <td><span class="udf udf-p">P</span></td>
+          <td><strong>Restantal</strong></td>
+          <td>P</td>
           <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
         </tr>
         <tr>
-          <td><strong>Resterende værdi</strong></td>
-          <td><span class="udf udf-p">P</span></td>
-          <td>Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
+          <td><strong>Markedsværdi</strong></td>
+          <td>P</td>
+          <td>Restantallet værdisat til den seneste værdipapirkurs, i handelsvalutaen.</td>
+        </tr>
+        <tr>
+          <td><strong>Restværdi (RV)</strong></td>
+          <td>P</td>
+          <td>Den bogførte værdi i regnskabsvaluta. Beregnes og opdateres automatisk på baggrund af bogførte poster.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h3>Undergruppe: Papirdetaljer</h3>
+  <h3>Undergruppe: Aktiedetaljer</h3>
   <p>I denne undergruppe angiver du stykstørrelsen for aktien.</p>
 
   <div class="table-wrap">
@@ -122,11 +127,15 @@
       <tbody>
         <tr>
           <td><strong>Stykstørrelse</strong></td>
-          <td><span class="udf udf-v">V</span></td>
-          <td>Angiv aktiens stykstørrelse (nominel stykstørrelse pr. aktie). Feltet kan ikke redigeres, hvis der eksisterer åbne poster på aktien — ændringen skal i så fald foretages via Overførselskladden.</td>
+          <td>V</td>
+          <td>Angiv aktiens stykstørrelse (nominel stykstørrelse pr. aktie). Feltet kan ikke redigeres, hvis der eksisterer <strong>åbne</strong> poster på aktien — ændringen skal i så fald foretages via Overførselskladden med bilagstypen <em>Stykstørrelsesregulering</em>.</td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="note">
+    <strong>Bemærk:</strong> Spærringen gælder kun, så længe der er <strong>åbne</strong> poster på aktien. Er hele beholdningen solgt, kan du igen rette stykstørrelsen direkte på kortet. Årsagen er, at en stykstørrelsesregulering omskalerer de åbne partier og derfor ikke kan bogføres, når der ingen beholdning er. De poster, der allerede er bogført, beholder den stykstørrelse, de blev bogført med, så historikken ændrer sig ikke.
   </div>
 
   <div class="info-box">
@@ -139,7 +148,7 @@
     <div class="section-icon">📊</div>
     <h2>Fanebladet Bogføring</h2>
   </div>
-  <p>På fanebladet <strong>Bogføring</strong> knytter du aktien til finanskontoplanen og definerer bogføringsgrupper og dimensioner. Disse oplysninger styrer, hvordan posteringer på aktien påvirker bogholderiet.</p>
+  <p>På fanebladet <strong>Bogføring</strong> knytter du aktien til finanskontoplanen og angiver bogføringsgruppe og dimensioner. Disse oplysninger styrer, hvordan posteringer på aktien påvirker bogholderiet.</p>
 
   <div class="table-wrap">
     <table>
@@ -153,32 +162,34 @@
       <tbody>
         <tr>
           <td><strong>Bogføringsgruppe</strong></td>
-          <td><span class="udf udf-t">T</span></td>
+          <td>T</td>
           <td>Angiv eller vælg den bogføringsgruppe, der knytter aktien til finanskontoplanen. Se vejledningen om bogføringsgrupper.</td>
         </tr>
         <tr>
-          <td><strong>Global dimension 1-kode</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Angiv den primære dimensionsværdi (f.eks. afdeling). Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
-        </tr>
-        <tr>
-          <td><strong>Global dimension 2-kode</strong></td>
-          <td><span class="udf udf-t">T</span></td>
-          <td>Angiv den sekundære dimensionsværdi. Feltet er obligatorisk, hvis dimensioner er konfigureret.</td>
-        </tr>
-        <tr>
           <td><strong>Rapporteringsgruppemetode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Vælg grupperingsmetode til rapporter: <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>.</td>
         </tr>
         <tr>
           <td><strong>Rapporteringsgruppekode</strong></td>
-          <td><span class="udf udf-v">V</span></td>
+          <td>V</td>
           <td>Angiv den tilhørende gruppekode. Opslaget afhænger af metoden: bogføringsgruppe, dimensionsværdi eller detaljeret information.</td>
+        </tr>
+        <tr>
+          <td><strong>Global dimension 1-kode</strong></td>
+          <td>V</td>
+          <td>Angiv den primære dimensionsværdi (f.eks. afdeling). Feltet er valgfrit. Værdien gemmes som standarddimension på aktien.</td>
+        </tr>
+        <tr>
+          <td><strong>Global dimension 2-kode</strong></td>
+          <td>V</td>
+          <td>Angiv den sekundære dimensionsværdi. Samme regler som Global dimension 1-kode.</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="info-box"><strong>Om dimensioner:</strong> De to felter gemmes som standarddimensioner på aktien og arves af kladdelinjen, når du vælger aktien. Ud over de to globale dimensioner kan flere standarddimensioner sættes med handlingen <strong>Dimensioner</strong> på kortet. Hele kæden — arv, konflikt med depotets dimensioner, kontrol ved bogføring og hvor dimensionerne ender — er beskrevet under Stamdata → Dimensioner på værdipapirer og depoter.</div>
 </div>
 
 <div class="section" id="handlinger">
@@ -189,10 +200,19 @@
   <p>Fra aktiekortet kan du navigere til relaterede data og udføre handlinger:</p>
 
   <ul class="bullets">
-    <li><strong>Værdipapirkurser</strong> — se kurshistorikken for den tilknyttede ISIN-kode og følg udviklingen i aktiens værdi over tid.</li>
-    <li><strong>Depotbeholdninger</strong> — se hvilke depoter aktien er tilknyttet.</li>
-    <li><strong>Comments</strong> — tilføj noter og kommentarer til aktien, fx for at dokumentere særlige aftaler eller observationer.</li>
+    <li><strong>Dimensioner</strong> — standarddimensioner for aktien (Alt+D).</li>
+    <li><strong>Poster</strong> — gruppe med fem indgange: <strong>Værdipapirposter</strong>, <strong>Depotposter</strong>, <strong>Detaljerede værdiposter</strong>, <strong>Detaljerede avanceposter</strong> og <strong>Finansposter</strong>.</li>
+    <li><strong>Porteføljestatistik</strong> — nøgletal for aktien (F7).</li>
+    <li><strong>Værdianalyse</strong> — alle værdiændringer over tid.</li>
+    <li><strong>Tilbagefør alle poster</strong> — danner tilbageførselslinjer i en kladde for alle ikke-tilbageførte poster.</li>
+    <li><strong>Værdipapirkurser</strong> — kurshistorikken for den tilknyttede ISIN-kode. Papiret skal have en ISIN-kode; er koden endnu ikke oprettet i ISIN-listen, bliver du spurgt, om den skal oprettes, inden kurslisten åbnes.</li>
+    <li><strong>Indekskurser</strong> — indekskurser (bruges til indeksobligationer).</li>
+    <li><strong>Værdipapirdepoter</strong> — de depoter, aktien er tilknyttet.</li>
+    <li><strong>Detaljeret information</strong> — attributværdier på aktien.</li>
+    <li><strong>Bemærkninger</strong> — noter og kommentarer til aktien.</li>
   </ul>
+
+  <p>Til højre på kortet viser infoboksen <strong>Detaljeret information</strong> de attributværdier, der er registreret på aktien.</p>
 </div>
 
 <div class="section" id="vejledning-til-udfyldelse">
@@ -205,38 +225,38 @@
   <p>Start med de felter, der er markeret med <strong>T</strong> (Tvungen):</p>
   <ul class="bullets">
     <li><strong>Værdipapirtype:</strong> Vælg <strong>Aktie</strong>.</li>
-    <li><strong>Nummerserie:</strong> Udfyldes automatisk.</li>
     <li><strong>Bogføringsgruppe:</strong> Knyt aktien til en bogføringsgruppe.</li>
-    <li><strong>Global dimension 1-kode og Global dimension 2-kode:</strong> Fyld kun ud, hvis dimensioner er konfigureret i systemet.</li>
   </ul>
 
   <h3>Hvad kan du udfylde efter behov?</h3>
-  <p>Felterne markeret med <strong>V</strong> (Valgfri) kan udfyldes efter behov:</p>
+  <p>Felterne markeret med <strong>V</strong> (Valgfri) udfyldes efter behov:</p>
   <ul class="bullets">
-    <li><strong>ISIN-kode:</strong> Hjælper med at identificere og linke til kurser.</li>
+    <li><strong>ISIN-kode:</strong> Hjælper med at identificere aktien og knytte den til kurser.</li>
     <li><strong>Navn og Søgenavn:</strong> Gør det lettere at søge og finde aktien senere.</li>
-    <li><strong>Valutakode:</strong> Fyld ud, hvis aktien handles i en anden valuta end DKK.</li>
+    <li><strong>Valutakode:</strong> Fyld ud, hvis aktien handles i en anden valuta end regnskabsvalutaen.</li>
     <li><strong>Stykstørrelse:</strong> Angiv, hvis aktien har en bestemt stykstørrelse.</li>
+    <li><strong>Global dimension 1- og 2-kode:</strong> Fyld ud, hvis du bruger dimensioner.</li>
   </ul>
 
   <h3>Hvad styres automatisk?</h3>
-  <p>Felterne markeret med <strong>P</strong> (Programstyret) opdateres automatisk baseret på posteringer:</p>
+  <p>Felterne markeret med <strong>P</strong> (Programstyret) vedligeholdes af systemet:</p>
   <ul class="bullets">
-    <li><strong>Resterende antal:</strong> Systemet beregner automatisk, hvor mange aktier du har tilbage.</li>
-    <li><strong>Resterende værdi:</strong> Systemet beregner automatisk værdien af det resterende beholdning.</li>
-    <li><strong>Søgenavn:</strong> Oprettes automatisk fra Navn, men kan ændres manuelt.</li>
+    <li><strong>Nummerserie:</strong> Sættes ved oprettelse; skiftes via assisteret redigering på Nummer.</li>
+    <li><strong>Restantal:</strong> Systemet beregner, hvor mange aktier der er tilbage.</li>
+    <li><strong>Markedsværdi og Restværdi (RV):</strong> Beregnes ud fra henholdsvis den seneste kurs og de bogførte poster.</li>
+    <li><strong>Søgenavn:</strong> Dannes automatisk ud fra Navn, men kan ændres manuelt.</li>
   </ul>
 
   <div class="note">
-    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Værdipapirtype</strong>, <strong>ISIN-kode</strong> eller <strong>Valutakode</strong>. Plant disse oplysninger omhyggeligt fra starten.
+    <strong>Vigtigt:</strong> Når du har bogført poster på en aktie, kan du ikke længere ændre <strong>Værdipapirtype</strong>, <strong>ISIN-kode</strong> eller <strong>Valutakode</strong>. Planlæg disse oplysninger omhyggeligt fra starten.
   </div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

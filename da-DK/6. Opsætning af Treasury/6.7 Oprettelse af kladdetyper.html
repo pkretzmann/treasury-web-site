@@ -41,23 +41,23 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Handel</strong></td>
+          <td><strong>Handel (Handelskladde)</strong></td>
           <td>Køb og salg af værdipapirer</td>
         </tr>
         <tr>
-          <td><strong>Afkast</strong></td>
+          <td><strong>Afkast (Afkastkladde)</strong></td>
           <td>Aktieudbytte, obligationsrente og andre afkast</td>
         </tr>
         <tr>
-          <td><strong>Curr. Exch. Rate Adjustment</strong></td>
+          <td><strong>Kursregulering (Kursreguleringskladde)</strong></td>
           <td>Fonds- og valutakursregulering</td>
         </tr>
         <tr>
-          <td><strong>Overførsel</strong></td>
+          <td><strong>Overførsel (Overførselskladde)</strong></td>
           <td>Værdioverførsler mellem værdipapirer (fusion, split mv.)</td>
         </tr>
         <tr>
-          <td><strong>Korrektion</strong></td>
+          <td><strong>Ompostering (Omposteringskladde)</strong></td>
           <td>Ompostering og korrektion af fejlposteringer</td>
         </tr>
       </tbody>
@@ -102,34 +102,22 @@
           <td>Et beskrivende navn eller tekst.</td>
         </tr>
         <tr>
-          <td><strong>Type</strong></td>
-          <td>Kladdens type: <strong>Handel</strong>, <strong>Afkast</strong>, <strong>Curr. Exch. Rate Adjustment</strong>, <strong>Overførsel</strong> eller <strong>Korrektion</strong>. Valget styrer automatisk, hvilken kladdesidetype der åbnes.</td>
+          <td><strong>Kladdetypetype</strong></td>
+          <td>Kladdens type: <strong>Handel</strong>, <strong>Afkast</strong>, <strong>Kursregulering</strong>, <strong>Overførsel</strong> eller <strong>Ompostering</strong>. Valget styrer automatisk, hvilken kladdeside der åbnes.</td>
         </tr>
         <tr>
           <td><strong>Kildekode</strong></td>
-          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>SEC-HANDEL</strong>.</td>
+          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>VP-HANDEL</strong>.</td>
         </tr>
         <tr>
           <td><strong>Årsagskode</strong></td>
           <td>En årsagskode, der indsættes automatisk på nye kladdelinjer. Kan overstyres på den enkelte linje.</td>
         </tr>
-        <tr>
-          <td><strong>Vis aktiekolonner</strong></td>
-          <td>Markér for at vise aktie-specifikke kolonner i kladden: <strong>Udtræk</strong> og <strong>Fondsaktie</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Vis obligationskolonner</strong></td>
-          <td>Markér for at vise obligations-specifikke kolonner: <strong>Handelsrente</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Vis valutakolonner</strong></td>
-          <td>Markér for at vise valutarelaterede kolonner: <strong>Valutafaktor</strong>.</td>
-        </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="note"><strong>Bemærk om kolonnevisning:</strong> Hvis du ikke markerer nogle af de tre kolonneflags, bruger systemet Business Centrals standard personalisering — programmet husker din egen kolonneopsætning for den pågældende kladde.</div>
+  <div class="note"><strong>Bemærk om kolonnevisning:</strong> Kladdetypen styrer ikke, hvilke kolonner kladden viser. Hver kladde har et fast standardlayout, og du tilføjer eller fjerner selv kolonner med <strong>Tilpas</strong> — Business Central husker derefter din egen opsætning. Kolonner som <strong>Fondsaktie</strong>, <strong>Gratis</strong> og beløbsfelterne i regnskabsvaluta er skjult i standardlayoutet, men kan altid hentes frem den vej.</div>
 </div>
 
 <div class="section" id="kladdetype-batches">
@@ -147,7 +135,7 @@
       <tbody>
         <tr>
           <td><strong>Navn</strong></td>
-          <td>Navn på kladdenavnet (op til 10 tegn). Eksempel: <strong>JAN-2026</strong> eller <strong>KØBER</strong>.</td>
+          <td>Navn på kladdenavnet (op til 10 tegn). Eksempel: <strong>JAN-2026</strong> eller <strong>DRIFT</strong>.</td>
         </tr>
         <tr>
           <td><strong>Beskrivelse</strong></td>
@@ -155,7 +143,7 @@
         </tr>
         <tr>
           <td><strong>Årsagskode</strong></td>
-          <td>En årsagskode specifik for dette kladdenavn — tilsidesætter kladdtypens årsagskode.</td>
+          <td>En årsagskode specifik for dette kladdenavn — tilsidesætter kladdetypens årsagskode.</td>
         </tr>
         <tr>
           <td><strong>Nummerserie</strong></td>
@@ -180,24 +168,24 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Navn</th><th>Type</th></tr>
+        <tr><th>Navn</th><th>Kladdetypetype</th></tr>
       </thead>
       <tbody>
         <tr><td><strong>HANDEL</strong></td><td>Handel</td></tr>
         <tr><td><strong>AFKAST</strong></td><td>Afkast</td></tr>
-        <tr><td><strong>KURSREG</strong></td><td>Curr. Exch. Rate Adjustment</td></tr>
+        <tr><td><strong>KURSREG</strong></td><td>Kursregulering</td></tr>
         <tr><td><strong>OVERF</strong></td><td>Overførsel</td></tr>
-        <tr><td><strong>OMPOST</strong></td><td>Korrektion</td></tr>
+        <tr><td><strong>OMPOST</strong></td><td>Ompostering</td></tr>
       </tbody>
     </table>
   </div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

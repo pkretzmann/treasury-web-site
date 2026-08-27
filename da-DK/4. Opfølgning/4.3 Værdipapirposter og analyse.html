@@ -20,74 +20,168 @@
     <nav class="toc">
       <h2>På denne side</h2>
       <ol>
-        <li><a href="#vaerdipapirposter-overblik">Oversigt over værdipapirposter</a></li>
-        <li><a href="#detaljer-ved-post">Detaljerede værdiposter</a></li>
-        <li><a href="#gevinster">Detaljerede gevinstposter</a></li>
-        <li><a href="#analyse-fremtid">Hvad er næste skridt?</a></li>
+        <li><a href="#vaerdipapirposter">Værdipapirposter</a></li>
+        <li><a href="#handlinger">Handlinger på posten</a></li>
+        <li><a href="#detaljerede-vaerdiposter">Detaljerede værdiposter</a></li>
+        <li><a href="#detaljerede-avanceposter">Detaljerede avanceposter</a></li>
+        <li><a href="#vaerdistatistik">Værdistatistik</a></li>
+        <li><a href="#vaerdianalyse">Værdianalyse</a></li>
       </ol>
     </nav>
-<div class="section" id="vaerdipapirposter-overblik">
+<div class="section" id="vaerdipapirposter">
   <div class="section-header">
-    <div class="section-icon">📋</div>
-    <h2>Oversigt over værdipapirposter</h2>
+    <div class="section-icon">📒</div>
+    <h2>Værdipapirposter</h2>
   </div>
-  <p>Værdipapirposter er en liste over alle bogførte transaktioner på værdipapirer — både køb, salg, udbytter, renter og reguleringer. Du kan åbne listen ved at gå til <strong>Værdipapirposter</strong> under Treasury-menuen.</p>
-  <p>Posterne kan ikke redigeres direkte. Hvis du skal ændre eller tilbageføre en post, bruger du ompostering (se afsnit 4.1) og bogfører en ny post.</p>
-  <h3>Filtrering og sortering</h3>
-  <ul class="bullets">
-    <li>Du kan filtrere efter værdipapir, dato, bilagsnummer, bilagstype og depot.</li>
-    <li>Du kan tilføje eller skjule kolonner ved at klikke på <strong>Indstil kolonner</strong>.</li>
-    <li>Sortér efter hvilket felt som helst ved at klikke på kolonneoverskriften.</li>
-  </ul>
+  <p>Alt, hvad der bogføres i Treasury, ender som poster. <strong>Værdipapirposter</strong> er
+  hovedbogen — én linje pr. bogført kladdelinje — og fire uddybende visninger forklarer, hvordan hver
+  post er sammensat. Ingen af posterne kan rettes direkte; en fejl rettes med en ompostering og en ny
+  bogføring.</p>
+  <p>Åbn <strong>Værdipapirposter</strong> fra Treasury-menuen i rollecentret, eller fra
+  værdipapirkortet, hvor listen er afgrænset til det papir, du står på.</p>
+
+  <h3>Kolonnerne i standardopsætningen</h3>
+  <p>Listen viser 24 kolonner, grupperet efter hvad du bruger dem til:</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Gruppe</th><th>Kolonner</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Identifikation</strong></td><td>Løbenr., Værdipapirnr., Værdipapirnavn, Depotkode, Bogføringsdato, Handelsdato, Bilagstype, Bilagsnr., Beskrivelse</td></tr>
+      <tr><td><strong>Handel</strong></td><td>Antal, Værdipapirkurs, Beløb, Beløb (RV), Valutakode, Omkostninger, Handelsrente</td></tr>
+      <tr><td><strong>Restbeholdning</strong></td><td>Åben, Restantal, Restbeløb, Restbeløb (RV)</td></tr>
+      <tr><td><strong>Status</strong></td><td>Realiseringstype, Global dimension 1, Global dimension 2, Tilbageført</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Der findes yderligere 31 kolonner på siden — beløb i regnskabsvaluta, valutafaktorer,
+  skattefelter, sporbarhedsfelter og lignende. De er skjult i standardopsætningen og hentes frem med
+  <strong>Tilpas</strong>. Business Central husker derefter din egen opsætning.</p>
+  <div class="info-box">
+    <strong>Depotkode</strong> er med som standardkolonne. Det er ofte den hurtigste vej til at se,
+    om en bevægelse ligger i det depot, du forventede — især efter en depotregulering.
+  </div>
 </div>
 
-<div class="section" id="detaljer-ved-post">
+<div class="section" id="handlinger">
   <div class="section-header">
-    <div class="section-icon">🔎</div>
+    <div class="section-icon">⚙️</div>
+    <h2>Handlinger på posten</h2>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Handling</th><th>Gør</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Detaljerede værdiposter</strong></td><td>Viser, hvordan postens værdi er sammensat og har udviklet sig.</td></tr>
+      <tr><td><strong>Detaljerede avanceposter</strong></td><td>Viser avancen fordelt på fondskurs, valutakurs, afkast og udbytteskat.</td></tr>
+      <tr><td><strong>Depotposter</strong></td><td>Viser de depotposter, bogføringen dannede.</td></tr>
+      <tr><td><strong>Værdistatistik</strong></td><td>Viser restantal og restværdi for det valgte købsparti.</td></tr>
+      <tr><td><strong>Dimensioner</strong></td><td>Viser postens dimensioner.</td></tr>
+      <tr><td><strong>Find poster...</strong></td><td>Finder alle poster og bilag med samme bilagsnr. og bogføringsdato — også i finansen.</td></tr>
+      <tr><td><strong>Tilbagefør post</strong></td><td>Danner en tilbageførselslinje i omposteringskladden til gennemsyn.</td></tr>
+      <tr><td><strong>Tilbagefør og bogfør journal</strong></td><td>Tilbagefører <strong>hele</strong> journalen, posten indgår i, og bogfører straks.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="info-box">De to tilbageførselshandlinger er beskrevet i afsnittet
+  <strong>Ompostering</strong>.</div>
+</div>
+
+<div class="section" id="detaljerede-vaerdiposter">
+  <div class="section-header">
+    <div class="section-icon">🧾</div>
     <h2>Detaljerede værdiposter</h2>
   </div>
-  <p>For at få mere indsigt i hvordan en enkelt køb påvirker beholdningen — fx når antal ændrer sig ved salg eller reguleringer — kan du åbne <strong>Detaljerede værdiposter</strong>.</p>
-  <p>Her kan du vælge en købspost og se:</p>
-  <ul class="bullets">
-    <li>Hvordan beholdningen af dette køb påvirkes af senere salg</li>
-    <li>Alle reguleringer (kursændringer, valutaændringer) der påvirker værdien af netop dette køb</li>
-    <li>Hvordan "restværdien" udvikler sig over tid</li>
-  </ul>
-</div>
-
-<div class="section" id="gevinster">
-  <div class="section-header">
-    <div class="section-icon">💰</div>
-    <h2>Detaljerede gevinstposter</h2>
-  </div>
-  <p>Gevinstposter registrerer alle realiserede og urealiserede gevinster eller tab — både fra salg og fra løbende markedsvurderinger.</p>
-  <p><strong>Detaljerede gevinstposter</strong> viser hver enkelt gevinst og dens type:</p>
-  <ul class="bullets">
-    <li><strong>Salg:</strong> Gevinst eller tab når værdipapirer sælges.</li>
-    <li><strong>Kursregulering:</strong> Ændring i fondskurs mellem køb og vurdering.</li>
-    <li><strong>Valutaregulering:</strong> Ændring i valutakurs (for værdipapirer i fremmed valuta).</li>
-    <li><strong>Afkast:</strong> Realiserede eller urealiserede udbytter og renter.</li>
-  </ul>
-  <p>Du kan filtrere efter værdipapir, gevinsttype og om gevinsten er realiseret eller urealiseret.</p>
+  <p>En detaljeret værdipost forklarer, hvad der er sket med værdien af ét bestemt
+  <strong>købsparti</strong>. Et køb danner selve partiet; salg, kursreguleringer og overførsler
+  danner efterfølgende linjer, der peger tilbage på det via <strong>Købspostløbenr.</strong></p>
+  <p>Kolonnen <strong>Depotkode</strong> viser, hvilket depot linjen hører til. Den er nødvendig,
+  fordi den samme bevægelse kan ramme flere depoter — et afgangs-/tilgangspar fra en depotregulering
+  og en fondsaktietildeling fordelt over flere depoter kan kun skelnes på depotet.</p>
   <div class="note">
-    <strong>Vigtigt:</strong> Urealiserede gevinster fra løbende kursreguleringer bliver automatisk tilbageført, hvis værdipapirerne senere sælges eller hele posten omposteres. Systemet beholder altid en komplet historik.
+    Kolonnerne <strong>Formateret løbenr.</strong> og <strong>Løbenummerfilter</strong> er skjult. De
+    bærer data fra den oprindelige NAV-løsning på migrerede poster, men udfyldes ikke af Business
+    Central. Har du brug for at se en migreret værdi, henter du kolonnen frem med
+    <strong>Tilpas</strong>.
   </div>
 </div>
 
-<div class="section" id="analyse-fremtid">
+<div class="section" id="detaljerede-avanceposter">
   <div class="section-header">
-    <div class="section-icon">🎯</div>
-    <h2>Hvad er næste skridt?</h2>
+    <div class="section-icon">💹</div>
+    <h2>Detaljerede avanceposter</h2>
   </div>
-  <p>I øjeblikket kan du gennemse værdipapirposter og gevinstposter hver for sig. Hvis du har behov for dybdegående analyse — fx sammenligning af hvor meget hver enkel købsdato bidrager til den samlede gevinst, eller overblik over hvilke værdipapirer der har ligget længst i porteføljen — kan disse analyser pt. ikke genereres automatisk.</p>
-  <p>I sådanne tilfælde kan du manuel filtrere listen ved hjælp af disponible søge- og filterfunktioner og eventuelt eksportere data til regneark for videre bearbejdelse.</p>
+  <p>Avanceposterne forklarer, hvor en gevinst eller et tab kommer fra. Hver linje bærer en
+  <strong>Avancekomponent</strong>, der siger hvilken slags avance det er:</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Avancekomponent</th><th>Opstår ved</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fondskursavance</strong></td><td>Kursen på selve værdipapiret har flyttet sig.</td></tr>
+      <tr><td><strong>Valutakursavance</strong></td><td>Valutakursen har flyttet sig mellem køb og salg.</td></tr>
+      <tr><td><strong>Afkast</strong></td><td>Rente eller udbytte.</td></tr>
+      <tr><td><strong>Udbytteskat</strong></td><td>Indeholdt skat af et udbytte.</td></tr>
+      <tr><td><strong>Overførsel</strong></td><td>Værdi flyttet mellem papirer eller depoter uden resultatvirkning.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Realiseringstype</strong> siger, om beløbet er realiseret (papiret er solgt, eller
+  pengene er modtaget) eller urealiseret (en regulering på en beholdning, du stadig har).</p>
+</div>
+
+<div class="section" id="vaerdistatistik">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <h2>Værdistatistik</h2>
+  </div>
+  <p><strong>Værdistatistik</strong> viser restbeholdningen på ét bestemt købsparti — det, du åbner
+  fra handlingen <strong>Værdistatistik</strong> på en købspost.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Kolonne</th><th>Indhold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Værdipapirnr.</strong></td><td>Værdipapiret.</td></tr>
+      <tr><td><strong>Købsdato</strong></td><td>Partiets oprindelige købsdato. Den følger med, hvis partiet flyttes til et andet depot, så ejertid og skattefri beholdningsperiode bevares.</td></tr>
+      <tr><td><strong>Antal</strong></td><td>Det oprindeligt købte antal.</td></tr>
+      <tr><td><strong>Restantal</strong></td><td>Hvor meget der er tilbage af partiet.</td></tr>
+      <tr><td><strong>Købskurs</strong></td><td>Anskaffelseskursen.</td></tr>
+      <tr><td><strong>Restværdi</strong></td><td>Restantal × købskurs.</td></tr>
+      <tr><td><strong>Åben</strong></td><td>Om partiet stadig kan sælges fra.</td></tr>
+      <tr><td><strong>Realiseringstype</strong></td><td>Realiseret eller urealiseret.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section" id="vaerdianalyse">
+  <div class="section-header">
+    <div class="section-icon">🔬</div>
+    <h2>Værdianalyse</h2>
+  </div>
+  <p><strong>Værdianalyse</strong> viser alle ændringer i værdien af et værdipapir i én liste — køb,
+  salg, reguleringer og periodiseringer — og bruges til at efterprøve, hvordan en avance er
+  beregnet.</p>
+  <p>Kolonnerne <strong>Avancetype fondskurs</strong> og <strong>Avancetype valutakurs</strong> står
+  lige efter <strong>Bilagstype</strong>. De er nødvendige dér, fordi en kursregulering skriver
+  <strong>to</strong> linjer, der deler bilagstype, dato og bilagsnr. — den ene for fondskursandelen,
+  den anden for valutakursandelen. Markørerne er det eneste, der skiller dem ad.</p>
+  <p>Derudover viser listen bilagstype, bogføringsdato, bilagsnr., værdipapirnr., antal, beløb, beløb
+  i regnskabsvaluta, købskurs, restantal, realiseringstype samt om linjen er åben eller
+  tilbageført.</p>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

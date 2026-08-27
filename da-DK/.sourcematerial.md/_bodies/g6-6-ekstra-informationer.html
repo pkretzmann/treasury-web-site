@@ -1,11 +1,11 @@
 <div class="section" id="ekstra-overblik">
   <div class="section-header">
     <div class="section-icon">📝</div>
-    <h2>Ekstra informationer — hvad de er</h2>
+    <h2>Detaljeret information — hvad det er</h2>
   </div>
-  <p>Ekstra informationer giver dig mulighed for at registrere brugerdefinerbare oplysninger på et værdipapir — oplysninger, som der ikke er standardfelter til på værdipapirkortet.</p>
+  <p>Detaljeret information giver dig mulighed for at registrere brugerdefinerbare oplysninger på et værdipapir — oplysninger, som der ikke er standardfelter til på værdipapirkortet.</p>
 
-  <p>Eksempler på ekstra informationer:</p>
+  <p>Eksempler på oplysninger, du kan registrere:</p>
   <ul class="bullets">
     <li>Dato for seneste generalforsamling</li>
     <li>Kreditvurdering</li>
@@ -13,7 +13,9 @@
     <li>Ejerstruktur</li>
   </ul>
 
-  <p>Funktionaliteten bygger på to niveauer: du definerer først attributtyper, derefter knytter du værdier til hvert værdipapir.</p>
+  <p>Funktionaliteten bygger på to niveauer: du definerer først attributterne, derefter taster du værdier på værdipapirerne.</p>
+
+  <div class="info-box"><strong>Bemærk om navngivningen:</strong> Den samme funktion optræder under tre navne i brugerfladen — <strong>Attributter</strong> (handlingen i Opsætning af Treasury), <strong>Detaljerede attributter</strong> (listens egen titel) og <strong>Værdipapirattributter</strong> (matricens titel). Denne vejledning bruger <strong>Detaljeret information</strong> om funktionen som helhed.</div>
 </div>
 
 <div class="section" id="ekstra-trin1">
@@ -21,13 +23,14 @@
     <div class="section-icon">⚙️</div>
     <h2>Trin 1 — Opret attributdefinitioner</h2>
   </div>
-  <p>Attributdefinitioner oprettes i listen <strong>Detailed Attributes</strong>. Her definerer du koderne og typerne, der skal bruges.</p>
+  <p>Attributdefinitionerne ligger i listen <strong>Detaljerede attributter</strong>. Her opretter du de koder og typer, der skal kunne registreres på værdipapirerne.</p>
 
-  <h3>Sådan åbner du attributdefinitioner</h3>
+  <h3>Sådan åbner du attributdefinitionerne</h3>
   <ol class="steps">
-    <li>Søg efter <strong>Detailed Attributes</strong> i søgefeltet (forstørrelsesglasset øverst til højre).</li>
-    <li>Listen åbnes.</li>
+    <li>Søg efter <strong>Opsætning af Treasury</strong> i søgefeltet (forstørrelsesglasset øverst til højre), og åbn siden.</li>
+    <li>Vælg handlingen <strong>Attributter</strong>. Listen <strong>Detaljerede attributter</strong> åbnes.</li>
   </ol>
+  <div class="note"><strong>Vigtigt:</strong> Listen kan <strong>ikke</strong> søges frem direkte. Den åbnes fra Opsætning af Treasury — eller fra matricen <strong>Værdipapirattributter</strong> med handlingen <strong>Attributter</strong>.</div>
 
   <h3>Felter</h3>
   <div class="table-wrap">
@@ -37,59 +40,53 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Code</strong></td>
+          <td><strong>Kode</strong></td>
           <td>En unik kode for attributten (op til 10 tegn). Eksempel: <strong>GF-DATO</strong> for "dato for seneste generalforsamling".</td>
         </tr>
         <tr>
-          <td><strong>Description</strong></td>
-          <td>Et beskrivende navn for attributten. Eksempel: <strong>Dato for seneste generalforsamling</strong>.</td>
+          <td><strong>Beskrivelse</strong></td>
+          <td>Et beskrivende navn for attributten (op til 50 tegn). Eksempel: <strong>Dato for seneste generalforsamling</strong>. Beskrivelsen bruges som kolonneoverskrift i matricen — er den tom, vises koden i stedet.</td>
         </tr>
         <tr>
           <td><strong>Type</strong></td>
-          <td>Datatypen for den tilknyttede værdi. Valgene er: <strong>Date</strong> (Dato) eller <strong>Decimal</strong> (tal med decimaler).</td>
+          <td>Datatypen for den tilknyttede værdi: <strong>Tekst</strong>, <strong>Dato</strong> eller <strong>Decimal</strong>. <strong>Tekst</strong> er standardværdien, så en attribut, hvor du ikke vælger type, bliver en tekstattribut.</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="info-box"><strong>Tip:</strong> Sletter eller omdøber du en attribut, følger de registrerede værdier med. Er attributten i brug, spørger systemet, inden den slettes — standardsvaret er <strong>nej</strong>.</div>
 </div>
 
 <div class="section" id="ekstra-trin2">
   <div class="section-header">
     <div class="section-icon">📎</div>
-    <h2>Trin 2 — Tilknyt værdier til et værdipapir</h2>
-  </div>
-  <p>Fra et værdipapirkort klikker du på handlingen <strong>Detailed Information</strong> i navigationslinjen. Siden åbnes filtreret på det pågældende værdipapir.</p>
-
-  <h3>Felter</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Felt</th><th>Beskrivelse</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Attribute Code</strong></td>
-          <td>Vælg attributkoden fra listen over definerede attributter.</td>
-        </tr>
-        <tr>
-          <td><strong>Attribute Type</strong></td>
-          <td>Vises automatisk ud fra den valgte attributkodes type (Date eller Decimal). Kan ikke redigeres.</td>
-        </tr>
-        <tr>
-          <td><strong>Active</strong></td>
-          <td>Markér feltet for at angive, at denne kombination er aktiv og skal medtages.</td>
-        </tr>
-        <tr>
-          <td><strong>Date Information Field</strong></td>
-          <td>Datoværdi. Vises kun, når Attribute Type er <strong>Date</strong>.</td>
-        </tr>
-        <tr>
-          <td><strong>Decimal Information Field</strong></td>
-          <td>Decimalværdi (tal). Vises kun, når Attribute Type er <strong>Decimal</strong>.</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2>Trin 2 — Tast værdier på værdipapirerne</h2>
   </div>
 
-  <div class="info-box"><strong>Tip:</strong> Kun det værdiefelt, der svarer til attributkodens type, vises på siden. Når du skifter attributkode, opdateres Attribute Type automatisk, og systemet viser det rigtige værdiefelt.</div>
+  <ol class="steps">
+    <li>Åbn værdipapirkortet for det papir, du vil registrere oplysninger på.</li>
+    <li>Vælg handlingen <strong>Detaljeret information</strong>. Matricen <strong>Værdipapirattributter</strong> åbnes.</li>
+    <li>Find rækken med dit værdipapir, og skriv værdien i kolonnen for den ønskede attribut.</li>
+  </ol>
+
+  <p>Matricen viser <strong>værdipapirerne som rækker</strong> og <strong>attributterne som kolonner</strong>:</p>
+  <ul class="bullets">
+    <li>Siden åbnes <strong>ufiltreret</strong> — alle værdipapirer vises, med markøren placeret på det værdipapir, du kom fra.</li>
+    <li>Der vises <strong>32 attributter ad gangen</strong>. Brug <strong>Forrige sæt</strong> og <strong>Næste sæt</strong> til at bladre i kolonnerne.</li>
+    <li>Systemet kontrollerer indtastningen mod attributtens type — en ugyldig dato eller decimal afvises med en fejlbesked.</li>
+    <li>Tømmer du en celle, <strong>slettes</strong> værdien.</li>
+  </ul>
+
+  <div class="note"><strong>Bemærk:</strong> Matricen kan ikke filtrere eller sortere på attributværdier.</div>
+</div>
+
+<div class="section" id="ekstra-trin3">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <h2>Trin 3 — Se værdierne på værdipapirkortet</h2>
+  </div>
+  <p>Infoboksen <strong>Detaljeret information</strong> til højre på værdipapirkortet viser <strong>Attributkode</strong> og <strong>Værdi</strong> for det aktuelle værdipapir. Visningen er skrivebeskyttet.</p>
+
+  <div class="info-box"><strong>Tip:</strong> Du behøver ikke forholde dig til, hvilken type attributten har, når du taster. Matricen og infoboksen bruger én fælles <strong>Værdi</strong>-kolonne — tekst, dato og decimal vises samme sted, og systemet gemmer værdien i det rigtige felt bag kulisserne.</div>
 </div>

@@ -1,0 +1,167 @@
+<div class="section" id="hvor-saettes">
+  <div class="section-header">
+    <div class="section-icon">🏷️</div>
+    <h2>Hvor dimensionerne sættes</h2>
+  </div>
+  <p>Dimensioner gør det muligt at analysere værdipapirbeholdning, afkast og avance på tværs af f.eks. afdeling, projekt eller forretningsområde. Der er <strong>to kilder</strong> til dimensioner i modulet: værdipapiret og depotet.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Kilde</th>
+          <th>Hvor sættes de</th>
+          <th>Se afsnit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapir</strong></td>
+          <td>Fanebladet <strong>Bogføring</strong> på værdipapirkortet</td>
+          <td>Stamdata → Oprettelse af aktier / Oprettelse af obligationer</td>
+        </tr>
+        <tr>
+          <td><strong>Depot</strong></td>
+          <td>Depotkontolisten og depotkortet</td>
+          <td>Opsætning af Treasury → Oprettelse af depoter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Begge steder gælder det samme mønster:</p>
+  <ul>
+    <li><strong>Global dimension 1-kode</strong> og <strong>Global dimension 2-kode</strong> ligger direkte på kortet. Felterne bærer navnet på den dimension, der er valgt som global i Finansopsætning — står der <strong>Afdeling</strong> i Finansopsætning, hedder feltet <strong>Afdelingskode</strong> i brugerfladen.</li>
+    <li>Handlingen <strong>Dimensioner</strong> åbner de fulde <strong>standarddimensioner</strong>, hvor også dimensioner ud over de to globale kan sættes.</li>
+  </ul>
+
+  <p>De to indgange er to visninger af det samme. Retter du <strong>Global dimension 1-kode</strong> på kortet, opdateres standarddimensionen — og retter du standarddimensionen for den globale dimension, opdateres feltet på kortet. Sletter du værdipapiret eller depotet, ryddes standarddimensionerne med; omdøber du koden, følger de med.</p>
+
+  <div class="info-box">Begge felter er <strong>valgfri</strong>. Intet i løsningen kræver, at de udfyldes — medmindre du selv sætter en dimension op som obligatorisk.</div>
+</div>
+
+<div class="section" id="arv">
+  <div class="section-header">
+    <div class="section-icon">⬇️</div>
+    <h2>Hvordan dimensionerne arves af kladdelinjen</h2>
+  </div>
+  <p>Kladdelinjen henter dimensionerne fra de to kilder, når felterne udfyldes:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Hændelse på kladdelinjen</th>
+          <th>Adfærd</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapir</strong> vælges</td>
+          <td>Dimensionssættet dannes af værdipapirets standarddimensioner</td>
+        </tr>
+        <tr>
+          <td><strong>Depotkode</strong> vælges</td>
+          <td>Depotets standarddimensioner flettes ind</td>
+        </tr>
+        <tr>
+          <td>Begge ryddes</td>
+          <td>Dimensionssættet nulstilles</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>Ved konflikt vinder depotet.</strong> Bærer både værdipapiret og depotet den samme dimension, men med hver sin værdi, er det depotets værdi, der havner på linjen. Depotet er den mere specifikke af de to kilder.</p>
+
+  <p><strong>Rækkefølgen kan ændres i opsætningen.</strong> Depotets forrang er kun en standard. På Business Centrals side <strong>Standarddimensionsprioriteter</strong> (søg via <em>Fortæl mig</em>) kan der pr. <strong>kildekode</strong> sættes en prioritet pr. tabel — laveste tal vinder. Skal værdipapiret vinde over depotet, oprettes rækkerne <em>Værdipapir</em> = prioritet <strong>1</strong> og <em>Depot</em> = prioritet <strong>2</strong> for den relevante kildekode. Modulet bruger fem kildekoder, én pr. kladdetype; de står i <strong>Kildekodeopsætning</strong> under overskriften <em>Værdipapir</em>: <strong>Værdipapirkladde</strong>, <strong>Afkastkladde</strong>, <strong>Kursreguleringskladde</strong>, <strong>Overførselskladde</strong> og <strong>Omposteringskladde</strong>. Skal værdipapiret vinde overalt, sættes prioriteten for alle fem. Uden opsætning vinder depotet som beskrevet ovenfor — og prioriteringen virker for alle linjer, fordi enhver kladdelinje, også dem batchkørslerne danner, bærer kladdetypens kildekode. Se <a href="../6. Opsætning af Treasury/6.9 Opsætning af dimensionsprioritering.html">Opsætning af dimensionsprioritering</a> for reglerne og opsætningen trin for trin.</p>
+
+  <div class="note">
+    <strong>Vigtigt:</strong> Dimensionssættet <strong>gendannes fra stamdataene</strong>, hver gang værdipapir eller depot vælges igen. Har du rettet dimensionerne manuelt på linjen og skifter derefter depot, går den manuelle rettelse tabt. Det er standard Business Central-adfærd, og det er bevidst: alternativet er et dimensionssæt, der stiltiende er uenigt med de stamdata, det påstår at komme fra. Ret derfor dimensionerne på linjen <strong>til sidst</strong>, når værdipapir og depot er på plads.
+  </div>
+</div>
+
+<div class="section" id="kladdesider">
+  <div class="section-header">
+    <div class="section-icon">📝</div>
+    <h2>Dimensioner på kladdesiderne</h2>
+  </div>
+  <p>Alle fem kladder — handel, korrektion, afkast, regulering og overførsel — viser dimensionerne på samme måde:</p>
+  <ul>
+    <li><strong>Genvejsdimension 1</strong> og <strong>2</strong> er faste kolonner og svarer til de to globale dimensioner.</li>
+    <li><strong>Genvejsdimension 3-8</strong> vises <strong>kun</strong>, hvis de er sat op i Finansopsætning. Er der ikke opsat en genvejsdimension 3, findes kolonnen ikke på siden. Kolonnerne bærer dimensionens eget navn.</li>
+    <li>Handlingen <strong>Dimensioner</strong> (Alt+D) åbner hele dimensionssættet for den valgte linje, også dimensioner ud over de otte genveje.</li>
+  </ul>
+</div>
+
+<div class="section" id="bogfoering">
+  <div class="section-header">
+    <div class="section-icon">✅</div>
+    <h2>Hvad der kontrolleres ved bogføring</h2>
+  </div>
+  <p>Sætter du en standarddimension op med <strong>Værdibogføring</strong> = <strong>Kode obligatorisk</strong> eller <strong>Samme kode</strong>, håndhæves reglen <strong>ved bogføring</strong> — ikke ved indtastning. Kladden kan altså gemmes med en manglende dimension, men ikke bogføres. Værdipapiret og depotet er begge kilder til kontrollen.</p>
+
+  <p>Det samme gælder <strong>spærrede dimensionskombinationer</strong>: er en kombination af to dimensionsværdier spærret i Finans, afvises linjen ved bogføring.</p>
+
+  <p>Fejlbeskeden kommer fra Business Centrals egen dimensionshåndtering og peger på den dimension, der mangler eller er ulovlig.</p>
+
+  <div class="info-box"><strong>Undtagelse — tilbageførsler.</strong> En tilbageførselslinje bærer dimensionssættet fra den post, den tilbagefører, ordret, og er undtaget fra de to kontroller. Er en dimensionsregel strammet, efter at den oprindelige postering blev bogført, ville tilbageførslen ellers være umulig at gennemføre.</div>
+</div>
+
+<div class="section" id="hvor-ender">
+  <div class="section-header">
+    <div class="section-icon">📊</div>
+    <h2>Hvor dimensionerne ender</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Post</th>
+          <th>Dimensioner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Værdipapirpost</strong></td>
+          <td>Global dimension 1- og 2-kode samt det fulde dimensionssæt</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost</strong></td>
+          <td>Overføres via finanskladdelinjen sammen med beløbet</td>
+        </tr>
+        <tr>
+          <td><strong>Depotpost</strong></td>
+          <td>Ingen egne — posten peger tilbage på værdipapirposten</td>
+        </tr>
+        <tr>
+          <td><strong>Detaljeret værdipost</strong> og <strong>detaljeret avancepost</strong></td>
+          <td>Ingen egne — posterne peger tilbage på værdipapirposten</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Dimensionsopdelt analyse foregår derfor på <strong>værdipapirposten</strong> og i <strong>finansbogholderiet</strong>. På værdipapirposteoversigten kan du både filtrere på de to globale dimensioner og åbne det fulde dimensionssæt med handlingen <strong>Dimensioner</strong> (Alt+D).</p>
+</div>
+
+<div class="section" id="skift-globale">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <h2>Skift af globale dimensioner</h2>
+  </div>
+  <p>Skifter du, hvilke dimensioner der er globale, dækker Business Centrals standardkørsel <strong>Skift globale dimensioner</strong> også modulets egne tabeller: værdipapiret, depotet, værdipapirposterne og kladdelinjerne opdateres sammen med resten af regnskabet. Der skal ikke gøres noget ekstra for Treasury-modulet.</p>
+</div>
+
+<div class="section" id="rapportgruppering">
+  <div class="section-header">
+    <div class="section-icon">📁</div>
+    <h2>Rapportgruppering på dimensionsværdi</h2>
+  </div>
+  <p>Feltet <strong>Rapporteringsgruppemetode</strong> på værdipapirkortet kan sættes til <strong>Dimensionsværdi</strong>, hvorefter <strong>Rapporteringsgruppekode</strong> angiver den værdi, værdipapiret grupperes under på udskrifter.</p>
+
+  <div class="note">
+    <strong>Vigtigt:</strong> Dette er en <strong>selvstændig</strong> gruppering. Den bruger værdipapirets rapporteringsgruppekode, ikke de dimensioner, posterne bærer. De to kan sættes op til at pege på det samme, men de opdateres ikke automatisk efter hinanden.
+  </div>
+</div>

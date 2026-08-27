@@ -1,120 +1,148 @@
-<div class="section" id="obligationsrente-oversigt">
+<div class="section" id="hvad-er-renteberegning">
   <div class="section-header">
-    <div class="section-icon">📊</div>
-    <h2>Bogføring af obligationsrente</h2>
+    <div class="section-icon">💵</div>
+    <h2>Hvad er renteberegning?</h2>
   </div>
-  <p>Når du holder obligationer i porteføljen, kan du beregne og bogføre rente på disse baseret på obligationens nominelle rente og terminsdatoer. Renten kan bogføres som realiseret (faktisk indtægt) eller urealiseret (periodisering, der kan tilbageføres senere).</p>
+  <p>Er der obligationer i porteføljen, beregnes og bogføres renten pr. terminsdato. Renten opgøres
+  ud fra obligationens nominelle rente, antallet af rentedage frem til terminsdatoen og depotets
+  beholdning på terminsdatoen.</p>
+  <p>Renten kan være:</p>
+  <ul class="bullets">
+    <li><strong>Realiseret</strong> — renten er modtaget og bogføres som indtægt.</li>
+    <li><strong>Urealiseret</strong> — renten er periodiseret og endnu ikke modtaget. Den lukkes
+    senere, når pengene kommer ind.</li>
+  </ul>
+  <div class="info-box">Hvilken af de to en termin giver, står på <strong>terminsopsætningen</strong>
+  — ikke på kørslen.</div>
 </div>
 
-<div class="section" id="saadan-gores">
+<div class="section" id="saadan-beregner-du">
   <div class="section-header">
-    <div class="section-icon">⚙️</div>
-    <h2>To måder at beregne rente</h2>
+    <div class="section-icon">▶️</div>
+    <h2>Sådan beregner du renten</h2>
   </div>
-  <h3>Metode 1: Beregn obligationsrente</h3>
-  <p>Denne rapport bruges til at gennemløbe et helt datointerval og oprette linjer for alle åbne terminsdatoer. Vælg <strong>Beregn obligationsrente</strong> under <strong>Periodiske aktiviteter</strong> i Treasury-rollecentret.</p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Felt</th>
-          <th>Bemærkning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Fra dato / Til dato</strong></td>
-          <td>Datointerval. Systemet finder alle åbne terminsdatoer i intervallet og opretter rentelinjer for hver.</td>
-        </tr>
-        <tr>
-          <td><strong>Kladde / Batch</strong></td>
-          <td>Værdipapirafkastkladde og batch hvor linjerne dannes.</td>
-        </tr>
-        <tr>
-          <td><strong>Filter på Værdipapir</strong></td>
-          <td>Du kan filtrering til ét eller flere obligationsværdipapirer.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ol class="steps">
+    <li>Vælg <strong>Beregn obligationsrente</strong> i Treasury-menuen under
+    <em>Periodiske aktiviteter</em>.</li>
+    <li>Udfyld anfordringssiden og kør.</li>
+    <li>Åbn afkastkladden, gennemse linjerne, og bogfør med <strong>Bogfør</strong> (F9).</li>
+  </ol>
 
-  <h3>Metode 2: Periodiseringskladde for enkelt termin</h3>
-  <p>Hvis du kun skal bogføre rente for én bestemt terminsdato, bruges <strong>Periodiseringskladde</strong>. Dette er nyttigt ved manuelt kontrolleret bogføring af individuelle betalinger.</p>
+  <h3>Anfordringssiden</h3>
   <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Felt</th>
-          <th>Bemærkning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Terminsdato-filter</strong></td>
-          <td>Den konkrete terminsdato på obligationens betalingsplan.</td>
-        </tr>
-        <tr>
-          <td><strong>Bogføringsdato / Bilagsnummer</strong></td>
-          <td>Dato og bilag for kladdelinjerne.</td>
-        </tr>
-        <tr>
-          <td><strong>Kladde / Batch</strong></td>
-          <td>Værdipapirafkastkladde og batch.</td>
-        </tr>
-        <tr>
-          <td><strong>Filter på Værdipapir</strong></td>
-          <td>Begrænsning til obligationer.</td>
-        </tr>
-      </tbody>
-    </table>
+  <table>
+    <thead>
+      <tr><th>Felt</th><th>Bemærkning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Fra dato</strong> / <strong>Til dato</strong></td><td>Datointerval. Alle åbne terminsdatoer i intervallet behandles. Begge felter er påkrævede.</td></tr>
+      <tr><td><strong>Afkastkladdetype</strong></td><td>Den kladdetype, linjerne dannes i. Feltet accepterer <strong>kun</strong> kladdetyper af typen <em>Afkast</em> — opslaget viser ikke andre, og en type af forkert slags afvises, når kørslen starter.</td></tr>
+      <tr><td><strong>Afkastkladdebatch</strong></td><td>Kladdenavnet under den valgte kladdetype. Opslaget er afgrænset til den valgte type, og skifter du type, ryddes navnet. Findes navnet ikke, afvises kørslen.</td></tr>
+      <tr><td><strong>Bilagsnr.</strong></td><td>Valgfrit. Lades feltet blankt, får hver linje sit bilagsnummer fra kladdenavnets nummerserie — som en linje, du selv taster. Udfylder du feltet, bruges dit nummer på alle linjer.</td></tr>
+      <tr><td><strong>Filter på Værdipapir</strong></td><td>Begræns til ét eller flere værdipapirer. Kørslen ser i forvejen kun på obligationer, hvor <strong>Udelad renteberegning</strong> ikke er markeret.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <strong>Kørslen kan gentages.</strong> Kører du samme interval igen, sletter kørslen først de
+    linjer, den selv dannede sidst — afkastlinjer markeret som <strong>Systemoprettet post</strong>
+    inden for intervallet — og genberegner. Linjer, du har tastet i hånden, og maskinlinjer for andre
+    perioder i samme kladde bliver stående.
+  </div>
+  <p>Efter kørslen fortæller en besked, hvor mange linjer der blev dannet. Blev en obligation sprunget
+  over, siger beskeden hvilken og hvorfor — fx at der ikke er sat en <strong>Terminskode</strong> på
+  papiret.</p>
+</div>
+
+<div class="section" id="saadan-beregnes-renten">
+  <div class="section-header">
+    <div class="section-icon">🧮</div>
+    <h2>Sådan beregnes renten</h2>
+  </div>
+  <p>For hver obligation, der ikke er undtaget:</p>
+  <ol class="steps">
+    <li>Kørslen finder de <strong>åbne</strong> terminsdatoer på obligationens
+    <strong>Terminskode</strong> inden for intervallet.</li>
+    <li>For hver terminsdato hentes <strong>Rentedage</strong> og
+    <strong>Realiseringstype</strong> fra terminsopsætningen.</li>
+    <li>Beholdningen opgøres <strong>pr. depot</strong> ud fra depotposterne.</li>
+    <li>Der dannes én afkastlinje pr. obligation, depot og terminsdato med bilagstype
+    <strong>Afkast</strong>, beløbet i <strong>Afkast før skat</strong> og realiseringstypen fra
+    terminsopsætningen.</li>
+  </ol>
+  <div class="info-box">
+    Terminen markeres først som <strong>Lukket</strong>, når alle obligationer er behandlet — ikke
+    undervejs. En terminskode kan deles af flere obligationer, og en for tidlig lukning ville springe
+    resten over.
   </div>
 </div>
 
-<div class="section" id="saetup">
+<div class="section" id="felterne">
   <div class="section-header">
-    <div class="section-icon">🔧</div>
-    <h2>Opsætning på obligationen</h2>
+    <div class="section-icon">📇</div>
+    <h2>Felterne, beregningen bruger</h2>
   </div>
-  <p>For at systemet kan beregne renten korrekt, skal følgende felter være udfyldt på obligationens værdipapirkort:</p>
+  <h3>På værdipapirkortet (obligation)</h3>
   <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Felt</th>
-          <th>Bemærkning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Nominel rente %</strong></td>
-          <td>Den årlige renteprocent. Systemet bruger dette til at beregne rentebeløbet.</td>
-        </tr>
-        <tr>
-          <td><strong>Betalingsplan-kode</strong></td>
-          <td>Kode der peger på de terminsdatoer hvor rente betales.</td>
-        </tr>
-        <tr>
-          <td><strong>Udeluk fra renteberegning</strong></td>
-          <td>Hvis afkrydset, springes obligationen over. Bruges fx hvis renten håndteres manuelt eller obligationen er udløbet.</td>
-        </tr>
-      </tbody>
-    </table>
+  <table>
+    <thead>
+      <tr><th>Felt</th><th>Bemærkning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Nominel rente %</strong></td><td>Nominel årlig rente i procent.</td></tr>
+      <tr><td><strong>Terminskode</strong></td><td>Peger på den terminsopsætning, der indeholder papirets terminsdatoer. Feltet er påkrævet på en obligation.</td></tr>
+      <tr><td><strong>Udelad renteberegning</strong></td><td>Er feltet markeret, springes obligationen over. Bruges, når renten håndteres manuelt, eller papiret er udløbet.</td></tr>
+    </tbody>
+  </table>
   </div>
-  <p>Betalingsplanen selv skal indeholde hver terminsdato og antal rentedage frem til denne dato.</p>
+
+  <h3>På terminsopsætningen</h3>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Felt</th><th>Bemærkning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Terminskode</strong> / <strong>Terminsdato</strong></td><td>Identificerer terminen.</td></tr>
+      <tr><td><strong>Rentedage</strong></td><td>Antal rentedage frem til terminsdatoen.</td></tr>
+      <tr><td><strong>Realiseringstype</strong></td><td><em>Realiseret</em> eller <em>Urealiseret</em>. Værdien kopieres til afkastlinjen og afgør dermed, om renten bogføres som indtægt eller som periodisering.</td></tr>
+      <tr><td><strong>Lukket</strong></td><td>Sættes af kørslen, når terminen er behandlet. En lukket termin regnes ikke med igen.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Terminsopsætningen er beskrevet i afsnittet <strong>Oprettelse af obligationsterminer</strong>.</p>
 </div>
 
-<div class="section" id="bogfoering">
+<div class="section" id="resultatet">
   <div class="section-header">
     <div class="section-icon">✓</div>
-    <h2>Bogføring og resultatet</h2>
+    <h2>Resultatet af bogføringen</h2>
   </div>
-  <p>Når du bogfører rentelinjen fra Værdipapirafkastkladden dannes:</p>
-  <ul class="bullets">
-    <li><strong>Værdipapirpost:</strong> En post med bilagstype Afkast, renten som beløb. Hvis det er urealiseret rente, markeres det som sådan.</li>
-    <li><strong>Gevinstpost:</strong> Én for det realiserede eller urealiserede afkast (Yield).</li>
-    <li><strong>Finanspost:</strong> Rentebeløbet bogføres på den relevante konto (typisk bankkonto ved realiseret rente, periodiseringskonto ved urealiseret).</li>
-  </ul>
-  <div class="info-box">
-    <strong>Tilbageføring:</strong> Hvis du bogfører urealiseret rente, tilbageføres den automatisk når værdipapirerne senere sælges, eller du kan manuelt ompostere linjen. Systemet håndterer tilbageførsler efter behov.
+  <p>Bogføres afkastlinjerne, dannes de samme posttyper som ved aktieudbytte:</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Posteringstype</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Værdipapirpost</strong></td><td>Bilagstype <em>Afkast</em>, antal 0, rentebeløbet i <strong>Afkast før skat</strong> samt beløbet i regnskabsvaluta. Realiseringstypen kommer fra terminsopsætningen.</td></tr>
+      <tr><td><strong>Depotpost</strong></td><td>Én pr. depot, med antal 0.</td></tr>
+      <tr><td><strong>Detaljeret avancepost</strong></td><td>Avancekomponent <em>Afkast</em>, realiseret eller urealiseret som på linjen.</td></tr>
+      <tr><td><strong>Finansposter</strong></td><td>Renteindtægten på afkastkontoen i <strong>Værdipapiravancebogføringsgruppe</strong>, modposteret på depotets modkonto (typisk banken ved realiseret rente, en periodiseringskonto ved urealiseret).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>En urealiseret rente lukkes, når renten senere realiseres — enten ved den efterfølgende
+  realiserede rentelinje, eller ved et salg af obligationen, som tilbagefører de udestående
+  urealiserede beløb på de forbrugte købspartier.</p>
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Tilbageførselsmetoden findes ikke som parameter</h4>
+    <span class="nav-says">NAV: <em>Renteberegningen har en <strong>Tilbageførselsmetode</strong> — blank, <strong>Straks</strong> eller <strong>Ved realisation</strong> — med egne tilbageførselsdatoer.</em></span>
+    <p>NAV-løsningen har en <em>Tilbageførselsmetode</em>
+    (<em>blank</em>, <em>Straks</em>, <em>Ved realisation</em>) som parameter på renteberegningen, der
+    kan danne en modgående linje dagen efter terminsdatoen. Den parameter findes ikke i Business
+    Central. Tilbageførslen sker i stedet ved realisationen som beskrevet ovenfor, eller manuelt via
+    en ompostering.</p>
   </div>
 </div>

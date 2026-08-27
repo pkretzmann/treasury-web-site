@@ -92,7 +92,7 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>Værdipapirpost (SLE)</td><td>2 nye poster: afgang på kilden (Bilagstype = Overførsel, Antal = −5) og tilgang på målet (Antal = +5, Åben = Ja, Restantal = 5). Begge bærer Overført fra værdipapirnr. = kilden.</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>2 nye: kildens depot −5, målets depot +5</td></tr>
+        <tr><td>Depotpost</td><td>2 nye: kildens depot −5, målets depot +5</td></tr>
         <tr><td>Detaljeret Værdipost (DVLE)</td><td>Kilde-lot forbruges (Restantal → 0) + nyt tilgangs-lot på målet (Åben = Ja, kostbasis og Købsdato bevaret = 01-04-2026).</td></tr>
         <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — overførsel realiserer intet</td></tr>
         <tr><td>Finanspost (G/L)</td><td>Pr. leg: <span class="acct" data-acct="holding">2640</span> (beholdning) + Realiseret Overførsel-modpost med modsat fortegn. Med samme mellemregningskonto netter hele overførslen til 0.</td></tr>
@@ -125,7 +125,7 @@
       <tbody>
         <tr><td>Værdipapirpost (SLE)</td><td>2 nye: AFGANG (Antal = −5, Stykstørrelse = 1,00, Pris = 400,00) + TILGANG (Antal = +10, Stykstørrelse = 0,50, Pris = 200,00)</td></tr>
         <tr><td>Detaljeret Værdipost (DVLE)</td><td>AFGANG-DVP lukker kilde-lottet (Restantal → 0) + TILGANG-DVP (Åben = Ja, Restantal = 10, Indkøbspris = 200,00, Købsdato bevaret = 01-04-2026)</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>Pr. depot med åben beholdning: 1 AFGANG (−5) + 1 TILGANG (+10)</td></tr>
+        <tr><td>Depotpost</td><td>Pr. depot med åben beholdning: 1 AFGANG (−5) + 1 TILGANG (+10)</td></tr>
         <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — split realiserer intet</td></tr>
         <tr><td>Finanspost (G/L)</td><td><span class="zero">Ingen</span> — stykstørrelse rører ikke finansen; bogføringsværdien er bevaret</td></tr>
         <tr><td>Værdipapir-kort</td><td>Stykstørrelse opdateres til 0,50</td></tr>

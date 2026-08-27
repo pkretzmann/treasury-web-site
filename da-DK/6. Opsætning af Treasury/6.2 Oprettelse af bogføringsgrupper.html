@@ -13,7 +13,7 @@
   <header>
     <div class="header-badge">Opsætning</div>
     <h1>Oprettelse af bogføringsgrupper</h1>
-    <p>Knyt værdipapirer til finanskonti via værdi- og avancebogføringsgrupper.</p>
+    <p>Knyt værdipapirer til finanskonti via balance- og resultatopgørelsesbogføringsgrupper.</p>
     <div class="header-pills"><span class="pill">Engangsopsætning</span></div>
   </header>
   <div class="container">
@@ -22,8 +22,8 @@
       <ol>
         <li><a href="#bogfoering-overblik">Bogføringsgrupper — overblik</a></li>
         <li><a href="#bogfoering-fanebladet-generelt">Fanebladet Generelt</a></li>
-        <li><a href="#bogfoering-værdibogfoeringsgrupper">Fanebladet Værdibogføringsgrupper</a></li>
-        <li><a href="#bogfoering-avancebogfoeringsgrupper">Fanebladet Avancebogføringsgrupper (Resultatbogføringsgrupper)</a></li>
+        <li><a href="#bogfoering-balance">Fanebladet Balance</a></li>
+        <li><a href="#bogfoering-resultatopgørelse">Fanebladet Resultatopgørelse</a></li>
         <li><a href="#bogfoering-tilknytning-værdipapirer">Tilknytning til værdipapirer</a></li>
       </ol>
     </nav>
@@ -32,16 +32,25 @@
     <div class="section-icon">📊</div>
     <h2>Bogføringsgrupper — overblik</h2>
   </div>
-  <p>Bogføringsgrupper knytter værdipapirer til finanskonti i regnskabet. Når du bogfører køb, salg, rente- eller kursreguleringer, bruger systemet bogføringsgruppen til at finde de korrekte finanskonti at debitere og kreditere.</p>
-  <p>Det anbefales som minimum at oprette én bogføringsgruppe for aktier og én for obligationer, så beholdnings- og resultatkonti holdes adskilt. Det er dog ikke et systemkrav.</p>
+  <p>Det centrale regnskab i Business Central føres i finansmodulet. Bogføringsgrupper er bindeledet mellem Treasury-løsningen og finanskontoplanen: de fastlægger, hvilke finanskonti der debiteres og krediteres, når der bogføres køb, salg, kursreguleringer og afkast på værdipapirer.</p>
+  <p>Det anbefales som minimum at oprette én bogføringsgruppe for aktier og én for obligationer, så beholdnings- og resultatkonti holdes adskilt i finanskontoplanen. Det er dog ikke et systemkrav.</p>
   <p>Bogføringsgrupper knyttes til det enkelte værdipapir via feltet <strong>Bogføringsgruppe</strong> på værdipapirkortet.</p>
 
   <h3>Sådan åbner du bogføringsgrupper</h3>
   <ol class="steps">
-    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
+    <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong> i navigationslinjen.</li>
     <li>Klik på <strong>Værdipapirbogføringsgrupper</strong> i gruppen <strong>Opsætning af Treasury</strong>.</li>
     <li>Oversigtsvinduet viser alle oprettede bogføringsgrupper med kode, beskrivelse og regnskabsprincip. Klik på en kode for at åbne bogføringsgruppekortet.</li>
   </ol>
+  <p>Kortet har tre dele: fanebladet <strong>Generelt</strong> med gruppens egne felter, fanebladet <strong>Balance</strong> med beholdningskontiene og fanebladet <strong>Resultatopgørelse</strong> med resultatkontiene.</p>
+  <figure class="screenshot">
+    <a href="images/posting-setup.png" target="_blank" rel="noopener">
+      <img src="images/posting-setup.png"
+           alt="Værdipapirbogføringsgruppekortet UDENL AKT med fanebladene Generelt, Balance og Resultatopgørelse"
+           width="1553" height="1133" loading="lazy" decoding="async" />
+    </a>
+    <figcaption>Bogføringsgruppekortet med sine tre dele: Generelt, Balance og Resultatopgørelse.</figcaption>
+  </figure>
 </div>
 
 <div class="section" id="bogfoering-fanebladet-generelt">
@@ -50,6 +59,14 @@
     <h2>Fanebladet Generelt</h2>
   </div>
   <p>Her definerer du den overordnede opsætning af bogføringsgruppen.</p>
+  <figure class="screenshot">
+    <a href="images/posting-setup-general.png" target="_blank" rel="noopener">
+      <img src="images/posting-setup-general.png"
+           alt="Fanebladet Generelt på bogføringsgruppekortet med felterne Kode, Beskrivelse, Regnskabsprincip, skattemetoder, avancemetode, handelsrentekonto og udbytteskat"
+           width="1486" height="452" loading="lazy" decoding="async" />
+    </a>
+    <figcaption>Fanebladet Generelt på bogføringsgruppen UDENL AKT.</figcaption>
+  </figure>
 
   <div class="table-wrap">
     <table>
@@ -67,35 +84,35 @@
         </tr>
         <tr>
           <td><strong>Regnskabsprincip</strong></td>
-          <td>Vælg <strong>Realisationsprincippet</strong> eller <strong>Lagerprincippet</strong>. Valget skal stemme overens med den tilsvarende indstilling i Værdipapiropsætning. Det håndhæves automatisk ved bogføring — en kladdelinje med lagerprincip-flaget afvises på en bogføringsgruppe sat til realisationsprincippet, og omvendt.</td>
+          <td>Vælg <strong>Realisationsprincippet</strong> eller <strong>Lagerprincippet</strong>. <strong>Begge</strong> kan ikke vælges her — den værdi hører hjemme i Opsætning af Treasury. Er Opsætningen af Treasury sat til ét af de to principper, skal gruppen bruge netop det; er den sat til <strong>Begge</strong>, vælger den enkelte bogføringsgruppe selv, og en ny gruppe starter på Realisationsprincippet, indtil du ændrer den. Princippet håndhæves ved bogføring: en kladdelinje med lagerprincip-flaget afvises på en bogføringsgruppe sat til realisationsprincippet, og omvendt.</td>
         </tr>
         <tr>
           <td><strong>Skattemetode avance</strong></td>
-          <td>Fastlægger skattestemplet på avanceposter ved salg. Valgene er: <strong>Blank</strong> (ingen skatteoplysning), <strong>Skattepligtig</strong>, <strong>Skattefri</strong> eller <strong>Ejertidsbestemt</strong>. Ved Ejertidsbestemt stemples avancen som skattepligtig, indtil ejertiden i feltet <strong>Metodeskift ejertid</strong> er opfyldt, herefter som skattefri.</td>
+          <td>Fastlægger <strong>Skattetype</strong> på de resultatrækker, avancer og kursreguleringer slår op. Valgene er: <strong>Blank</strong>, <strong>Skattepligtig</strong>, <strong>Skattefri</strong> eller <strong>Ejertidsbestemt</strong>. Ved Ejertidsbestemt afgøres skattetypen pr. købsparti ud fra <strong>Skattefri beholdningsperiode (år)</strong>: partier, der er ældre end perioden, stemples Skattefri, yngre partier Skattepligtig. Er feltet blankt, bruges Skattepligtig.</td>
         </tr>
         <tr>
           <td><strong>Skattemetode afkast</strong></td>
-          <td>Fastlægger skattestemplet på afkastposter (renter, udbytter). Valgene er: <strong>Blank</strong>, <strong>Skattepligtig</strong> eller <strong>Skattefri</strong>.</td>
+          <td>Fastlægger <strong>Skattetype</strong> på afkastrækker (udbytte og rente). Valgene er: <strong>Blank</strong>, <strong>Skattepligtig</strong> eller <strong>Skattefri</strong>. Feltet er uafhængigt af <em>Skattemetode avance</em> — et værdipapir kan have skattefri avance og skattepligtigt udbytte. Er feltet blankt, bruges Skattepligtig.</td>
         </tr>
         <tr>
           <td><strong>Avancemetode</strong></td>
-          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Valgene er: <strong>Gennemsnit</strong> eller <strong>Aktie-for-aktie</strong> (FIFO). Se nedenfor for eksempler.</td>
+          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Vælg <strong>Gennemsnit</strong> eller <strong>Aktie-for-aktie</strong>. Se nedenfor for eksempler. Værdien <strong>Ejertidsbestemt</strong> kan vælges, men er endnu ikke aktiv.</td>
         </tr>
         <tr>
           <td><strong>Metodeskift ejertid (år)</strong></td>
-          <td>Kun relevant ved Ejertidsbestemt-avancemetode. Angiv det antal år, der skal forløbe, inden metodeskiftet aktiveres automatisk. Bemærk: automatisk skift er endnu ikke fuldt implementeret.</td>
+          <td>Hører til Avancemetode = Ejertidsbestemt og angiver, hvor mange år der skal gå, inden avanceberegningen skifter fra aktie-for-aktie til gennemsnit. <strong>Feltet har ingen virkning i denne version</strong> — udfyld det ikke i forventning om et automatisk metodeskift. Feltet, der styrer skiftet fra skattepligtig til skattefri, er <strong>Skattefri beholdningsperiode (år)</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Udbytteskat pct.</strong></td>
-          <td>Angiv beskatningsprocent for udbytte, hvis bogføringsgruppen bruges til aktier med udbytte. Procenten bruges af systemet til at beregne udbytteskatten ved oprettelse af afkastkladdelinjer.</td>
+          <td><strong>Skattefri beholdningsperiode (år)</strong></td>
+          <td>Antal år et købsparti skal være ejet, før en realiseret avance stemples <strong>Skattefri</strong>. Bruges kun, når Skattemetode avance = Ejertidsbestemt. Perioden måles fra partiets købsdato til salgets bogføringsdato; er feltet 0, behandles alle partier som Skattepligtig.</td>
         </tr>
         <tr>
           <td><strong>Handelsrentekonto</strong></td>
-          <td>Finanskonto til bogføring af handelsrente (i regnskabsvaluta) ved køb og salg af obligationer. Hvis feltet er blankt, bogføres ingen separat handelsrente — handelsrenten skal i så fald være indeholdt i handelskursen.</td>
+          <td>Finanskonto til bogføring af handelsrente (i regnskabsvaluta) ved køb og salg af obligationer. Hvis feltet er blankt, bogføres ingen separat handelsrente — handelsrenten skal i så fald være indeholdt i selve handelskursen.</td>
         </tr>
         <tr>
-          <td><strong>Konto for udbytteskat</strong></td>
-          <td>Finanskonto til bogføring af indeholdt udbytteskat (i regnskabsvaluta), når en afkastkladdelinje har en udbytteskat forskellig fra nul. Udbytteskatten er ikke en avancepost — den bogføres direkte på denne konto og kræver derfor <strong>ingen</strong> linje i Avancebogføringsgrupper. Hvis feltet er blankt, fejler bogføring af et udbytte med indeholdt skat.</td>
+          <td><strong>Udbytteskat %</strong></td>
+          <td>Angiv beskatningsprocent for udbytte, hvis bogføringsgruppen bruges til aktier med udbytte. Procenten anvendes af kørslen <strong>Foreslå udbyttelinjer</strong> til at beregne udbytteskatten ved oprettelse af afkastkladdelinjer.</td>
         </tr>
       </tbody>
     </table>
@@ -103,17 +120,27 @@
 
   <h3>Avancemetoder — forklaret</h3>
   <ul class="bullets">
-    <li><strong>Gennemsnit:</strong> Anskaffelsessummen beregnes som et vægtet gennemsnit af alle åbne køb. Eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 100 kr. (250 − 150 gennemsnit).</li>
-    <li><strong>Aktie-for-aktie (FIFO):</strong> Ældste køb fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
+    <li><strong>Gennemsnit:</strong> Anskaffelsessummen opgøres som et vægtet gennemsnit af alle åbne købsposter på værdipapiret. Eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 100 kr. (250 − 150 gennemsnit).</li>
+    <li><strong>Aktie-for-aktie (FIFO):</strong> Ældste købsposter fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
   </ul>
+
+  <div class="note"><strong>Bemærk:</strong> Avancemetoden <strong>Ejertidsbestemt</strong> er endnu ikke implementeret. Vælges den, opgøres salg efter aktie-for-aktie, uanset hvad der står i <strong>Metodeskift ejertid (år)</strong>, og uden nogen advarsel. Vælg derfor Gennemsnit eller Aktie-for-aktie.</div>
 </div>
 
-<div class="section" id="bogfoering-værdibogfoeringsgrupper">
+<div class="section" id="bogfoering-balance">
   <div class="section-header">
     <div class="section-icon">💰</div>
-    <h2>Fanebladet Værdibogføringsgrupper</h2>
+    <h2>Fanebladet Balance</h2>
   </div>
-  <p>Her knytter du transaktionstyper til <strong>beholdningskonti</strong> (balance). For hver transaktionstype du ønsker at bogføre, skal der oprettes én linje med den tilhørende finanskonto.</p>
+  <p>Her knytter du de fire <strong>balance</strong>komponenter til hver sin finanskonto. Bilagstypen siger, hvilken rolle kontoen har i balancen — ikke hvilken slags handel der bogføres. Køb og salg bruger derfor <strong>samme</strong> række, nemlig <em>Beholdning</em>.</p>
+  <figure class="screenshot">
+    <a href="images/posting-setup-balance.png" target="_blank" rel="noopener">
+      <img src="images/posting-setup-balance.png"
+           alt="Fanebladet Balance med rækkerne Beholdning, Fondskursregulering, Valutakursregulering og Afkastperiodisering"
+           width="1468" height="327" loading="lazy" decoding="async" />
+    </a>
+    <figcaption>Fanebladet Balance — én række pr. bilagstype med tilhørende finanskonto. Skærmbilledet er taget på en opsætning, hvor rækkerne deler konto 2640; eksemplet nedenfor skiller dem ad.</figcaption>
+  </figure>
 
   <div class="table-wrap">
     <table>
@@ -123,11 +150,11 @@
       <tbody>
         <tr>
           <td><strong>Bilagstype</strong></td>
-          <td>Transaktionstypen. Valgene er: <strong>Køb</strong>, <strong>Salg</strong>, <strong>Afkast</strong>, <strong>Kursregulering</strong>, <strong>Overførsel</strong> eller <strong>Tilbageføring</strong>.</td>
+          <td>Valgene er: <strong>Beholdning</strong>, <strong>Fondskursregulering</strong>, <strong>Valutakursregulering</strong> eller <strong>Afkastperiodisering</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Finanskonto</strong></td>
-          <td>Nummeret på den finanskonto, der skal bruges for den pågældende bilagstype.</td>
+          <td><strong>Finanskontonr.</strong></td>
+          <td>Nummeret på den finanskonto, der skal benyttes for den pågældende komponent.</td>
         </tr>
         <tr>
           <td><strong>Finanskontonavn</strong></td>
@@ -137,39 +164,84 @@
     </table>
   </div>
 
-  <h3>Eksempel på typisk opsætning</h3>
+  <h3>Hvad hver konto bærer</h3>
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Bilagstype</th><th>Finanskonto</th><th>Bemærkning</th></tr>
+        <tr><th>Bilagstype</th><th>Kontoen bærer</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>Køb</td>
-          <td>60</td>
-          <td>Værdipapirsbeholdning (debiteres ved køb)</td>
+          <td><strong>Beholdning</strong></td>
+          <td>Selve værdipapirbeholdningen (aktivet). Debiteres ved køb, krediteres ved salg med den oprindelige anskaffelsessum, og bruges også til begge ben af en overførsel. Bærer <strong>desuden</strong> modposten til en kursregulering, når kladdelinjen har <strong>Lagerprincip = Ja</strong> — da lægges reguleringen ind i beholdningen i stedet for at stå særskilt.</td>
         </tr>
         <tr>
-          <td>Salg</td>
-          <td>60</td>
-          <td>Samme beholdningskonto (krediteres ved salg)</td>
+          <td><strong>Fondskursregulering</strong></td>
+          <td>Modposten på balancesiden til urealiserede <strong>fondskurs</strong>reguleringer bogført <strong>uden</strong> lagerprincip — det er her, reguleringen står særskilt. Opbygges ved hver kursregulering og nulstilles igen ved salg.</td>
         </tr>
         <tr>
-          <td>Kursregulering</td>
-          <td>61</td>
-          <td>Kursregulering på beholdningen</td>
+          <td><strong>Valutakursregulering</strong></td>
+          <td>Samme rolle for <strong>valutakurs</strong>delen af en regulering uden lagerprincip. Holdes adskilt fra fondskurslaget, så de to lag kan afvikles hver for sig ved salg.</td>
+        </tr>
+        <tr>
+          <td><strong>Afkastperiodisering</strong></td>
+          <td>Tilgodehavendet, der modsvarer et periodiseret (urealiseret) afkast. Bruges, når en afkastlinje bogføres uden modkonto — typisk periodiseret obligationsrente. Ved realiseret afkast går modposten i stedet på kladdelinjens modkonto (banken).</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <h3>Eksempel på typisk opsætning</h3>
+  <p>Kontonumrene bygger på testscenarierne for aktier, men med reguleringskontiene skilt ud.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Bilagstype</th><th>Finanskontonr.</th><th>Bemærkning</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Beholdning</td>
+          <td>2640</td>
+          <td>Værdipapirbeholdning. Bærer også de kursreguleringer, der bogføres med lagerprincip</td>
+        </tr>
+        <tr>
+          <td>Fondskursregulering</td>
+          <td>2641</td>
+          <td>Urealiseret fondskursregulering uden lagerprincip</td>
+        </tr>
+        <tr>
+          <td>Valutakursregulering</td>
+          <td>2642</td>
+          <td>Urealiseret valutakursregulering uden lagerprincip</td>
+        </tr>
+        <tr>
+          <td>Afkastperiodisering</td>
+          <td><em>(egen konto)</em></td>
+          <td>Tilgodehavende renter. Skal være en <strong>anden</strong> konto end beholdningen; kræves først, når der bogføres periodiseret afkast</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note" style="border-left-color:#c0392b"><strong>Vigtigt — hold reguleringskontiene adskilt fra beholdningen.</strong> Lægges <strong>Fondskursregulering</strong> på samme finanskonto som <strong>Beholdning</strong>, forsvinder forskellen mellem de to regnskabsprincipper i finans: en kursregulering med lagerprincip og en uden rammer da samme konto, og reguleringen kan hverken aflæses særskilt eller afstemmes. Skal lagerprincippet kunne ses i finansbogføringen, <strong>skal</strong> de tre komponenter have hver sin konto.</div>
+
+  <div class="note"><strong>Bemærk:</strong> Der findes ingen balancerække for <em>Afkast</em> eller <em>Overførsel</em>. Realiseret afkast bruger kladdelinjens modkonto, og overførsler bruger <em>Beholdning</em>. Mangler en balancerække ved bogføring, oplyser fejlbeskeden hvilken bogføringsgruppe og hvilken bilagstype der mangler en konto. Opret som minimum de tre første rækker fra start.</div>
 </div>
 
-<div class="section" id="bogfoering-avancebogfoeringsgrupper">
+<div class="section" id="bogfoering-resultatopgørelse">
   <div class="section-header">
     <div class="section-icon">📈</div>
-    <h2>Fanebladet Avancebogføringsgrupper (Resultatbogføringsgrupper)</h2>
+    <h2>Fanebladet Resultatopgørelse</h2>
   </div>
-  <p>Her knytter du kombinationer af transaktionstype, avancetype og skattetype til <strong>resultatkonti</strong>. For hver kombination du ønsker at bogføre, oprettes én linje.</p>
+  <p>Her knytter du kombinationer af realiseringstype, bilagstype, avancetype og skattetype til <strong>resultatkonti</strong>. For hver kombination, bogføringen slår op, skal der findes én række.</p>
+  <figure class="screenshot">
+    <a href="images/posting-setup-income.png" target="_blank" rel="noopener">
+      <img src="images/posting-setup-income.png"
+           alt="Fanebladet Resultatopgørelse med rækker for realiseret og urealiseret avance fordelt på bilagstype, avancetype og skattetype"
+           width="1418" height="547" loading="lazy" decoding="async" />
+    </a>
+    <figcaption>Fanebladet Resultatopgørelse — én række pr. kombination af realiseringstype, bilagstype, avancetype og skattetype.</figcaption>
+  </figure>
 
   <div class="table-wrap">
     <table>
@@ -179,27 +251,27 @@
       <tbody>
         <tr>
           <td><strong>Realiseringstype</strong></td>
-          <td><strong>Realiseret</strong> — bruges til realiserede transaktioner som salg og udtræk. <strong>Urealiseret</strong> — bruges til urealiserede kursreguleringer under lagerprincippet.</td>
+          <td><strong>Realiseret</strong> — bruges til realiserede transaktioner (salg, udtræk, udbytte). <strong>Urealiseret</strong> — bruges til urealiserede kursreguleringer (lagerprincippet) og til periodiseret afkast.</td>
         </tr>
         <tr>
           <td><strong>Bilagstype</strong></td>
-          <td>Transaktionstypen som i Værdibogføringsgrupper (Køb, Salg, Afkast osv.).</td>
+          <td>Hvilken resultatkomponent kontoen bærer. Valgene er: <strong>Fondskursavance</strong>, <strong>Valutakursavance</strong>, <strong>Afkast</strong>, <strong>Udbytteskat</strong> eller <strong>Overførsel</strong>.</td>
         </tr>
         <tr>
           <td><strong>Avancetype</strong></td>
-          <td>Typen af avance eller tab. Valgene er: <strong>Fondskursavance/tab</strong>, <strong>Valutakursavance/tab</strong>, <strong>Afkast</strong> eller <strong>Overførsel</strong>. <em>Indeholdt udbytteskat bogføres ikke her — den har sin egen konto på fanebladet Generelt (Konto for udbytteskat).</em></td>
+          <td>Underopdeler bilagstypen. Valgene er: <strong>Blank</strong>, <strong>Gevinst</strong> eller <strong>Tab</strong>. Se forklaringen nedenfor — feltet afgør, om beløbet lander på gevinst- eller tabskontoen.</td>
         </tr>
         <tr>
           <td><strong>Skattetype</strong></td>
-          <td><strong>Blank</strong> — ingen skatteoplysning (bruges fx til overførsler). <strong>Skattepligtig</strong> — avancen er fradragsberettiget ved tab eller beskattet ved gevinst. <strong>Skattefri</strong> — skattefri avance. Skattetypen på <em>afkast</em>-rækken afledes af <strong>Skattemetode afkast</strong>, mens salgs- og kursreguleringsrækker afledes af <strong>Skattemetode avance</strong>.</td>
+          <td><strong>Blank</strong> — ingen skatteoplysning (bruges til udbytteskat, overførsler og modposten til periodiseret afkast). <strong>Skattepligtig</strong> eller <strong>Skattefri</strong> — udledes ved bogføring af skattemetoderne på fanebladet Generelt.</td>
         </tr>
         <tr>
           <td><strong>Tilbageførsel</strong></td>
-          <td>Markér feltet, hvis linjen bruges til tilbageføring af urealiserede reguleringer ved salg.</td>
+          <td>Markeringsfelt. <strong>Lad feltet stå tomt</strong> — se bemærkningen sidst i afsnittet.</td>
         </tr>
         <tr>
-          <td><strong>Finanskonto</strong></td>
-          <td>Den finanskonto, der bruges for den pågældende kombination.</td>
+          <td><strong>Finanskontonr.</strong></td>
+          <td>Den finanskonto, der benyttes for den pågældende kombination.</td>
         </tr>
         <tr>
           <td><strong>Finanskontonavn</strong></td>
@@ -209,34 +281,73 @@
     </table>
   </div>
 
-  <h3>Eksempel på typisk opsætning for realiserede fondskursavancer</h3>
+  <h3>Avancetype — sådan udfyldes den</h3>
+  <p>Avancetypen sættes af bogføringen selv; din opgave er at oprette de rækker, den slår op:</p>
+  <ul class="bullets">
+    <li><strong>Gevinst / Tab</strong> bruges til fondskurs- og valutakurskomponenterne. Et beløb, der krediteres resultatet, slår op på Gevinst; et beløb, der debiteres, slår op på Tab. Det er dermed avancetypen — ikke fortegnet på én fælles konto — der styrer, om resultatet lander på gevinst- eller tabskontoen. Ønsker du gevinst og tab på samme finanskonto, angiver du blot samme kontonummer på begge rækker.</li>
+    <li><strong>Blank</strong> bruges til de kombinationer, der ikke deles i tab og gevinst: <strong>afkast</strong> (både udbytte på aktier og rente på obligationer), udbytteskat og overførselsmellemregning.</li>
+    <li>Bruttoafkastet skal altså <strong>ikke</strong> deles i udbytte og rente her. Et værdipapir er enten en aktie eller en obligation og bærer bogføringsgruppen for sin type, så de to slår allerede op i hver sin bogføringsgruppe og rammer hver sin afkastkonto. En aktiegruppe har derfor kun brug for én <em>Afkast</em>-række, og det samme gælder en obligationsgruppe.</li>
+  </ul>
+
+  <h3>Skattetype — sådan udledes den</h3>
+  <ul class="bullets">
+    <li>Rækker for <strong>Fondskursavance</strong> og <strong>Valutakursavance</strong> får skattetypen fra <strong>Skattemetode avance</strong>.</li>
+    <li>Rækker for <strong>Afkast</strong> får skattetypen fra <strong>Skattemetode afkast</strong>.</li>
+    <li>Er skattemetoden blank, bruges <strong>Skattepligtig</strong>.</li>
+    <li>Rækker for <strong>Udbytteskat</strong> og <strong>Overførsel</strong> slås altid op med Skattetype = <strong>Blank</strong>.</li>
+  </ul>
+  <p>Modposten til et periodiseret afkast er derimod ikke en resultatrække — den hentes fra fanebladet <strong>Balance</strong>, Bilagstype <em>Afkastperiodisering</em>.</p>
+
+  <h3>Eksempel på typisk opsætning</h3>
+  <p>Eksemplet er en aktiegruppe på lagerprincippet, hvor både avance og afkast er skattefri. Kontonumrene følger testscenarierne for aktier.</p>
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Skattetype</th><th>Finanskonto</th></tr>
+        <tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Skattetype</th><th>Finanskontonr.</th><th>Rolle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Urealiseret</td><td>Fondskursavance</td><td>Gevinst</td><td>Skattefri</td><td>1350</td><td>Urealiseret fondskursresultat</td></tr>
+        <tr><td>Urealiseret</td><td>Fondskursavance</td><td>Tab</td><td>Skattefri</td><td>1350</td><td>— samme konto, tab-siden</td></tr>
+        <tr><td>Urealiseret</td><td>Valutakursavance</td><td>Gevinst</td><td>Skattefri</td><td>1680</td><td>Urealiseret valutaresultat</td></tr>
+        <tr><td>Urealiseret</td><td>Valutakursavance</td><td>Tab</td><td>Skattefri</td><td>1680</td><td>— samme konto, tab-siden</td></tr>
+        <tr><td>Realiseret</td><td>Fondskursavance</td><td>Gevinst</td><td>Skattefri</td><td>1670</td><td>Realiseret fondskursavance</td></tr>
+        <tr><td>Realiseret</td><td>Fondskursavance</td><td>Tab</td><td>Skattefri</td><td>1670</td><td>— samme konto, tab-siden</td></tr>
+        <tr><td>Realiseret</td><td>Valutakursavance</td><td>Gevinst</td><td>Skattefri</td><td>1680</td><td>Realiseret valutaresidual</td></tr>
+        <tr><td>Realiseret</td><td>Valutakursavance</td><td>Tab</td><td>Skattefri</td><td>1680</td><td>— samme konto, tab-siden</td></tr>
+        <tr><td>Realiseret</td><td>Afkast</td><td>Blank</td><td>Skattefri</td><td>1450</td><td>Udbytteindtægt (brutto)</td></tr>
+        <tr><td>Realiseret</td><td>Udbytteskat</td><td>Blank</td><td>Blank</td><td>1455</td><td>Indeholdt udbytteskat</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Opret <strong>både</strong> en Gevinst- og en Tab-række for hver kurskomponent: hvilken af dem bogføringen rammer, afhænger af periodens resultat, og den manglende række opdages først, når fortegnet vender.</p>
+
+  <h3>Rækker, der først bliver nødvendige i særlige situationer</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Realiseringstype</th><th>Bilagstype</th><th>Avancetype</th><th>Skattetype</th><th>Bruges til</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>Realiseret</td>
-          <td>Salg</td>
-          <td>Fondskursavance/tab</td>
-          <td>Skattepligtig</td>
-          <td>6 (Fondskursgevinst, skattepligtig)</td>
+          <td>Realiseret</td><td>Overførsel</td><td>Blank</td><td>Blank</td>
+          <td>Mellemregningskonto ved overførsel mellem to værdipapirer. Brug <strong>samme</strong> konto i afgivende og modtagende bogføringsgruppe, så de to ben går ud med nul.</td>
         </tr>
         <tr>
-          <td>Realiseret</td>
-          <td>Salg</td>
-          <td>Fondskursavance/tab</td>
-          <td>Skattefri</td>
-          <td>8 (Skattefri fondskursgevinst)</td>
+          <td>Urealiseret</td><td>Afkast</td><td>Blank</td><td><em>(fra Skattemetode afkast)</em></td>
+          <td>Indtægtsbenet ved periodiseret obligationsrente. Modposten hentes fra Balance-rækken <em>Afkastperiodisering</em>.</td>
+        </tr>
+        <tr>
+          <td>Realiseret</td><td>Afkast</td><td>Blank</td><td><em>(fra Skattemetode afkast)</em></td>
+          <td>Renteindtægt på obligationer, hvor afkastet er modtaget.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="note"><strong>Bemærk:</strong> Gevinst og tab skelnes ikke via separate felter — det afgøres af beregningsresultatet. Et positivt beløb bogføres som gevinst, et negativt som tab, men på den samme finanskonto.</div>
+  <div class="info-box"><strong>Udbytteskat (udbytte):</strong> Den indeholdte udbytteskat på et udbytte kræver sin egen række her på fanebladet Resultatopgørelse — <strong>Realiseret / Udbytteskat / Blank / Blank</strong>. Mangler rækken, fejler bogføringen af det første udbytte med indeholdt skat. Bruttoudbyttet krediteres den separate afkastrække (Bilagstype = <em>Afkast</em>, Avancetype = <em>Blank</em>), hvis skattetype afledes af <strong>Skattemetode afkast</strong>.</div>
 
-  <div class="info-box"><strong>Udbytteskat (udbytte):</strong> den indeholdte udbytteskat på et udbytte er <em>ikke</em> en avancepost og bogføres ikke via en avancebogføringsgruppe-række. Den posteres direkte på feltet <strong>Konto for udbytteskat</strong> på fanebladet Generelt. Bruttoudbyttet (afkastet) krediteres derimod afkast-rækken (Bilagstype = Afkast, Avancetype = Afkast), hvis skattetype afledes af <strong>Skattemetode afkast</strong>.</div>
+  <div class="note"><strong>Bemærk:</strong> Feltet <strong>Tilbageførsel</strong> har ingen virkning i denne version. Bogføringen slår altid op med Tilbageførsel = <em>Nej</em>, så en række med <em>Ja</em> bliver aldrig fundet. Tilbageførsel af urealiserede reguleringer ved salg rammer bevidst den <strong>samme</strong> konto som den oprindelige regulering — der skal derfor ikke oprettes særskilte tilbageførselsrækker.</div>
 </div>
 
 <div class="section" id="bogfoering-tilknytning-værdipapirer">
@@ -245,14 +356,14 @@
     <h2>Tilknytning til værdipapirer</h2>
   </div>
   <p>Når bogføringsgrupperne er oprettet, skal koden angives i feltet <strong>Bogføringsgruppe</strong> på hvert enkelt værdipapirkort (fanebladet <strong>Bogføring</strong>). Uden en bogføringsgruppe kan der ikke bogføres på værdipapiret.</p>
-  <div class="note"><strong>Vigtigt:</strong> Hvis en bogføringskombination, der opstår ved bogføring, ikke er oprettet i Avance- eller Værdibogføringsgruppen, vil bogføringen fejle med en fejlmeddelelse om manglende opsætning.</div>
+  <div class="note"><strong>Vigtigt:</strong> Hvis en kombination, der opstår ved bogføring, ikke er oprettet på fanebladet <strong>Balance</strong> eller <strong>Resultatopgørelse</strong>, fejler bogføringen. Fejlbeskeden oplyser præcis, hvad der mangler — bogføringsgruppe og bilagstype for en balancerække, og hele kombinationen af realiseringstype, bilagstype, avancetype og skattetype for en resultatrække. Opret rækken og bogfør igen.</div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

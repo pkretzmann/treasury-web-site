@@ -3,28 +3,197 @@
     <div class="section-icon">↩️</div>
     <h2>Hvad er ompostering?</h2>
   </div>
-  <p>Ompostering bruges til at tilbageføre værdipapirposteringer, fx hvis der er bogført en transaktion for en forkert dato, beløb eller værdipapir. Systemet opretter automatisk et spejlsæt af poster med modsatte fortegn og markerer både de oprindelige og de tilbageførte poster som omposterede.</p>
-  <p>På denne måde bibeholdes en komplet revisionsspor af alle ændringer — ingen poster slettes, kun omposteret.</p>
+  <p>Ompostering bruges til at tilbageføre en værdipapirpostering, der er bogført forkert — forkert
+  dato, beløb, antal, depot eller værdipapir. Der slettes aldrig noget: den oprindelige post bliver
+  stående og markeres som omposteret, og der dannes et spejlsæt af poster med modsat fortegn.
+  Revisionssporet er dermed intakt.</p>
+  <p>Alle omposteringer går gennem <strong>Omposteringskladden</strong>, så du kan se linjen og rette
+  dens bogføringsdato og årsagskode, før du bogfører.</p>
 </div>
 
-<div class="section" id="ompostering-fra-ledger">
+<div class="section" id="tilbagefoer-en-post">
   <div class="section-header">
     <div class="section-icon">🔄</div>
-    <h2>Ompostering fra værdipapirposter</h2>
+    <h2>Sådan tilbagefører du en post</h2>
   </div>
-  <h3>Sådan tilbagefører du en post</h3>
   <ol class="steps">
-    <li>Åbn <strong>Værdipapirposter</strong> under Treasury-menuen i rollecentret.</li>
-    <li>Find den post du ønsker at ompostere. Du kan filtrere efter værdipapir, dato eller bilagsnummer.</li>
-    <li>Vælg posten og klik på handlingen <strong>Reverse Entry</strong>.</li>
-    <li>Systemet åbner et vindue hvor du vælger hvilken kladde og batch ompostberingen skal dannes i. Vælg en Værdipapirljedaldes batch af passende type (fx Journal Template = <strong>JOURNAL</strong>, Journal Batch = <strong>REVERSAL</strong>).</li>
-    <li>Systemet danner automatisk en tilbageføringslinje i kladden med modsatte beløb og samme værdipapir, dato og øvrige felter.</li>
-    <li>Åbn kladden og gennemse linjen. Du kan rette bogføringsdatoen hvis ompostberingen skal have anden dato end oprindelsen.</li>
-    <li>Bogfør kladdelinjen ved at klikke <strong>Bogfør</strong> (F9).</li>
+    <li>Åbn <strong>Værdipapirposter</strong> fra Treasury-menuen i rollecentret — eller fra
+    værdipapirkortet, hvor listen allerede er afgrænset til ét papir.</li>
+    <li>Find posten. Vælg handlingen <strong>Tilbagefør post</strong>.</li>
+    <li>Har du flere kladdetyper af typen <em>Ompostering</em>, bliver du bedt om at vælge én. Har du
+    kun én, bruges den uden videre.</li>
+    <li>Programmet danner tilbageførselslinjen og åbner <strong>Omposteringskladden</strong> på
+    den.</li>
+    <li>Gennemse linjen, ret <strong>Bogføringsdato</strong> og <strong>Årsagskode</strong>, hvis det
+    er nødvendigt.</li>
+    <li>Bogfør kladden med <strong>Bogfør</strong> (F9).</li>
   </ol>
-  <div class="info-box">
-    <strong>Vigtig regel:</strong> Den senest bogførte transaktion på et værdipapir bør omposteres først. Systemet tillader dig at ompostere ældre poster, men det kan gøre afstemning vanskeligere.
+  <div class="note">
+    <strong>Den nyeste post skal tilbageføres først.</strong> Findes der nyere poster på samme
+    værdipapir, som ikke er tilbageført, afvises handlingen med en fejl, der nævner værdipapiret. Det
+    er ikke en advarsel, du kan gå videre fra — tilbagefør den nyeste post først, og arbejd bagud.
   </div>
+  <p><strong>Alle bilagstyper kan omposteres.</strong> To af dem — <strong>Stykregulering</strong> og
+  <strong>Depotregulering</strong> — bogfører et par af værdipapirposter ud af én kladdelinje, og de
+  tilbageføres som et par: tilbageførslen tastes på <strong>tilgangsposten</strong>, og bogføringen af
+  den ene linje tager begge ben. Peger du i stedet på afgangsposten, afvises den med henvisning til
+  tilgangspostens løbenummer. Fremgangsmåden og hvad du kan forvente at se bagefter står i afsnit
+  5.4.</p>
+  <p>Et <strong>køb</strong>, hvis lot er helt eller delvist solgt, kræver at salgene tilbageføres
+  først, og en post, der allerede er tilbageført, kan ikke tilbageføres igen — begge dele følger af
+  seneste-først-reglen.</p>
+
+  <h3>Beskrivelsen på tilbageførselslinjen</h3>
+  <p>Linjen får den oprindelige posts beskrivelse med bilagstypen foran:
+  <strong>Tilbageførsel: &lt;den oprindelige tekst&gt;</strong>. Det samme sker, hvis du selv taster et
+  <strong>Udlign løbenr.</strong> på en tom linje i kladden. Har du skrevet din egen beskrivelse på
+  linjen, bliver den stående.</p>
+  <p>Teksten kan rettes i kladden inden bogføring, og <strong>det, der står på linjen, er det, der
+  bogføres</strong> — samme tekst havner på værdipapirposten, depotposten og finansposten.</p>
+</div>
+
+<div class="section" id="kladdens-kolonner">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Kolonnerne i Omposteringskladden</h2>
+  </div>
+  <p>Kladden viser de kolonner, du skal bruge til en tilbageførsel:</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Kolonne</th><th>Bemærkning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Bogføringsdato</strong></td><td><strong>Kan rettes.</strong> Se afsnittet om alternativ bogføringsdato nedenfor.</td></tr>
+      <tr><td><strong>Bilagsnr.</strong></td><td>Overtages fra den post, der tilbageføres, så original og tilbageførsel netter til nul under ét bilagsnummer.</td></tr>
+      <tr><td><strong>Bilagstype</strong></td><td>Sættes automatisk til <em>Tilbageførsel</em>, når du udpeger posten.</td></tr>
+      <tr><td><strong>Realiseringstype</strong></td><td>Spejles fra den tilbageførte post og er låst.</td></tr>
+      <tr><td><strong>Værdipapirnr.</strong></td><td>Spejles fra posten.</td></tr>
+      <tr><td><strong>Beskrivelse</strong></td><td>Den oprindelige tekst med bilagstypen foran — <em>Tilbageførsel: …</em>. Kan rettes, og det, der står her, er det, der bogføres.</td></tr>
+      <tr><td><strong>Udlign løbenr.</strong></td><td><strong>Den kolonne, du udfylder,</strong> hvis du skriver linjen i hånden.</td></tr>
+      <tr><td><strong>Årsagskode</strong></td><td><strong>Kan rettes.</strong> Foreslås fra kladdenavnets årsagskode, ellers fra kladdetypens.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Beløb, antal, kurser og valutafaktorer er skjulte kolonner. De spejles fra den tilbageførte post
+  og kan ikke rettes på en tilbageførselslinje — bogføringen henter dem alligevel fra den oprindelige
+  post. Vil du se dem, henter du kolonnerne frem med <strong>Tilpas</strong>.</p>
+
+  <h3>Udlign løbenr.</h3>
+  <p><strong>Udlign løbenr.</strong> peger på den værdipapirpost, linjen skal tilbageføre. Feltet
+  udfyldes automatisk, når du bruger handlingen <strong>Tilbagefør post</strong>, men du kan også
+  skrive en linje fra bunden i kladden og udpege posten selv.</p>
+  <p>Klik på opslaget i feltet for at få en liste over de poster, der stadig kan tilbageføres. Listen
+  er afgrænset til linjens værdipapir og udelader poster, der allerede er tilbageført eller
+  omposteret. Når du vælger en post, udfyldes bilagstype, realiseringstype, beløb og de øvrige
+  spejlede felter.</p>
+
+  <h3>Alternativ bogføringsdato</h3>
+  <p><strong>Bogføringsdato</strong> er den ene dato, du kan ændre på en tilbageførselslinje. Brug den,
+  når den oprindelige post ligger i en lukket regnskabsperiode, eller når rettelsen af andre grunde
+  skal bogføres i en anden periode end originalen.</p>
+  <p>Ændrer du datoen, bliver beløbene stående uændret. Det er med vilje: bogføringen henter beløb og
+  valutakursfaktorer fra den oprindelige værdipapirpost, ikke fra kladdelinjen, så en omregning på
+  linjen ville vise tal, der aldrig blev bogført.</p>
+  <p><strong>Handelsdato</strong> kan derimod ikke rettes på en tilbageførselslinje. Den kopieres fra
+  originalen, og en rettelse dér ville skrive den nye bogføringsdato over igen.</p>
+  <div class="info-box">
+    Bogføringsdatoen kontrolleres af finansopsætningen som enhver anden bogføring — tilladte
+    bogføringsdatoer og åbne regnskabsperioder gælder også her.
+  </div>
+</div>
+
+<div class="section" id="hvilke-konti">
+  <div class="section-header">
+    <div class="section-icon">🏦</div>
+    <h2>Hvilke konti rammer en ompostering?</h2>
+  </div>
+  <p>En ompostering danner en modsat postering på <strong>de samme konti</strong>, som den oprindelige postering ramte — men de to ben finder kontoen hver sin vej.</p>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Ben</th><th>Konti</th><th>Hvor kommer kontoen fra?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Beholdning og avance</td>
+        <td>Beholdnings-, fondskurs-, valutakurs- og avancekonti</td>
+        <td>Slås op i <strong>bogføringsopsætningen</strong> (værdipapir- og avancebogføringsgruppen) på det tidspunkt, omposteringen bogføres</td>
+      </tr>
+      <tr>
+        <td><strong>Modkonto</strong> (bank/finans)</td>
+        <td>Den bank- eller finanskonto, pengene stod på</td>
+        <td>Kopieres fra <strong>den oprindelige postering</strong> — ikke fra depotets nuværende modkonto</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Forskellen har kun betydning, hvis opsætningen er ændret, siden fejlposteringen blev bogført:</p>
+  <ul class="bullets">
+    <li>Er en <strong>bogføringsgruppe</strong> ændret, rammer omposteringen den konto, der er sat op i dag. Beholdning og avance omposteres altså der, hvor de bogføres nu.</li>
+    <li>Er <strong>modkontoen på depotet</strong> ændret, rammer omposteringen fortsat den konto, pengene faktisk blev bogført på. Det er et bevidst valg: omposteringen skal gå i nul på den konto, den oprindelige postering rørte, så hverken den gamle eller den nye modkonto står tilbage med en difference.</li>
+  </ul>
+  <div class="info-box">
+    <strong>Er den oprindelige modkonto blevet spærret eller slettet?</strong> Tilbageførselslinjen dannes alligevel med den konto, og du får en besked om det. Du vælger selv, om du vil åbne kontoen igen, eller udfylde <strong>Modkontotype</strong> og <strong>Modkontonr.</strong> på kladdelinjen med en anden konto, inden du bogfører. De to felter er skjult som standard i omposteringskladden og hentes frem med <strong>Tilpas</strong>.
+  </div>
+  <p><strong>Dimensionerne følger med.</strong> Tilbageførselslinjen dannes med
+  <strong>Dimension 1</strong>, <strong>Dimension 2</strong>, det fulde dimensionssæt og
+  <strong>Eksternt bilagsnr.</strong> kopieret fra den post, der tilbageføres, og de skrives videre til
+  både værdipapirposten og finansposterne ved bogføring. En dimensionsafgrænset finansrapport viser
+  derfor original og ompostering samme sted, så de to netter til nul pr. dimension. Har du brug for at
+  rette en dimension på omposteringen, gør du det direkte på kladdelinjen — det, der står i kladden,
+  er det, der bogføres.</p>
+  <p>En <strong>kursregulering</strong> har ingen modkonto — den rører kun beholdnings- og resultatkontiene — så her er modkontofelterne tomme på tilbageførselslinjen.</p>
+</div>
+
+<div class="section" id="tre-indgange">
+  <div class="section-header">
+    <div class="section-icon">🚪</div>
+    <h2>De tre indgange til en ompostering</h2>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Indgang</th><th>Hvor</th><th>Gør</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tilbagefør post</strong></td>
+        <td>Handling på <strong>Værdipapirposter</strong></td>
+        <td>Danner <strong>én</strong> kladdelinje for den valgte post og åbner kladden. Den normale vej.</td>
+      </tr>
+      <tr>
+        <td><strong>Tilbagefør pr. værdipapir</strong></td>
+        <td>Rapport i Treasury-menuen</td>
+        <td>Danner kladdelinjer for <strong>alle</strong> ikke-tilbageførte poster på ét værdipapir, nyeste først. Du kan angive en fælles bogføringsdato på anfordringssiden. Linjerne bogføres ikke — de venter i kladden.</td>
+      </tr>
+      <tr>
+        <td><strong>Tilbagefør og bogfør journal</strong></td>
+        <td>Handling på <strong>Værdipapirposter</strong></td>
+        <td>Tilbagefører <strong>hele</strong> den journal, den valgte post indgår i, og bogfører straks. Du bliver spurgt, hvor mange poster det drejer sig om, inden kørslen går i gang.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <strong>Vær varsom med Tilbagefør og bogfør journal.</strong> Bogførte du tyve handler i én
+    kørsel, tilbagefører handlingen alle tyve — og der er ingen kladdelinjer at gennemse først.
+    Handlingen er derfor ikke lagt op på båndet; den findes i handlingsmenuen. Til daglig brug er
+    <strong>Tilbagefør post</strong> den rigtige.
+  </div>
+</div>
+
+<div class="section" id="kildekoden">
+  <div class="section-header">
+    <div class="section-icon">🏷️</div>
+    <h2>Kildekoden</h2>
+  </div>
+  <p>Omposteringer stemples med kladdetypens <strong>Kildekode</strong>, ikke med kildekoden fra den
+  post, der tilbageføres. Sæt kildekoden op ét sted — feltet <strong>Omposteringskladde</strong> på
+  siden <strong>Kildekodeopsætning</strong> i gruppen <em>Værdipapirer</em> — så foreslås den
+  automatisk, når en kladdetype får typen <em>Ompostering</em>.</p>
+  <p>Dermed kan du genfinde alle omposteringer på kildekoden, og de kan skelnes fra de handler, de
+  retter.</p>
 </div>
 
 <div class="section" id="resultatet">
@@ -32,12 +201,25 @@
     <div class="section-icon">✓</div>
     <h2>Hvad sker der ved bogføring?</h2>
   </div>
-  <p>Når du bogfører ompostberingen, sker følgende:</p>
   <ul class="bullets">
-    <li>Den <strong>oprindelige post</strong> markeres som omposteret.</li>
-    <li>Der dannes en <strong>ny post</strong> med modsatte beløb — hvis oprindelsen var en indgang på +10, bliver ompostberingen −10.</li>
-    <li>Både oprindelig og tilbageføring får samme <strong>Reversed Entry No.</strong> så de kan linkes sammen.</li>
-    <li>Generelle finansposter dannes på samme måde — hvis transaktionen påvirkede GL-kontiene, tilbageføres også disse.</li>
+    <li>Den <strong>oprindelige post</strong> markeres som tilbageført og lukkes, så den ikke kan
+    sælges fra eller tilbageføres igen.</li>
+    <li>Der dannes <strong>spejlposter</strong> med modsat fortegn: værdipapirpost, depotpost samt
+    detaljerede værdi- og avanceposter.</li>
+    <li>De to poster kobles via <strong>Tilbageført løbenr.</strong>, så du altid kan gå fra den ene
+    til den anden.</li>
+    <li><strong>Finansposterne</strong> tilbageføres tilsvarende på de konti, der er beskrevet
+    ovenfor.</li>
+    <li>Ved en <strong>stykregulering</strong> eller en <strong>depotregulering</strong> tages begge
+    ben: begge poster markeres som tilbageførte, de lodder, operationen lukkede, åbnes igen med præcis
+    det restantal og den anskaffelseskurs, de havde før, og <strong>Stykstørrelse</strong> på
+    værdipapirkortet sættes tilbage til den gamle værdi. Der bogføres intet i finans — der blev heller
+    ikke bogført noget, da reguleringen blev lavet.</li>
+    <li>Et <strong>periodiseret afkast</strong> tilbageføres på periodiseringskontoen, ikke på den
+    realiserede afkastkonto. Tilbageførslen følger den <strong>Realiseringstype</strong>, den
+    oprindelige post blev bogført med, så pengene kommer ud igen der, hvor de gik ind.</li>
+    <li>Kørslen registreres i <strong>Værdipapirjournal</strong> som enhver anden bogføring.</li>
   </ul>
-  <p>Kontroller altid de nye poster i <strong>Værdipapirposter</strong> for at sikre, at ompostberingen er korrekt bogført, og at depotets beholdning afspejler det forventede.</p>
+  <p>Kontroller bagefter i <strong>Værdipapirposter</strong>, at spejlsættet er dannet, og at depotets
+  beholdning igen er den, du forventer.</p>
 </div>

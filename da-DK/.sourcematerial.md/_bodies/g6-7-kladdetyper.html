@@ -12,23 +12,23 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Trade (Handelskladde)</strong></td>
+          <td><strong>Handel (Handelskladde)</strong></td>
           <td>Køb og salg af værdipapirer</td>
         </tr>
         <tr>
-          <td><strong>Return (Afkastkladde)</strong></td>
+          <td><strong>Afkast (Afkastkladde)</strong></td>
           <td>Aktieudbytte, obligationsrente og andre afkast</td>
         </tr>
         <tr>
-          <td><strong>Curr. Exch. Rate Adjustment (Kursreguleringskladde)</strong></td>
+          <td><strong>Kursregulering (Kursreguleringskladde)</strong></td>
           <td>Fonds- og valutakursregulering</td>
         </tr>
         <tr>
-          <td><strong>Transfer (Overførselskladde)</strong></td>
+          <td><strong>Overførsel (Overførselskladde)</strong></td>
           <td>Værdioverførsler mellem værdipapirer (fusion, split mv.)</td>
         </tr>
         <tr>
-          <td><strong>Correction (Omposteringskladde)</strong></td>
+          <td><strong>Ompostering (Omposteringskladde)</strong></td>
           <td>Ompostering og korrektion af fejlposteringer</td>
         </tr>
       </tbody>
@@ -46,16 +46,16 @@
 
   <ol class="steps">
     <li>Gå til rollecenteret og vælg menuen <strong>Treasury</strong>.</li>
-    <li>Klik på <strong>Security Journal Templates</strong> i gruppen <strong>Treasury Setup</strong>.</li>
+    <li>Klik på <strong>Værdipapirkladdetyper</strong> i gruppen <strong>Opsætning af Treasury</strong>.</li>
   </ol>
 
-  <p>Alternativt kan du søge efter <strong>Security Journal Templates</strong> i søgefeltet.</p>
+  <p>Alternativt kan du søge efter <strong>Værdipapirkladdetyper</strong> i søgefeltet.</p>
 </div>
 
 <div class="section" id="kladdetype-felter">
   <div class="section-header">
     <div class="section-icon">⚙️</div>
-    <h2>Felter på Security Journal Templates</h2>
+    <h2>Felter på Værdipapirkladdetyper</h2>
   </div>
 
   <div class="table-wrap">
@@ -65,50 +65,38 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Name</strong></td>
+          <td><strong>Navn</strong></td>
           <td>En unik kode for kladdetypen (op til 10 tegn). Eksempler: <strong>HANDEL</strong>, <strong>AFKAST</strong>, <strong>KURSREG</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Description</strong></td>
+          <td><strong>Beskrivelse</strong></td>
           <td>Et beskrivende navn eller tekst.</td>
         </tr>
         <tr>
-          <td><strong>Type</strong></td>
-          <td>Kladdens type: <strong>Trade</strong>, <strong>Return</strong>, <strong>Curr. Exch. Rate Adjustment</strong>, <strong>Transfer</strong> eller <strong>Correction</strong>. Valget styrer automatisk, hvilken kladdesidetype der åbnes.</td>
+          <td><strong>Kladdetypetype</strong></td>
+          <td>Kladdens type: <strong>Handel</strong>, <strong>Afkast</strong>, <strong>Kursregulering</strong>, <strong>Overførsel</strong> eller <strong>Ompostering</strong>. Valget styrer automatisk, hvilken kladdeside der åbnes.</td>
         </tr>
         <tr>
-          <td><strong>Source Code</strong></td>
-          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>SEC-HANDEL</strong>.</td>
+          <td><strong>Kildekode</strong></td>
+          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>VP-HANDEL</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Reason Code</strong></td>
+          <td><strong>Årsagskode</strong></td>
           <td>En årsagskode, der indsættes automatisk på nye kladdelinjer. Kan overstyres på den enkelte linje.</td>
-        </tr>
-        <tr>
-          <td><strong>Show Stock Columns</strong></td>
-          <td>Markér for at vise aktie-specifikke kolonner i kladden: <strong>Drawing</strong> (Udtræk) og <strong>Bonus Share</strong> (Fondsaktie).</td>
-        </tr>
-        <tr>
-          <td><strong>Show Bond Columns</strong></td>
-          <td>Markér for at vise obligations-specifikke kolonner: <strong>Trading Interest</strong> (Handelsrente).</td>
-        </tr>
-        <tr>
-          <td><strong>Show Currency Columns</strong></td>
-          <td>Markér for at vise valutarelaterede kolonner: <strong>Currency Factor</strong> (Valutafaktor).</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="note"><strong>Bemærk om kolonnevisning:</strong> Hvis du ikke markerer nogle af de tre kolonneflags, bruger systemet Business Centrals standard personalisering — programmet husker din egen kolonneopsætning for den pågældende kladde.</div>
+  <div class="note"><strong>Bemærk om kolonnevisning:</strong> Kladdetypen styrer ikke, hvilke kolonner kladden viser. Hver kladde har et fast standardlayout, og du tilføjer eller fjerner selv kolonner med <strong>Tilpas</strong> — Business Central husker derefter din egen opsætning. Kolonner som <strong>Fondsaktie</strong>, <strong>Gratis</strong> og beløbsfelterne i regnskabsvaluta er skjult i standardlayoutet, men kan altid hentes frem den vej.</div>
 </div>
 
 <div class="section" id="kladdetype-batches">
   <div class="section-header">
     <div class="section-icon">📦</div>
-    <h2>Kladdenavne (Batches)</h2>
+    <h2>Kladdenavne</h2>
   </div>
-  <p>Til hver kladdetype kan du oprette ét eller flere kladdenavne (batches). Kladdenavnene administreres fra knappen <strong>Batches</strong> øverst i kladdetyplisten.</p>
+  <p>Til hver kladdetype kan du oprette ét eller flere kladdenavne. Kladdenavnene administreres fra knappen <strong>Navne</strong> øverst i kladdetyplisten.</p>
 
   <div class="table-wrap">
     <table>
@@ -117,24 +105,24 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Name</strong></td>
-          <td>Navn på kladdenavnet (op til 10 tegn). Eksempel: <strong>JAN-2026</strong> eller <strong>KØBER</strong>.</td>
+          <td><strong>Navn</strong></td>
+          <td>Navn på kladdenavnet (op til 10 tegn). Eksempel: <strong>JAN-2026</strong> eller <strong>DRIFT</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Description</strong></td>
+          <td><strong>Beskrivelse</strong></td>
           <td>En beskrivelse af kladdenavnet.</td>
         </tr>
         <tr>
-          <td><strong>Reason Code</strong></td>
-          <td>En årsagskode specifik for dette kladdenavn — tilsidesætter kladdtypens årsagskode.</td>
+          <td><strong>Årsagskode</strong></td>
+          <td>En årsagskode specifik for dette kladdenavn — tilsidesætter kladdetypens årsagskode.</td>
         </tr>
         <tr>
-          <td><strong>No. Series</strong></td>
+          <td><strong>Nummerserie</strong></td>
           <td>Nummerserie til tildeling af midlertidige bilagsnumre på kladdelinjer. Lades feltet tomt, tildeles numre manuelt.</td>
         </tr>
         <tr>
-          <td><strong>Posting No. Series</strong></td>
-          <td>Nummerserie til bilagsnumre på de <strong>bogførte</strong> poster. Skal adskille sig fra No. Series. Lades feltet tomt, benyttes det nummer, der allerede er angivet på kladdelinjen.</td>
+          <td><strong>Bogføringsnummerserie</strong></td>
+          <td>Nummerserie til bilagsnumre på de <strong>bogførte</strong> poster. Skal adskille sig fra Nummerserie. Lades feltet tomt, benyttes det nummer, der allerede er angivet på kladdelinjen.</td>
         </tr>
       </tbody>
     </table>
@@ -151,14 +139,14 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Name</th><th>Type</th></tr>
+        <tr><th>Navn</th><th>Kladdetypetype</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>HANDEL</strong></td><td>Trade</td></tr>
-        <tr><td><strong>AFKAST</strong></td><td>Return</td></tr>
-        <tr><td><strong>KURSREG</strong></td><td>Curr. Exch. Rate Adjustment</td></tr>
-        <tr><td><strong>OVERF</strong></td><td>Transfer</td></tr>
-        <tr><td><strong>OMPOST</strong></td><td>Correction</td></tr>
+        <tr><td><strong>HANDEL</strong></td><td>Handel</td></tr>
+        <tr><td><strong>AFKAST</strong></td><td>Afkast</td></tr>
+        <tr><td><strong>KURSREG</strong></td><td>Kursregulering</td></tr>
+        <tr><td><strong>OVERF</strong></td><td>Overførsel</td></tr>
+        <tr><td><strong>OMPOST</strong></td><td>Ompostering</td></tr>
       </tbody>
     </table>
   </div>

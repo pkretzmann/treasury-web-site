@@ -13,7 +13,7 @@
   <header>
     <div class="header-badge">Handel</div>
     <h1>Obligationskøb</h1>
-    <p>Sådan køber du obligationer — bemærk kurskonventionen (120 = 120 %).</p>
+    <p>Sådan køber du obligationer — kursen angives som procent af nominel værdi.</p>
     <div class="header-pills"><span class="pill">Daglig brug</span></div>
   </header>
   <div class="container">
@@ -31,7 +31,11 @@
     <div class="section-icon">📂</div>
     <h2>Åbn Handelskladden</h2>
   </div>
-  <p>Klik på <strong>Handelskladder</strong> i Treasury-menuen i rollecentret. Vælg den kladdetype, der er oprettet til obligationshandel. Kladdetypen bør have <strong>Vis obligationskolonner</strong> aktiveret, så handelsrentefeltet vises. Vinduet <strong>Handelskladder</strong> vises.</p>
+  <p>Klik på <strong>Værdipapirhandelskladder</strong> i Treasury-menuen i rollecentret. Hvis du har oprettet flere kladdetyper, vises en oversigt over disse. Vælg den kladdetype, der er oprettet til obligationshandel. Øverst i vinduet kan du skifte kladdenavn (batch) i feltet <strong>Kladdenavn</strong>.</p>
+  <p>Fremgangsmåden er den samme som ved aktiekøb – men beløbet beregnes efter obligationskonventionen, og tre kolonner er kun relevante her: <strong>Handelsrenter</strong>, <strong>Udtrækning</strong> og – ved indeksobligationer – <strong>Indekskurs</strong>, som er skjult som standard og hentes frem med <strong>Personalisér</strong> (se <em>Skjulte kolonner</em> nedenfor).</p>
+  <div class="note">
+    <strong>Bemærk:</strong> Kladdetypen styrer ikke, hvilke kolonner du ser. Alle kolonner findes på kladden, uanset om du handler aktier eller obligationer, og du bestemmer selv hvilke der vises med <strong>Personalisér</strong> (tandhjulet → <em>Personalisér</em>).
+  </div>
 </div>
 
 <div class="section" id="udfyld-kladdelinjen-obligation">
@@ -50,7 +54,7 @@
       <tbody>
         <tr>
           <td><strong>Handelsdato</strong></td>
-          <td>Angiv handelsdatoen – normalt den dato, hvor aftalen indgås. Bogføringsdatoen sættes automatisk lig med handelsdatoen. Det er ikke muligt at bogføre med en dato tidligere end den sidst bogførte post på obligationen.</td>
+          <td>Angiv handelsdatoen – normalt den dato, hvor aftalen indgås. <strong>Bogføringsdato</strong> sættes automatisk lig med handelsdatoen. Ændrer du handelsdatoen senere, hentes valutakursen for den nye dato på ny.</td>
         </tr>
         <tr>
           <td><strong>Bilagsnr.</strong></td>
@@ -61,57 +65,136 @@
           <td>Vælg <strong>Køb</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Værdipapirnummer</strong></td>
-          <td>Vælg den obligation, der er købt. Spærrede obligationer kan ikke vælges. Beskrivelse, valutakode og seneste kurs indsættes automatisk.</td>
+          <td><strong>Værdipapirnr.</strong></td>
+          <td>Vælg den obligation, der er købt. Spærrede obligationer kan ikke bogføres. Når feltet udfyldes, indsættes automatisk beskrivelse, valutakode og – hvis kursforslaget er slået til – værdipapirkursen fra ISIN-kurslisten. Se noten om kursforslaget nedenfor.</td>
         </tr>
         <tr>
           <td><strong>Beskrivelse</strong></td>
-          <td>Udfyldes automatisk. Kan redigeres.</td>
+          <td>Udfyldes automatisk med bilagstype og obligationens navn. Kan redigeres.</td>
+        </tr>
+        <tr>
+          <td><strong>Udtrækning</strong></td>
+          <td>Markér feltet ved en obligationsudtrækning. Markeringen sætter <strong>Værdipapirkurs</strong> til 100. Lad feltet stå tomt ved et almindeligt køb.</td>
         </tr>
         <tr>
           <td><strong>Valutakode</strong></td>
-          <td>Hentes automatisk fra obligationskortet. Tomt felt = regnskabsvaluta.</td>
+          <td>Hentes automatisk fra obligationskortet og kan ikke ændres på linjen — valutaen tilhører værdipapiret. Tomt felt = regnskabsvaluta. Handles obligationen i en anden valuta, ændres koden på <strong>obligationskortet</strong>. Selve <em>kursen</em> kan stadig overstyres pr. linje med <strong>Ret valutakurs</strong> i handlingsbåndet.</td>
         </tr>
         <tr>
           <td><strong>Antal</strong></td>
-          <td>Angiv det antal enheder (stk./nominelt), der er købt.</td>
+          <td>Angiv den nominelle værdi, der er købt. Antallet tastes <strong>positivt</strong> – fortegnsskiftet sker ved bogføringen, og bogføringen afviser et negativt tal. Skal en allerede bogført linje gøres om, bruger du en <strong>tilbageførsel</strong>.</td>
         </tr>
         <tr>
-          <td><strong>Kurs</strong></td>
-          <td>Kursen foreslås automatisk fra ISIN-kurslisten. Kan overskrives. <strong>OBS:</strong> I modsætning til det tidligere system divideres kursen ikke automatisk med 100 – se vigtig note nedenfor.</td>
+          <td><strong>Værdipapirkurs</strong></td>
+          <td>Kursen angives som <strong>procent af nominel værdi</strong> – f.eks. <code>98,50</code> for kurs 98,50. Foreslås automatisk fra ISIN-kurslisten, når der findes en kurs på handelsdatoen, og kan altid overskrives manuelt.</td>
         </tr>
         <tr>
           <td><strong>Omkostninger</strong></td>
           <td>Angiv omkostninger (kurtage, provisioner m.v.). Indgår i anskaffelsesværdien ved fremtidig avanceopgørelse.</td>
         </tr>
         <tr>
-          <td><strong>Handelsrente</strong></td>
-          <td><em>(Synlig når Vis obligationskolonner er aktiveret på kladdetypen.)</em> Angiv evt. handelsrente ved købet. Feltet registreres på posten.</td>
+          <td><strong>Handelsrenter</strong></td>
+          <td>Angiv den vedhængende rente, der betales ved købet. Beløbet indgår i <strong>Beløb</strong>, men <strong>ikke</strong> i anskaffelsesværdien, og bogføres til sin egen finanskonto – se noten nedenfor.</td>
         </tr>
         <tr>
           <td><strong>Beløb</strong></td>
-          <td>Beregnes automatisk: <strong>Beløb = (Antal × Kurs) + Omkostninger</strong>. Handelsrente er ikke inkluderet i beregningen.</td>
+          <td>Beregnes automatisk, se formlen nedenfor. Feltet kan overstyres manuelt.</td>
         </tr>
         <tr>
-          <td><strong>Beløb (LCY)</strong></td>
-          <td>Beløbet i regnskabsvaluta.</td>
+          <td><strong>Beløb (RV)</strong></td>
+          <td>Beløbet i regnskabsvaluta. Beregnes automatisk ud fra valutafaktoren.</td>
         </tr>
         <tr>
-          <td><strong>Depotbeholdningskode</strong></td>
-          <td>Det depot, obligationen tilskrives. Obligatorisk. Modkontotype og modkonto sættes automatisk.</td>
+          <td><strong>Depotkode</strong></td>
+          <td>Det depot, obligationen tilskrives. Obligatorisk. Modkontotype og modkonto sættes automatisk fra depotopsætningen, og dimensioner hentes fra depotet.</td>
         </tr>
         <tr>
-          <td><strong>Bal. Kontotype</strong></td>
-          <td>Udfyldes automatisk fra depotopsætningen.</td>
+          <td><strong>Modkontotype</strong></td>
+          <td>Udfyldes automatisk fra depotopsætningen (Finanskonto eller Bankkonto).</td>
         </tr>
         <tr>
-          <td><strong>Bal. Kontonr.</strong></td>
+          <td><strong>Modkontonr.</strong></td>
           <td>Udfyldes automatisk fra depotopsætningen.</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div class="note"><strong>Vigtig:</strong> Obligationskurser er traditionelt angivet som en procentsats af den nominelle værdi (f.eks. 120,00 betyder 120 % af nominelt). I modsætning til tidligere systemer divideres kursen <strong>ikke</strong> automatisk med 100. Du skal selv angive kursen korrekt. Hvis den nominelle værdi er 1.000 DKK og kursen er 120 %, skal du angive 120 (hvis du vil have en enhedskurs) eller 120.000 (hvis du vil have det samlede beløb). Afklar med dit regnskabskontor, hvordan kursfeltet skal udfyldes.</div>
+
+  <h3>Skjulte kolonner</h3>
+  <p>Følgende kolonner findes på kladden, men vises ikke som standard. Du henter dem frem med <strong>Personalisér</strong>:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Felt</th>
+          <th>Vejledning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bogføringsdato</strong></td>
+          <td>Sættes automatisk lig med handelsdatoen. Hent kolonnen frem, hvis bogføringsdatoen undtagelsesvis skal afvige fra handelsdatoen.</td>
+        </tr>
+        <tr>
+          <td><strong>Fondsaktie</strong> · <strong>Gratis</strong></td>
+          <td>Bruges ved tildelinger, se afsnit 3.1.</td>
+        </tr>
+        <tr>
+          <td><strong>Indekskurs</strong></td>
+          <td>Kun obligationer, der er markeret <strong>Indeksobligation</strong> på obligationskortet – dér er feltet til gengæld <strong>obligatorisk</strong>, så handler du indeksobligationer, henter du kolonnen frem, inden du bogfører. Angiv indeksfaktoren – <code>1,05</code> for indeks 105, ikke indekstallet selv. Den ganges på beløbet, se formlen nedenfor. Feltet foreslås automatisk fra <strong>Indekskurser</strong>. På en obligation uden markeringen, og på en aktie, afvises feltet.</td>
+        </tr>
+        <tr>
+          <td><strong>Valutafaktor</strong></td>
+          <td>Faktoren hentes automatisk ud fra handelsdatoen og valutakoden. Du kan ændre den manuelt via <strong>Ret valutakurs</strong> i handlingsbåndet.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotvalutakode</strong></td>
+          <td>Valutakoden på depotets modkonto, når modkontoen er en bankkonto. Udfyldes automatisk.</td>
+        </tr>
+        <tr>
+          <td><strong>Depotbeløb</strong> · <strong>Depotvalutafaktor</strong> · <strong>Depotbeløb (RV)</strong></td>
+          <td>Handelsbeløbet set fra depotets bankkonto: beløbet omregnet til depotets valuta, den kurs det er omregnet med, og beløbet i regnskabsvaluta. <strong>Depotbeløb</strong> beregnes automatisk og kan ikke tastes. <strong>Depotbeløb (RV)</strong> er altid det samme som <strong>Beløb (RV)</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Beløb før renter</strong></td>
+          <td>Beløbet uden handelsrente. Udledes ved bogføring og er det, kostprisen og beholdningskontoen bruger.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Beløbsberegningen</h3>
+  <p><strong>Beløb = (Antal × Værdipapirkurs / 100) + Omkostninger + Handelsrenter</strong></p>
+  <p>Har obligationen en <strong>Indekskurs</strong>, ganges den på først:</p>
+  <p><strong>Beløb = (Antal × Værdipapirkurs / 100 × Indekskurs) + Omkostninger + Handelsrenter</strong></p>
+  <p>Divisionen med 100 sker automatisk, fordi kursen er en procentsats af den nominelle værdi. Ved en aktie divideres der ikke – der er kursen et beløb pr. enhed.</p>
+
+  <div class="note">
+    <strong>Kursforslaget:</strong> Kursen foreslås kun, hvis der findes en kurs på <strong>præcis</strong> handelsdatoen i ISIN-kurslisten. Er der ingen kurs den dag, ændres feltet ikke – så du selv taster kursen frem for at arbejde videre på en forældet kurs. Er handelsdatoen endnu ikke udfyldt, bruges arbejdsdatoen som opslagsdato. Forslaget kan slås helt fra med <strong>Foreslå værdipapirkurs v. handel</strong> i <strong>Opsætning af Treasury</strong>. Den kurs, du taster, gemmes i ISIN-kurslisten ved bogføring.
+  </div>
+
+  <div class="note">
+    <strong>Handelsrenten:</strong> Handelsrenten er en del af det beløb, du betaler, men den er ikke en del af obligationens kostpris. Ved bogføring debiteres den derfor sin egen finanskonto – feltet <strong>Handelsrentekonto</strong> på værdipapirbogføringsgruppen – mens beholdningskontoen kun debiteres med <strong>Beløb før renter</strong>. Er <strong>Handelsrentekonto</strong> ikke udfyldt på bogføringsgruppen, afvises en linje med handelsrente ved bogføring.
+  </div>
+
+  <div class="note">
+    <strong>Indekskursen tastes som en faktor:</strong> <code>1,05</code> for indeks 105 – ikke indekstallet selv. Taster du <code>105</code>, bliver beløbet 105 gange for stort. Samme konvention gælder i kartoteket <strong>Indekskurser</strong> (afsnit 6.5), som feltet foreslås fra, og i kursreguleringen.
+    <br /><br />
+    <strong>Indekskursen følger markeringen Indeksobligation:</strong> Er obligationen markeret <strong>Indeksobligation</strong> på obligationskortet, <em>skal</em> indekskursen udfyldes – ellers afvises bogføringen. Er den ikke markeret, må feltet ikke udfyldes; det afvises allerede, når du taster det, og igen ved bogføring, hvis markeringen fjernes bagefter. På en aktie afvises feltet ubetinget. Kontrollen gælder køb og salg – afkast, kursregulering, overførsel, stykregulering og tilbageførsel er upåvirkede. Skifter du <strong>Værdipapirnr.</strong> på linjen til noget, der ikke er en indeksobligation, ryddes indekskursen automatisk, og beløbet genberegnes.
+    <br /><br />
+    <strong>Indekskursen genberegnes ikke senere:</strong> Den gemmes på værdipapirposten som en oplysning om, hvad der gjaldt på handelsdatoen. Sælger du obligationen, regnes avancen af lottets anskaffelseskurs, som allerede har indekseringen indbygget; og kursreguleringen henter den <strong>seneste</strong> indekskurs frem for den, posten blev bogført med.
+  </div>
+
+  <div class="note">
+    <strong>Depotet må føres i en anden valuta end obligationen:</strong> Vælger du et depot, hvis bankkonto står i fx EUR til en obligation noteret i USD, får du en advarsel og kan gå videre. Handlen bogføres i <strong>obligationens</strong> valuta på beholdningskontoen, mens <strong>modkontoen bogføres i depotets valuta</strong> med <strong>Depotbeløb</strong> og <strong>Depotvalutafaktor</strong>. Advarslen står, fordi to forskellige valutaer oftest skyldes en fejl i opsætningen – ikke fordi det er forbudt.
+  </div>
+  <div class="nav-deviation">
+    <span class="nav-deviation-tag">Afvigelse fra NAV</span>
+    <h4>Depotbeløbet omskriver ikke kursen</h4>
+    <span class="nav-says">NAV: <em>"Ved manuel ændring ændres Depotbeløb som igen bevirker ændring i <strong>Fondskursen</strong> for at få beløbene til at gå op."</em></span>
+    <p><strong>I Business Central er Depotbeløb skrivebeskyttet</strong> og afledt af handlen. Der er ingen vej tilbage fra depotbeløbet til <strong>Værdipapirkurs</strong>.</p>
+    <p><strong>Hvorfor:</strong> handlen skal være den eneste kilde. <strong>Værdipapirkurs</strong> er den kurs, papiret faktisk blev handlet til, og den må ikke ændre sig, fordi et afledt beløb bliver afrundet – så ville man bagefter ikke kunne se, hvad der oprindeligt blev handlet til. Skal beløbet være et andet, retter du <strong>Antal</strong>, <strong>Værdipapirkurs</strong>, <strong>Indekskurs</strong> eller <strong>Omkostninger</strong>; depotbeløbet følger med af sig selv.</p>
+  </div>
 </div>
 
 <div class="section" id="bogforing-obligation">
@@ -119,7 +202,20 @@
     <div class="section-icon">✓</div>
     <h2>Bogfør købet</h2>
   </div>
-  <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>). Programmet udfører de samme kontroller som ved aktiekøb.</p>
+  <p>Klik på <strong>Bogfør</strong> (genvejstast <strong>F9</strong>) for at bogføre linjen.</p>
+  <p>Vil du se resultatet, inden du bogfører, klikker du på <strong>Vis bogføring</strong> (genvejstast <strong>Ctrl+Alt+F9</strong>). Funktionen gennemfører bogføringen i en transaktion, der rulles tilbage bagefter, og viser samtlige poster, handlen ville danne – værdipapirposter, depotposter, detaljerede poster og finansposter. Bilagsnummeret simuleres, så en visning ikke bruger et nummer i nummerserien.</p>
+  <div class="note">
+    <strong>Bemærk:</strong> <em>Bogfør og udskriv</em> (Shift+F9) bogfører kladden og udskriver derefter værdipapirjournalen for de netop bogførte poster; handlingen <strong>Testrapport</strong> kontroludskriver kladdens linjer med eventuelle fejl inden bogføring. NAV's <em>Simuler</em> er dækket af <strong>Vis bogføring</strong>.
+  </div>
+  <p>Programmet udfører de samme kontroller som ved aktiekøb og desuden tre, der kun gælder obligationer:</p>
+  <ul class="bullets">
+    <li>At obligationen har en <strong>Terminskode</strong>. Skal obligationen bevidst holdes ude af renteberegningen, markerer du i stedet <strong>Udelad renteberegning</strong> på obligationskortet</li>
+    <li>At obligationen har en <strong>Udstederkode</strong></li>
+    <li>At <strong>Handelsrentekonto</strong> er udfyldt på bogføringsgruppen, hvis linjen har handelsrente</li>
+  </ul>
+  <div class="note">
+    <strong>Bagudkontrollen:</strong> Den hyppigste årsag til, at en bogføring stopper, er, at handlen ligger bag om en allerede bogført post på det samme værdipapir: <strong>Handelsdato</strong> må ikke ligge før handelsdatoen på den sidst bogførte post på obligationen. Fejlbeskeden nævner handelsdatoen på den post, der spærrer. To undtagelser: <strong>afkastposter</strong> tæller ikke med, så en rente- eller udbyttepost bogført sent på året spærrer ikke for et køb med en tidligere handelsdato. <strong>Tilbageførselslinjer</strong> kontrolleres heller ikke – det er dem, du bruger til at rette en ældre post.
+  </div>
 </div>
 
 <div class="section" id="resultatet-bogforing-obligation">
@@ -137,40 +233,40 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Obligationspost</strong></td>
-          <td>En post med dokumenttype Køb, antal, kurs og beløb. Posten er åben og udgør et nyt kostprislot.</td>
+          <td><strong>Værdipapirpost</strong></td>
+          <td>En post med bilagstype Køb, nominel værdi, værdipapirkurs, omkostninger og beløb. Indekskursen gemmes på posten, hvis den er angivet. Posten markeres som åben.</td>
         </tr>
         <tr>
-          <td><strong>Depotbeholdsningspost</strong></td>
-          <td>En depotpost der registrerer, at antallet er tilgået depotet.</td>
+          <td><strong>Detaljeret værdipost</strong></td>
+          <td>Én lot-post pr. køb. Den peger på sig selv via <em>Købspostløbenr.</em> og indeholder <em>Restantal</em> og <em>Købskurs</em>, der bruges til avanceopgørelse ved fremtidigt salg. Beløbet på lottet er <strong>Beløb før renter</strong>, således at handelsrenten ikke indgår i kostprisen.</td>
         </tr>
         <tr>
-          <td><strong>Kostprislot</strong></td>
-          <td>Et åbent lot til fremtidig avanceopgørelse (FIFO/Gennemsnit).</td>
+          <td><strong>Depotpost</strong></td>
+          <td>En depotpost der registrerer, at den nominelle værdi er tilgået depotet.</td>
         </tr>
         <tr>
-          <td><strong>Finanspost (beholdningskonto)</strong></td>
-          <td>Obligationsbeholdningskontoen debiteres med beløbet.</td>
+          <td><strong>Finanspost (værdipapirkonto)</strong></td>
+          <td>Beholdningskontoen (rækken med bilagstype <strong>Beholdning</strong> i <strong>Værdipapirværdibogføringsgruppe</strong>) debiteres med <strong>Beløb før renter</strong> i regnskabsvaluta.</td>
+        </tr>
+        <tr>
+          <td><strong>Finanspost (handelsrentekonto)</strong></td>
+          <td>Dannes kun, når linjen har en handelsrente. Kontoen fra <strong>Handelsrentekonto</strong> på værdipapirbogføringsgruppen debiteres med renten.</td>
         </tr>
         <tr>
           <td><strong>Finanspost (modkonto)</strong></td>
-          <td>Bankmodkontoen krediteres.</td>
-        </tr>
-        <tr>
-          <td><strong>Handelsrente</strong></td>
-          <td>Registreres på obligationsposten.</td>
+          <td>Modkontoen (bank, finanskonto eller anden type angivet i depotopsætningen) krediteres med det samlede beløb inklusive handelsrente.</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p>Alle poster knyttes til samme transaktionsnummer og registreres som audit trail.</p>
+  <p>Alle poster knyttes til samme transaktionsnummer og registreres i <strong>Værdipapirjournal</strong> som audit trail. Du kan navigere til posterne fra <strong>Værdipapirposter</strong> via rollecentret, eller med <strong>Naviger</strong> ud fra bilagsnummeret. Fra <strong>Værdipapirposter</strong> åbner handlingen <strong>Depotposter</strong> den tilhørende depotpost.</p>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

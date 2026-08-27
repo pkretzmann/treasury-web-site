@@ -89,6 +89,12 @@
     <li>Klik på <strong>Værdipapirkurser</strong>.</li>
   </ol>
   <p>Du kan også åbne siden filtreret på en valgt ISIN-kode via handlingen <strong>Værdipapirkurser</strong> fra ISIN-listen.</p>
+  <p>Fra <strong>værdipapirkortet</strong> og <strong>værdipapirlisten</strong> åbner den samme handling
+  kursserien for papirets egen ISIN-kode. Papiret skal have en ISIN-kode — er feltet tomt, siger
+  handlingen det, i stedet for at åbne hele kurslisten filtreret på en blank kode. Er koden endnu ikke
+  oprettet i ISIN-listen, bliver du spurgt, om den skal oprettes; svarer du ja, oprettes den, og siden
+  åbnes filtreret på den, så den første linje, du taster, kan gemmes. Svarer du nej, åbnes siden
+  ikke.</p>
 
   <h3>Felter</h3>
   <div class="table-wrap">
@@ -111,7 +117,7 @@
         </tr>
         <tr>
           <td><strong>Navn</strong></td>
-          <td>Værdipapirets navn. Vises automatisk fra det tilknyttede værdipapir og kan ikke redigeres.</td>
+          <td>Værdipapirets navn, som kurskilden oplyser det. Kan redigeres. En ny linje uden navn henter det selv, så snart ISIN-koden er kendt: først fra den nyeste kurslinje for samme ISIN-kode, der har et navn, og ellers fra det første værdipapir med den ISIN-kode. Et navn, du selv har tastet, bliver stående.</td>
         </tr>
         <tr>
           <td><strong>Nominel rente %</strong></td>
@@ -123,6 +129,47 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <h3>Hvor kurserne kommer fra</h3>
+  <p>Kurslisten fylder sig selv op ved bogføring. Den kurs, der står på en handelslinje, skrives ved
+  bogføring ind i kurslisten på værdipapirets <strong>ISIN-kode</strong> og linjens
+  <strong>handelsdato</strong> — ikke bogføringsdatoen, for en kurs er et notat om den dag, den blev
+  noteret. Findes der allerede en kurslinje på samme ISIN-kode og dato, rettes den til linjens kurs:
+  <strong>den sidst bogførte kurs vinder</strong>. Et køb til 101 og et salg til 99 samme dag
+  efterlader altså 99 — og dermed også som <strong>Aktuel kurs</strong> på ISIN-koden. Er det forkert,
+  retter du kurslinjen i hånden.</p>
+  <p>Ikke enhver bogført linje bærer en kurs, nogen har handlet til, så disse skriver <strong>ikke</strong>
+  i listen:</p>
+  <ul class="bullets">
+    <li><strong>Overførsel</strong> — kursen er beholdningens historiske kostpris, ikke en kurs fra i dag.</li>
+    <li><strong>Udtrækning</strong> — kurs 100 er en indfrielseskurs til pari.</li>
+    <li><strong>Gratis</strong> og <strong>Fondsaktie</strong> — en tildeling prissætter ingenting.</li>
+    <li><strong>Fremskrevet kurs</strong> — kursreguleringskørslen faldt tilbage på den seneste kurs før
+    datoen, og den må ikke skrives tilbage som en kurs på en dag, hvor ingen har noteret én.</li>
+    <li><strong>Stykregulering</strong>, <strong>Depotregulering</strong> og <strong>Tilbageførsel</strong>
+    — ingen af dem handler til en kurs.</li>
+    <li>Linjer uden kurs (kurs 0), fx afkastlinjer.</li>
+  </ul>
+  <p>Selve <strong>opslaget</strong> går den anden vej og har to sider:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Sted</th><th>Regel</th><th>Hvad du ser</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Kursforslag i handelskladden</td><td>Kursen på <strong>præcis</strong> handelsdatoen</td><td>Findes kursen ikke på dagen, står kursfeltet blankt, og du taster kursen selv</td></tr>
+        <tr><td>Kursreguleringskørslen</td><td>Kursen på <strong>præcis</strong> reguleringsdatoen</td><td>Mangler kursen, dannes linjen alligevel med kurs 0, og du taster dagens kurs inden bogføring</td></tr>
+        <tr><td>Porteføljestatistikken</td><td><strong>Seneste kurs på eller før</strong> opgørelsesdatoen</td><td>Rapporten viser den kursdato, værdien hviler på</td></tr>
+        <tr><td><strong>Aktuel kurs</strong> på ISIN-koden</td><td><strong>Seneste kurs på eller før</strong> arbejdsdatoen</td><td>Kun en indikator bag værdipapirets <strong>Restværdi</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="info-box">
+    En kurs videreføres aldrig i stilhed til en bogføring: hvor beløbet ender i finansen, skal kursen
+    være noteret på selve datoen. Hvor tallet kun vises, bruges den senest kendte kurs, og datoen følger
+    med, så du kan se, hvor gammel den er. Indekskurser er ikke omfattet — de læses altid som "seneste
+    på eller før", fordi der kun findes én global serie.
   </div>
 
   <h3>Import og eksport</h3>
@@ -180,11 +227,11 @@
   <p>Kurser registreres manuelt — én linje per dato. Den senest registrerede kurs på eller før handelsdatoen vil blive anvendt ved beregninger for indeksobligationer.</p>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
-   The /html-guide command inlines this file verbatim into a
+   The /website-build command inlines this file verbatim into a
    <script> just before </body>. Pure vanilla JS, no dependencies,
    no build step. Every feature is guarded so the guide is fully
    usable with JavaScript disabled — this only enhances.

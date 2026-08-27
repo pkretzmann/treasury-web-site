@@ -4,7 +4,7 @@
   "lang": "da",
   "motion": true,
   "title_suffix": " · Værdipapirhandel",
-  "footer": "<strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret juni 2026",
+  "footer": "<strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026",
   "pages": [
     {
       "group": "1. Introduktion",
@@ -12,7 +12,9 @@
       "title": "Design",
       "badge": "Introduktion",
       "subtitle": "Modulets byggeklodser — depot, værdipapir, ISIN og udsteder — og hvordan de hænger sammen.",
-      "pills": ["Koncept"],
+      "pills": [
+        "Koncept"
+      ],
       "body_file": "g1-1-design.html"
     },
     {
@@ -21,7 +23,9 @@
       "title": "De fem kladdetyper",
       "badge": "Introduktion",
       "subtitle": "De fem kladdetyper i værdipapirmodulet — og hvad hver type bruges til.",
-      "pills": ["Koncept"],
+      "pills": [
+        "Koncept"
+      ],
       "body_file": "g1-2-kladdetyper.html"
     },
     {
@@ -30,7 +34,9 @@
       "title": "Posteringer i modulet",
       "badge": "Introduktion",
       "subtitle": "Fra kladde til poster — de fem slags poster og hvad hver transaktion danner.",
-      "pills": ["Koncept"],
+      "pills": [
+        "Koncept"
+      ],
       "body_file": "g1-3-posteringer.html"
     },
     {
@@ -39,7 +45,9 @@
       "title": "Oprettelse af aktier",
       "badge": "Stamdata",
       "subtitle": "Felt-for-felt vejledning til at oprette en aktie som stamdata.",
-      "pills": ["Ved nye papirer"],
+      "pills": [
+        "Ved nye papirer"
+      ],
       "body_file": "g2-1-aktier.html"
     },
     {
@@ -48,8 +56,23 @@
       "title": "Oprettelse af obligationer",
       "badge": "Stamdata",
       "subtitle": "Felt-for-felt vejledning til at oprette en obligation, inkl. automatisk navngivning.",
-      "pills": ["Ved nye papirer"],
+      "pills": [
+        "Ved nye papirer"
+      ],
       "body_file": "g2-2-obligationer.html"
+    },
+    {
+      "group": "2. Stamdata",
+      "file": "2.3 Dimensioner på værdipapirer og depoter.html",
+      "title": "Dimensioner på værdipapirer og depoter",
+      "badge": "Stamdata",
+      "subtitle": "Hvor dimensionerne sættes, hvordan de følger med ned på kladdelinjen, og hvor de ender.",
+      "pills": [
+        "To kilder",
+        "Depotet vinder",
+        "Kontrol ved bogføring"
+      ],
+      "body_file": "g2-3-dimensioner.html"
     },
     {
       "group": "3. Handel",
@@ -57,7 +80,9 @@
       "title": "Aktiekøb",
       "badge": "Handel",
       "subtitle": "Sådan registrerer og bogfører du et køb af aktier i handelskladden.",
-      "pills": ["Daglig brug"],
+      "pills": [
+        "Daglig brug"
+      ],
       "body_file": "g3-1-aktiekob.html"
     },
     {
@@ -66,7 +91,9 @@
       "title": "Aktiesalg",
       "badge": "Handel",
       "subtitle": "Sådan registrerer og bogfører du et salg af aktier, inkl. gevinst og tab.",
-      "pills": ["Daglig brug"],
+      "pills": [
+        "Daglig brug"
+      ],
       "body_file": "g3-2-aktiesalg.html"
     },
     {
@@ -74,8 +101,10 @@
       "file": "3.3 Obligationskøb.html",
       "title": "Obligationskøb",
       "badge": "Handel",
-      "subtitle": "Sådan køber du obligationer — bemærk kurskonventionen (120 = 120 %).",
-      "pills": ["Daglig brug"],
+      "subtitle": "Sådan køber du obligationer — kursen angives som procent af nominel værdi.",
+      "pills": [
+        "Daglig brug"
+      ],
       "body_file": "g3-3-obligationskob.html"
     },
     {
@@ -84,7 +113,9 @@
       "title": "Obligationssalg",
       "badge": "Handel",
       "subtitle": "Sådan sælger du obligationer, inkl. udtrækning ved udløb.",
-      "pills": ["Daglig brug"],
+      "pills": [
+        "Daglig brug"
+      ],
       "body_file": "g3-4-obligationssalg.html"
     },
     {
@@ -93,7 +124,9 @@
       "title": "Ompostering",
       "badge": "Opfølgning",
       "subtitle": "Sådan retter eller tilbagefører du en bogført værdipapirpostering.",
-      "pills": ["Løbende opfølgning"],
+      "pills": [
+        "Løbende opfølgning"
+      ],
       "body_file": "g4-1-ompostering.html"
     },
     {
@@ -102,7 +135,9 @@
       "title": "Værdipapirstatistik",
       "badge": "Opfølgning",
       "subtitle": "Overblik over beholdning og afkast samt afstemning mod finans.",
-      "pills": ["Løbende opfølgning"],
+      "pills": [
+        "Løbende opfølgning"
+      ],
       "body_file": "g4-2-statistik.html"
     },
     {
@@ -111,7 +146,9 @@
       "title": "Værdipapirposter og analyse",
       "badge": "Opfølgning",
       "subtitle": "Find og analysér de enkelte værdipapirposter.",
-      "pills": ["Løbende opfølgning"],
+      "pills": [
+        "Løbende opfølgning"
+      ],
       "body_file": "g4-3-poster.html"
     },
     {
@@ -120,7 +157,9 @@
       "title": "Aktieudbytte",
       "badge": "Periodisk",
       "subtitle": "Registrér og bogfør udbytte — manuelt eller med automatisk forslag.",
-      "pills": ["Periodisk"],
+      "pills": [
+        "Periodisk"
+      ],
       "body_file": "g5-1-aktieudbytte.html"
     },
     {
@@ -129,7 +168,9 @@
       "title": "Fondskursregulering",
       "badge": "Periodisk",
       "subtitle": "Reguler porteføljen til markedsværdi (mark-to-market).",
-      "pills": ["Periodisk"],
+      "pills": [
+        "Periodisk"
+      ],
       "body_file": "g5-2-fondskursregulering.html"
     },
     {
@@ -138,7 +179,9 @@
       "title": "Beregning af obligationsrente",
       "badge": "Periodisk",
       "subtitle": "Tilskriv renter på obligationer på terminsdatoer.",
-      "pills": ["Periodisk"],
+      "pills": [
+        "Periodisk"
+      ],
       "body_file": "g5-3-obligationsrente.html"
     },
     {
@@ -147,7 +190,9 @@
       "title": "Overførsel af værdipapirværdier",
       "badge": "Periodisk",
       "subtitle": "Sammenlægning, split og flytning af beholdninger mellem papirer og depoter.",
-      "pills": ["Periodisk"],
+      "pills": [
+        "Periodisk"
+      ],
       "body_file": "g5-4-overforsel.html"
     },
     {
@@ -156,16 +201,20 @@
       "title": "Likviditetssimulering",
       "badge": "Periodisk",
       "subtitle": "Forventet likviditet fra porteføljen (planlagt funktion).",
-      "pills": ["Periodisk"],
+      "pills": [
+        "Periodisk"
+      ],
       "body_file": "g5-5-likviditet.html"
     },
     {
       "group": "6. Opsætning af Treasury",
       "file": "6.1 Opsætning af værdipapirer.html",
-      "title": "Opsætning af værdipapirer",
+      "title": "Opsætning af Treasury",
       "badge": "Opsætning",
       "subtitle": "Globale indstillinger for værdipapirmodulet.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-1-opsaetning-vaerdipapirer.html"
     },
     {
@@ -173,8 +222,10 @@
       "file": "6.2 Oprettelse af bogføringsgrupper.html",
       "title": "Oprettelse af bogføringsgrupper",
       "badge": "Opsætning",
-      "subtitle": "Knyt værdipapirer til finanskonti via værdi- og avancebogføringsgrupper.",
-      "pills": ["Engangsopsætning"],
+      "subtitle": "Knyt værdipapirer til finanskonti via balance- og resultatopgørelsesbogføringsgrupper.",
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-2-bogfoeringsgrupper.html"
     },
     {
@@ -183,7 +234,9 @@
       "title": "Oprettelse af depoter",
       "badge": "Opsætning",
       "subtitle": "Opret depoter (værdipapirkonti) og knyt dem til finans eller bank.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-3-depoter.html"
     },
     {
@@ -192,7 +245,9 @@
       "title": "Oprettelse af udstedere",
       "badge": "Opsætning",
       "subtitle": "Opret udstedere — bruges især til obligationer.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-4-udstedere.html"
     },
     {
@@ -201,7 +256,9 @@
       "title": "Oprettelse af kurser",
       "badge": "Opsætning",
       "subtitle": "ISIN, fondskurser, valutakurser og indekskurser.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-5-kurser.html"
     },
     {
@@ -210,7 +267,9 @@
       "title": "Oprettelse af ekstra informationer",
       "badge": "Opsætning",
       "subtitle": "Brugerdefinerede attributter på værdipapirer.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-6-ekstra-informationer.html"
     },
     {
@@ -219,7 +278,9 @@
       "title": "Oprettelse af kladdetyper",
       "badge": "Opsætning",
       "subtitle": "Opret kladdetyper og kladdenavne for de fem transaktionstyper.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-7-kladdetyper.html"
     },
     {
@@ -228,8 +289,22 @@
       "title": "Oprettelse af obligationsterminer",
       "badge": "Opsætning",
       "subtitle": "Terminskoder, terminsdatoer og terminsopsætning for obligationer.",
-      "pills": ["Engangsopsætning"],
+      "pills": [
+        "Engangsopsætning"
+      ],
       "body_file": "g6-8-obligationsterminer.html"
+    },
+    {
+      "group": "6. Opsætning af Treasury",
+      "file": "6.9 Opsætning af dimensionsprioritering.html",
+      "title": "Opsætning af dimensionsprioritering",
+      "badge": "Opsætning",
+      "subtitle": "Bestem om værdipapiret eller depotet vinder, når begge bærer samme dimension på kladdelinjen.",
+      "pills": [
+        "Valgfri opsætning",
+        "Depotet vinder som standard"
+      ],
+      "body_file": "g6-9-dimensionsprioritering.html"
     }
   ]
 }

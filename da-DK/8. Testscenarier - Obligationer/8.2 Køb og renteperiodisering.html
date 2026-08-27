@@ -74,13 +74,13 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>Værdipapirpost (SLE)</td><td>1 ny post, Bilagstype = Køb, Antal = 1.000.000, Restantal = 1.000.000, Åben = Ja, Beløb (RV) = 987.500,00 DKK <strong>(ekskl. handelsrente)</strong>, Handelsrente = 2.500,00 DKK</td></tr>
-        <tr><td>Depotbeholdningspost</td><td>Bilagstype = Køb, Antal = 1.000.000, Modkonto = Bank/modkonto fra depotet</td></tr>
-        <tr><td>Detaljeret Værdipost (DVLE)</td><td>1 åbent lot (FIFO): Åben = Ja, Restantal = 1.000.000, Beløb før renter (Amount B.I.) = 987.500,00 DKK</td></tr>
+        <tr><td>Depotpost</td><td>Bilagstype = Køb, Antal = 1.000.000, Modkonto = Bank/modkonto fra depotet</td></tr>
+        <tr><td>Detaljeret Værdipost (DVLE)</td><td>1 åbent lot (FIFO): Åben = Ja, Restantal = 1.000.000, Beløb før renter (Amount Excl. Trading Interest) = 987.500,00 DKK</td></tr>
         <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — avance opstår først ved regulering/salg</td></tr>
         <tr><td>Finanspost (G/L)</td><td>Debet <span class="acct" data-acct="holding">2650</span> (beholdning) 987.500,00 + Debet <span class="acct" data-acct="tradingInterest">1460</span> (handelsrente) 2.500,00; Kredit <span class="acct" data-acct="bank">2620</span> (bank) 990.000,00</td></tr>
       </tbody></table></div>
   <h3>Beregning</h3>
-  <p class="muted">Ren kursværdi (kostbasis) = Antal × Pris ÷ 100 = 1.000.000 × 98,75 ÷ 100 = 987.500,00 DKK (motoren dividerer selv med 100 for obligationer). Handelsrente = nominel × rente % × dage ÷ renteår = 1.000.000 × 2 % × 45/360 = 2.500,00 DKK. Samlet bankafregning = 987.500,00 + 2.500,00 = 990.000,00 DKK. Kun den rene kursværdi aktiveres som kostbasis (Amount B.I.) — handelsrenten holdes ude.</p>
+  <p class="muted">Ren kursværdi (kostbasis) = Antal × Pris ÷ 100 = 1.000.000 × 98,75 ÷ 100 = 987.500,00 DKK (motoren dividerer selv med 100 for obligationer). Handelsrente = nominel × rente % × dage ÷ renteår = 1.000.000 × 2 % × 45/360 = 2.500,00 DKK. Samlet bankafregning = 987.500,00 + 2.500,00 = 990.000,00 DKK. Kun den rene kursværdi aktiveres som kostbasis (Amount Excl. Trading Interest) — handelsrenten holdes ude.</p>
   <h3>Bogføring — finansposter</h3>
   <div class="table-wrap"><table>
       <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
@@ -95,7 +95,7 @@
 <div class="section" id="case2">
   <div class="section-header"><div class="section-icon">⏳</div><h2>Case 2 — Renteperiodisering (urealiseret) <span class="case-badge yield">Afkast · Urealiseret</span></h2></div>
   <p><strong>Bogføringsdato</strong> 31-05-2026 &nbsp;|&nbsp; periodisering frem mod kuponen 30-06 &nbsp;|&nbsp; 60 rentedage.</p>
-  <p>Kør <strong>Interest Accrual Batch</strong> (<code>report 79927</code>) for terminsdato 31-05 (Realiseringstype = Urealiseret) og bogfør den dannede afkastlinje fra Værdipapirafkastkladden.</p>
+  <p>Kør <strong>Calculate Bond Interest</strong> (<code>report 79930</code>) med <em>Fra dato</em> = <em>Til dato</em> = 31-05 (Realiseringstype = Urealiseret på terminsopsætningslinjen) og bogfør den dannede afkastlinje fra Værdipapirafkastkladden. Ligger obligationen i flere depoter, dannes der én linje pr. depot.</p>
   <div class="summary-box">Urealiseret rente = nominel × rente % × rentedage ÷ renteår = 1.000.000 × 2 % × 60/360 = <strong>3.333,33 DKK</strong><br>
     <span class="muted">Føres som urealiseret indtægt (<span class="acct" data-acct="unrealInterest">1455</span>) mod balancekontoen rentetilgodehavende (<span class="acct" data-acct="interestReceivable">2280</span>).</span></div>
   <h3>Forventet udfald</h3>
@@ -116,7 +116,7 @@
         <tr><td><span class="acct" data-acct="interestReceivable">2280</span></td><td>Periodiseret rentetilgodehavende (balance) <span class="muted">(rentetilgodehavende)</span></td><td class="num">3.333,33</td><td class="num"></td></tr>
         <tr><td><span class="acct" data-acct="unrealInterest">1455</span></td><td>Urealiseret renteindtægt (periodisering) <span class="muted">(urealiseret renteindtægt)</span></td><td class="num"></td><td class="num">3.333,33</td></tr>
       </tbody></table></div>
-  <div class="note">Periodiseringen forudsætter, at resultatbogføringsgruppen har en række for Realiseringstype = Urealiseret · Bilagstype = Afkast. Se <a href="8.1 Oversigt og opsætning.html#uhensigt">uhensigtsmæssighed #1</a> — det bør verificeres, at den nødvendige Avancetype kan vælges på rækken.</div>
+  <div class="note">Periodiseringen forudsætter, at resultatbogføringsgruppen har en række for Realiseringstype = Urealiseret · Bilagstype = Afkast · Avancetype = <strong>Blank</strong>. Blank kan vælges på feltet, så rækken kan oprettes.</div>
 </div>
 
   </div>
