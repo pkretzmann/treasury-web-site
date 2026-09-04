@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ofte stillede spørgsmål · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Introduktion</div>
+    <h1>Ofte stillede spørgsmål</h1>
+    <p>Svar på de spørgsmål, der oftest dukker op i arbejdet med modulet — fra afrunding og valuta til udligning og tilbageførsel.</p>
+    <div class="header-pills"><span class="pill">FAQ</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#faq-afrunding">Afrunding og valuta</a></li>
+        <li><a href="#faq-bogfoering">Bogføring og poster</a></li>
+      </ol>
+    </nav>
+<div class="section" id="faq-afrunding">
+  <div class="section-header">
+    <div class="section-icon">🧮</div>
+    <h2>Afrunding og valuta</h2>
+  </div>
+  <p>En kladdelinje kan arbejde med op til tre valutalag på samme tid: værdipapirets egen valuta,
+  depotets valuta og regnskabsvalutaen. Hvert beløb afrundes i den valuta, det er udtrykt i —
+  aldrig til et fast antal decimaler.</p>
+
+  <div class="accordion">
+
+    <details open>
+      <summary>
+        <span class="acc-title">Hvordan afrundes beløb — afhænger det af valutaen?</span>
+      </summary>
+      <div class="acc-body">
+        <p>Ja. Et beløb afrundes altid til præcisionen for den valuta, det er udtrykt i. Præcisionen
+        hentes fra feltet <strong>Afrundingspræcision</strong> på valutakortet; er feltet tomt — eller
+        er beløbet i regnskabsvaluta — bruges <strong>Finansopsætningen</strong> i stedet.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Værdi</th><th>Præcision hentes fra</th><th>Standard</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Beløb i værdipapirets valuta (Beløb, Omkostninger, Handelsrente, Afkast, Udbytteskat …)</td>
+                <td>Valutakortet for værdipapirets valutakode</td>
+                <td>0,01</td>
+              </tr>
+              <tr>
+                <td>Depotbeløb (depotets valuta)</td>
+                <td>Valutakortet for depotvalutakoden</td>
+                <td>0,01</td>
+              </tr>
+              <tr>
+                <td>RV-beløb (regnskabsvaluta)</td>
+                <td>Finansopsætningen</td>
+                <td>0,01</td>
+              </tr>
+              <tr>
+                <td>Kurser og kostpris pr. enhed</td>
+                <td>Enhedsafrundingspræcision (valutakort, ellers Finansopsætningen)</td>
+                <td>0,00001</td>
+              </tr>
+              <tr>
+                <td>Antal</td>
+                <td>Fast i modulet — antal er ikke penge og følger ingen valuta</td>
+                <td>0,00001</td>
+              </tr>
+              <tr>
+                <td>Procenter (fx udbytteskattesats)</td>
+                <td>Fast i modulet</td>
+                <td>0,00001</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>Afrundingen sker <strong>én gang</strong> — i det øjeblik værdien skrives til
+          kladdelinjen eller posten. Det er det afrundede tal, der gemmes; visningen på skærmen
+          ændrer ikke noget.</li>
+          <li>Kurser og kostpriser pr. enhed må med vilje bære flere decimaler end beløb — derfor har
+          de deres egen enhedspræcision adskilt fra beløbspræcisionen.</li>
+          <li>Hele modulet afrunder gennem én fælles rutine, som slår valutaen op pr. beløb. Et beløb
+          i fx USD kan derfor aldrig ved en fejl blive afrundet med regnskabsvalutaens
+          øre-præcision.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Kan delsalg give ørediferencer på beholdningskontoen?<span class="acc-sub">100 stk solgt ad tre omgange skal stadig ramme købsværdien præcist</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Nej — og det er ikke en tilfældighed. Køber du 100 stk til kurs 10,005, koster partiet
+        1.000,50. Blev hvert delsalg afrundet for sig, ville salg af 33 + 33 + 34 stk trække
+        330,17 + 330,17 + 340,17 = <strong>1.000,51</strong> af beholdningskontoen — én øre for
+        meget, permanent.</p>
+        <p>Modulet beregner i stedet hvert salgs kostpris som forskellen mellem partiets afrundede
+        værdi <em>før</em> og <em>efter</em> salget: 330,16 + 330,17 + 340,17 =
+        <strong>1.000,50</strong>. Delene "teleskoperer", så de altid summer til partiets fulde
+        afrundede købsværdi — også når salgene bogføres måneder fra hinanden — og det salg, der
+        tømmer partiet, opsuger automatisk den rest, de tidligere efterlod.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvorfor deles en gevinst i fondskursavance og valutakursavance?<span class="acc-sub">Provenuet omregnet til købskursen skiller de to komponenter</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Ved salg i fremmed valuta består gevinsten af to ting: papirets egen kursudvikling og
+        valutaens bevægelse siden købet. Modulet skiller dem ad ved først at omregne salgsprovenuet
+        til den valutakurs, partiet blev <em>købt</em> til. Forskellen mellem det tal og kostprisen
+        er <strong>fondskursavancen</strong> — kursudviklingen renset for valuta. Resten — op til
+        provenuet omregnet til salgsdagens kurs — er <strong>valutakursavancen</strong>.</p>
+        <p>De to komponenter bogføres som hver sin detaljerede avancepost og kan derfor ramme hver
+        sin resultatkonto. Se også
+        <a href="1.3%20Posteringer%20i%20modulet.html">Posteringer i modulet</a>.</p>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<div class="section" id="faq-bogfoering">
+  <div class="section-header">
+    <div class="section-icon">📒</div>
+    <h2>Bogføring og poster</h2>
+  </div>
+  <p>Spørgsmål om, hvordan bogføringen udligner, værdiansætter og fortrydes.</p>
+
+  <div class="accordion">
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvordan udlignes et salg mod købene?<span class="acc-sub">FIFO — ældste åbne købsparti først</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Efter FIFO-princippet: salget trækker fra de åbne købsposter med ældst købsdato først — og
+        kun inden for det depot, der sælges fra. Et delsalg lader købsposten stå åben med reduceret
+        restantal; først når restantallet rammer nul, lukkes den.</p>
+        <p>Holder depotet ikke åbne partier nok til salget, afvises bogføringen med en besked om at
+        flytte beholdningen ind i depotet med en depotoverførsel i overførselskladden først.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvad er forskellen på Restværdi og Markedsværdi?</span>
+      </summary>
+      <div class="acc-body">
+        <p><strong>Restværdi (RV)</strong> er den bogførte værdi af den tilbageværende beholdning —
+        det, der faktisk står på beholdningskontoen i finans. <strong>Markedsværdi</strong> er
+        beholdningen opgjort til den seneste kurs — det, papirerne er værd i dag. Forskellen mellem
+        de to er den urealiserede gevinst eller det urealiserede tab, som en fondskursregulering kan
+        bogføre.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvilke konti rammer gevinst og tab?<span class="acc-sub">Bilagstype + avancetype bestemmer resultatkontoen</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Værdipapirkortet peger på en bogføringsgruppe. Balancesiden — beholdningskontiene — kommer
+        fra gruppens balanceopsætning, mens resultatkontoen slås op i
+        <strong>værdipapiravancebogføringsgruppen</strong> ud fra kombinationen af
+        <strong>bilagstype</strong> og <strong>avancetype</strong> (Gevinst, Tab, Udbytte eller
+        Rente). En kursgevinst og et kurstab på samme slags handel kan derfor ramme hver sin
+        konto.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvad er forskellen på realisationsprincippet og lagerprincippet?<span class="acc-sub">Vælges i Opsætning af Treasury og pr. bogføringsgruppe</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Regnskabsprincippet vælges i <strong>Opsætning af Treasury</strong> og pr.
+        <strong>bogføringsgruppe</strong> (feltet Regnskabsprincip) — og håndhæves ved bogføring, så
+        en kladdelinje aldrig kan bruge det forkerte princip for sin gruppe.</p>
+        <ul>
+          <li><strong>Realisationsprincippet:</strong> årets kursreguleringer står som urealiserede
+          på reguleringskontiene; gevinsten realiseres først ved salg.</li>
+          <li><strong>Lagerprincippet:</strong> reguleringen ved regnskabsårets udløb bogføres på
+          beholdningskontoen, så markedsværdien bliver næste års kostgrundlag. Lagerprincip-feltet
+          på kursreguleringskørslen kan kun sættes, når en regnskabsperiode starter dagen efter
+          reguleringsdatoen.</li>
+        </ul>
+        <p>Detaljerne står under
+        <a href="../5.%20Periodiske%20aktiviteter/5.2%20Fondskursregulering.html">Fondskursregulering</a>
+        og
+        <a href="../6.%20Ops%C3%A6tning%20af%20Treasury/6.2%20Oprettelse%20af%20bogf%C3%B8ringsgrupper.html">Oprettelse af bogføringsgrupper</a>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvorfor indgår handelsrenten ikke i beholdningsværdien?<span class="acc-sub">Beløb før renter er kostgrundlaget</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Ved obligationshandel indeholder afregningsbeløbet vedhængende rente. Beholdningen
+        bogføres til <strong>Beløb før renter</strong>, mens handelsrenten går på sin egen
+        handelsrentekonto fra bogføringsgruppen. Blev renten regnet med i kostgrundlaget, ville den
+        dukke op igen som kursgevinst eller -tab, den dag papiret sælges — renteindtægt og
+        kursavance skal blive på hver sin resultatkonto.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvordan håndteres udbytteskat?</span>
+      </summary>
+      <div class="acc-body">
+        <p>Når et udbytte føres i afkastkladden, foreslår systemet skatten ud fra bogføringsgruppens
+        udbytteskatteprocent; beløbet kan rettes på kladdelinjen før bogføring. Ved bogføringen
+        krediteres bruttoafkastet afkastkontoen, banken modtager nettobeløbet, og skatten debiteres
+        den konto, som værdipapiravancebogføringsgruppen udpeger for bilagstypen
+        <strong>Udbytteskat</strong>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvorfor indtastes antal altid positivt — også ved salg?</span>
+      </summary>
+      <div class="acc-body">
+        <p>Fortegnet sættes af bogføringen ud fra bilagstypen: et køb lægger til, et salg trækker
+        fra. Et negativt antal på et salg ville derfor flytte beholdningen den forkerte vej og
+        afvises med en fejl. Skal en allerede bogført post fortrydes, sker det med en
+        tilbageførsel — aldrig med et minus.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvordan fortryder jeg en bogført transaktion?<span class="acc-sub">Tilbageførsel — enkeltpost eller hel journal</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Fra <strong>Værdipapirposter</strong> kan du tilbageføre enten den markerede post eller
+        hele den bogføringskørsel (værdipapirjournalen), posten hører til. Systemet danner
+        tilbageførselslinjer med bilagstypen <strong>Tilbageførsel</strong> og bogfører dem med det
+        samme.</p>
+        <ul>
+          <li>Original og tilbageførsel kædes sammen via <strong>Tilbageført løbenr.</strong>, så
+          sporet kan følges begge veje.</li>
+          <li>Allerede tilbageførte poster springes over — intet tilbageføres to gange.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="acc-title">Hvad kan overførselskladden bruges til?<span class="acc-sub">Tre slags flytninger uden købs- eller salgsafregning</span></span>
+      </summary>
+      <div class="acc-body">
+        <p>Overførselskladden dækker tre situationer, hvor en beholdning skal flyttes uden at der
+        handles:</p>
+        <ul>
+          <li><strong>Værdipapir til værdipapir</strong> — fx en fusion eller ombytning; kørslen
+          <a href="../5.%20Periodiske%20aktiviteter/5.4%20Overf%C3%B8rsel%20af%20v%C3%A6rdipapirv%C3%A6rdier.html">Overførsel af værdipapirværdier</a>
+          foreslår linjerne og flytter værdien til ét eller to modtagende papirer.</li>
+          <li><strong>Stykregulering</strong> — antallet ændres, når papirets stykstørrelse ændres,
+          uden at værdien flyttes.</li>
+          <li><strong>Depotoverførsel</strong> — beholdningen flyttes fra ét depot til et andet,
+          fx før et salg, der skal ske fra det rigtige depot.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+</div>
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
+  <script>
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /website-build command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── FAQ search / filter — live-filters a .faq accordion, highlights
+        matches, auto-opens hits and shows a result count. No-op when the
+        page has no .faq, so it is safe to ship in every guide. ── */
+  var faqWrap = document.querySelector('.faq');
+  if (faqWrap) {
+    var faqItems = Array.prototype.slice.call(faqWrap.querySelectorAll('details'));
+    faqItems.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var b = d.querySelector('.faq-body');
+      if (s) s.setAttribute('data-orig', s.innerHTML);
+      if (b) b.setAttribute('data-orig', b.innerHTML);
+    });
+
+    var search = document.createElement('div');
+    search.className = 'doc-search';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.placeholder = 'Søg i ofte stillede spørgsmål…';
+    input.setAttribute('aria-label', 'Søg i ofte stillede spørgsmål');
+    var count = document.createElement('span');
+    count.className = 'doc-search-count';
+    search.appendChild(input);
+    search.appendChild(count);
+    faqWrap.parentNode.insertBefore(search, faqWrap);
+
+    var noResults = document.createElement('div');
+    noResults.className = 'faq-no-results';
+    noResults.textContent = 'Ingen spørgsmål matcher din søgning.';
+    noResults.style.display = 'none';
+    faqWrap.appendChild(noResults);
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function highlight(el, re) {
+      var orig = el.getAttribute('data-orig');
+      el.innerHTML = orig;
+      if (!re) return;
+      walkAndHighlight(el, re);
+    }
+    function walkAndHighlight(node, re) {
+      for (var i = node.childNodes.length - 1; i >= 0; i--) {
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          var replaced = text.replace(re, '<mark class="search-hit">$1</mark>');
+          if (replaced !== text) {
+            var span = document.createElement('span');
+            span.innerHTML = replaced;
+            child.parentNode.replaceChild(span, child);
+          }
+        } else if (child.nodeType === 1 && child.nodeName !== 'MARK') {
+          walkAndHighlight(child, re);
+        }
+      }
+    }
+
+    function runSearch() {
+      var q = input.value.trim();
+      var ql = q.toLowerCase();
+      var re = q ? new RegExp('(' + escapeRegExp(q) + ')', 'gi') : null;
+      var shown = 0;
+      faqItems.forEach(function (d) {
+        var s = d.querySelector('summary');
+        var b = d.querySelector('.faq-body');
+        var hay = ((s ? s.getAttribute('data-orig') : '') + ' ' +
+                   (b ? b.getAttribute('data-orig') : ''))
+                   .replace(/<[^>]+>/g, ' ').toLowerCase();
+        var match = ql === '' || hay.indexOf(ql) !== -1;
+        d.style.display = match ? '' : 'none';
+        if (match) {
+          shown++;
+          if (s) highlight(s, re);
+          if (b) highlight(b, re);
+          d.open = ql !== '';
+        } else {
+          d.open = false;
+        }
+      });
+      count.textContent = q === '' ? '' : shown + ' resultat' + (shown === 1 ? '' : 'er');
+      noResults.style.display = shown === 0 ? 'block' : 'none';
+    }
+
+    input.addEventListener('input', runSearch);
+  }
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  </script>
+</body>
+</html>
