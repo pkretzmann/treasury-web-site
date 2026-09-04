@@ -96,11 +96,11 @@
         </tr>
         <tr>
           <td><strong>Avancemetode</strong></td>
-          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Vælg <strong>Gennemsnit</strong> eller <strong>Aktie-for-aktie</strong>. Se nedenfor for eksempler. Værdien <strong>Ejertidsbestemt</strong> kan vælges, men er endnu ikke aktiv.</td>
+          <td>Bestemmer, hvordan anskaffelsessummen beregnes ved salg eller udtræk af værdipapirer. Vælg <strong>Gennemsnit</strong>, <strong>Aktie-for-aktie</strong> eller <strong>Ejertidsbestemt</strong>. Se nedenfor for eksempler.</td>
         </tr>
         <tr>
           <td><strong>Metodeskift ejertid (år)</strong></td>
-          <td>Hører til Avancemetode = Ejertidsbestemt og angiver, hvor mange år der skal gå, inden avanceberegningen skifter fra aktie-for-aktie til gennemsnit. <strong>Feltet har ingen virkning i denne version</strong> — udfyld det ikke i forventning om et automatisk metodeskift. Feltet, der styrer skiftet fra skattepligtig til skattefri, er <strong>Skattefri beholdningsperiode (år)</strong>.</td>
+          <td>Hører til Avancemetode = Ejertidsbestemt og angiver, hvor mange år der skal gå, inden avanceberegningen skifter fra aktie-for-aktie til gennemsnit. Perioden måles pr. købsparti, fra partiets købsdato til salgets bogføringsdato. Feltet <strong>skal</strong> udfyldes, når avancemetoden er <em>Ejertidsbestemt</em> — ellers afvises bogføringen af salget. Feltet, der styrer skiftet fra skattepligtig til skattefri, er et andet: <strong>Skattefri beholdningsperiode (år)</strong>.</td>
         </tr>
         <tr>
           <td><strong>Skattefri beholdningsperiode (år)</strong></td>
@@ -124,7 +124,15 @@
     <li><strong>Aktie-for-aktie (FIFO):</strong> Ældste købsposter fratrækkes først (First In, First Out). Samme eksempel: Du køber 1 stk. à 100 kr. og 1 stk. à 200 kr., og sælger 1 stk. à 250 kr. Avancen bliver 150 kr. (250 − 100).</li>
   </ul>
 
-  <div class="note"><strong>Bemærk:</strong> Avancemetoden <strong>Ejertidsbestemt</strong> er endnu ikke implementeret. Vælges den, opgøres salg efter aktie-for-aktie, uanset hvad der står i <strong>Metodeskift ejertid (år)</strong>, og uden nogen advarsel. Vælg derfor Gennemsnit eller Aktie-for-aktie.</div>
+  <p><strong>Ejertidsbestemt:</strong> Metoden vælges pr. købsparti ud fra partiets alder på
+  salgsdatoen. Partier, der har været ejet i mindre end <strong>Metodeskift ejertid (år)</strong>,
+  opgøres efter aktie-for-aktie; partier, der har passeret grænsen, opgøres efter gennemsnit — og det
+  gennemsnit dækker kun de partier, der selv har passeret grænsen. Eksempel med
+  <strong>Metodeskift ejertid (år)</strong> = 3: køb 1 stk. à 100 kr. for fem år siden, køb 1 stk. à
+  200 kr. for et år siden, sælg 2 stk. à 250 kr. → det gamle parti giver 150 kr. i avance
+  (250 − 100, gennemsnittet af de gamle partier er her partiets egen kurs), det unge giver 50 kr.
+  (250 − 200).</p>
+  <div class="note"><strong>Bemærk:</strong> <strong>Metodeskift ejertid (år)</strong> skal være udfyldt, når avancemetoden er <em>Ejertidsbestemt</em>. Er feltet 0, afvises bogføringen af salget med en fejl — der sker altså ikke et stiltiende skift til aktie-for-aktie.</div>
 </div>
 
 <div class="section" id="bogfoering-balance">
@@ -267,7 +275,7 @@
         </tr>
         <tr>
           <td><strong>Tilbageførsel</strong></td>
-          <td>Markeringsfelt. <strong>Lad feltet stå tomt</strong> — se bemærkningen sidst i afsnittet.</td>
+          <td>Markeringsfelt. <strong>Lad feltet stå tomt</strong> på de almindelige rækker. Sæt det kun på en ekstra række, hvis tilbageførslen af en urealiseret regulering ved salg skal på sin egen finanskonto — se bemærkningen sidst i afsnittet.</td>
         </tr>
         <tr>
           <td><strong>Finanskontonr.</strong></td>
@@ -347,7 +355,16 @@
 
   <div class="info-box"><strong>Udbytteskat (udbytte):</strong> Den indeholdte udbytteskat på et udbytte kræver sin egen række her på fanebladet Resultatopgørelse — <strong>Realiseret / Udbytteskat / Blank / Blank</strong>. Mangler rækken, fejler bogføringen af det første udbytte med indeholdt skat. Bruttoudbyttet krediteres den separate afkastrække (Bilagstype = <em>Afkast</em>, Avancetype = <em>Blank</em>), hvis skattetype afledes af <strong>Skattemetode afkast</strong>.</div>
 
-  <div class="note"><strong>Bemærk:</strong> Feltet <strong>Tilbageførsel</strong> har ingen virkning i denne version. Bogføringen slår altid op med Tilbageførsel = <em>Nej</em>, så en række med <em>Ja</em> bliver aldrig fundet. Tilbageførsel af urealiserede reguleringer ved salg rammer bevidst den <strong>samme</strong> konto som den oprindelige regulering — der skal derfor ikke oprettes særskilte tilbageførselsrækker.</div>
+  <div class="note"><strong>Bemærk — Tilbageførsel:</strong> Feltet bruges kun ét sted: når et
+  <strong>salg</strong> tilbagefører en opsamlet urealiseret fondskurs- eller valutakursregulering.
+  Bogføringen leder først efter rækken med Tilbageførsel = <em>Ja</em>, og finder den ikke, bruges den
+  almindelige række med <em>Nej</em>. Du behøver derfor <strong>ikke</strong> at oprette
+  tilbageførselsrækker: uden dem rammer tilbageførslen den samme konto, som reguleringen blev
+  opbygget på. Opret dem kun, hvis tilbageførslen skal kunne ses på sin egen finanskonto — én ekstra
+  række pr. kombination, du vil udskille (<em>Urealiseret</em> + <em>Fondskursavance</em> hhv.
+  <em>Valutakursavance</em>, Avancetype <em>Gevinst</em>/<em>Tab</em>, Skattetype blank,
+  Tilbageførsel <strong>Ja</strong>). Andre kombinationer slår aldrig op med Tilbageførsel =
+  <em>Ja</em>, og en tilbageførselsrække uden finanskonto afvises ved bogføring.</div>
 </div>
 
 <div class="section" id="bogfoering-tilknytning-værdipapirer">
@@ -359,7 +376,7 @@
   <div class="note"><strong>Vigtigt:</strong> Hvis en kombination, der opstår ved bogføring, ikke er oprettet på fanebladet <strong>Balance</strong> eller <strong>Resultatopgørelse</strong>, fejler bogføringen. Fejlbeskeden oplyser præcis, hvad der mangler — bogføringsgruppe og bilagstype for en balancerække, og hele kombinationen af realiseringstype, bilagstype, avancetype og skattetype for en resultatrække. Opret rækken og bogfør igen.</div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer

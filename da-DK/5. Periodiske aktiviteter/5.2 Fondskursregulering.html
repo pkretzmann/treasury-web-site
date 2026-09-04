@@ -186,11 +186,29 @@
           </tr>
           <tr>
             <td>Finanspost — urealiseret avance</td>
-            <td>Avancekontoen fra avancebogføringsgruppen, opslået på realiseringstype <em>Unrealized</em> og avancekomponent <em>Price Adjustment</em> hhv. <em>Currency Adjustment</em>.</td>
+            <td>Resultatkontoen fra Værdipapiravancebogføringsgruppen, opslået på realiseringstype <em>Urealiseret</em>, bilagstype <em>Fondskursavance</em> hhv. <em>Valutakursavance</em>, linjens skattetype og den <strong>Avancetype</strong>, laget er stemplet med — se noten nedenfor.</td>
           </tr>
         </tbody>
       </table>
       <p>Bogføringen tilbagefører først den udestående regulering fra forrige periode og bogfører derefter den nye, så finansvirkningen bliver periodens ændring og ikke det akkumulerede beløb.</p>
+      <div class="note">
+        <strong>Gevinst eller tab — hvilken konto laget rammer.</strong> Hver kursreguleringslinje
+        stemples med en <strong>Avancetype</strong> (<em>Gevinst</em> eller <em>Tab</em>), og det er
+        den — ikke fortegnet på det beløb, der bogføres — der afgør, hvilken af
+        avancebogføringsgruppens to konti beløbet lander på.
+        <ul>
+          <li><strong>Fondskursdelen</strong> bedømmes på <strong>periodens bevægelse</strong>: den
+          nye markedsværdi målt mod det lag, kørslen netop har tilbageført. Er kursen steget i
+          perioden, er laget en <em>gevinst</em> — også selvom papiret stadig står
+          <strong>under</strong> kostpris. Er kursen uændret, bliver laget liggende på den konto, det
+          blev bygget op på, i stedet for at skifte side uden grund.</li>
+          <li><strong>Valutadelen</strong> stemples altid <em>Gevinst</em>. Den urealiserede
+          valutaregulering afvikles på én konto, og et negativt beløb dér er tabet.</li>
+        </ul>
+        Stemplet følger med posten. Når værdipapiret senere sælges, tilbagefører salget laget på
+        <strong>den konto, det blev bygget op på</strong> — derfor går både gevinst- og tabskontoen i
+        nul, når en position er afviklet.
+      </div>
       <div class="note">
         <strong>Sådan deles beløbet mellem fondskurs og valutakurs.</strong> Fondskursdelen måles med den
         valutafaktor, beholdningen blev <strong>købt</strong> til, og valutadelen er resten. Krydsleddet
@@ -319,7 +337,7 @@
   </details>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer

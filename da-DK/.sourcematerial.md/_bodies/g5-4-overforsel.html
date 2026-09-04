@@ -38,6 +38,29 @@
     <li>Bogfør når summen af beløbene går i nul.</li>
   </ol>
   <div class="note">
+    <strong>Procenterne foreslås.</strong> Med ét målværdipapir står fordelingen på
+    <strong>100/0</strong>. Udfylder du <em>2. målværdipapirnr.</em>, foreslås
+    <strong>50/50</strong> — men kun hvis du ikke selv har rørt procenterne; et bevidst skævt valg
+    overskrives ikke. Tømmer du feltet igen, stilles der tilbage til 100/0. Summen skal være 100,
+    ellers afvises kørslen.
+  </div>
+  <div class="note">
+    <strong>Sådan findes målets depot.</strong> Er <em>målkonto</em> udfyldt, bruges den — opslaget
+    viser kun depoter, der hører til det pågældende målværdipapir. Er feltet blankt, prøves i
+    rækkefølge: målværdipapirets <strong>eneste</strong> depot, dets <strong>standarddepot</strong>,
+    kildens depotkode (men kun hvis målværdipapiret faktisk har et depot med den kode) — og ellers
+    står feltet <strong>blankt</strong> på købslinjen, så du udfylder det i kladden inden bogføring.
+    Der kan altså ikke længere dannes en linje med et depot, der ikke hører til papiret.
+  </div>
+  <div class="note">
+    <strong>Overførsel på tværs af valutaer.</strong> Det er <strong>regnskabsværdien (RV)</strong>,
+    der overføres, og det er den kolonne, der skal gå i nul. Salgslinjen omregnes med det enkelte
+    partis <strong>købs</strong>valutakurs; købslinjen får det samme RV-beløb med modsat fortegn. Er
+    målet i samme valuta som kilden, ankommer partiet med uændret beløb og kurs; er målet i en anden
+    valuta, omregnes RV-beløbet med kørslens bogføringsdatokurs; er målet i regnskabsvaluta, er
+    beløbet RV-beløbet selv. Kostbasen følger altså med papiret uden at ændre værdi.
+  </div>
+  <div class="note">
     <strong>Vigtig regel:</strong> Kun restbeholdningen pr. oprindelig købsdato overføres — hele historikken bevares ved at det nye papir får samme købsdato som det gamle.
   </div>
 </div>

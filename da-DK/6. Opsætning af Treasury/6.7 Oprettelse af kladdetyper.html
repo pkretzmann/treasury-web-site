@@ -102,12 +102,20 @@
           <td>Et beskrivende navn eller tekst.</td>
         </tr>
         <tr>
+          <td><strong>Testrapport-id</strong></td>
+          <td>Den rapport, handlingen <strong>Testrapport</strong> på kladdesiden kører. Den kontroludskriver kladdens linjer med eventuelle fejl, <em>inden</em> du bogfører. Udfyldes automatisk med <strong>Værdipapirkladde - kontrol</strong>, når du vælger <strong>Kladdetypetype</strong> — du kan pege på en anden rapport, og et bevidst valg bliver ikke overskrevet.</td>
+        </tr>
+        <tr>
+          <td><strong>Bogføringsrapport-id</strong></td>
+          <td>Den rapport, handlingen <strong>Bogfør og udskriv</strong> (Shift+F9) kører, når bogføringen er gennemført. Udfyldes automatisk med <strong>Værdipapirjournal</strong>, der udskriver netop de journaler, kørslen dannede. Er feltet blankt, afvises <strong>Bogfør og udskriv</strong> med en klar fejl, <em>inden</em> der bogføres; <strong>Bogfør</strong> (F9) virker uændret.</td>
+        </tr>
+        <tr>
           <td><strong>Kladdetypetype</strong></td>
           <td>Kladdens type: <strong>Handel</strong>, <strong>Afkast</strong>, <strong>Kursregulering</strong>, <strong>Overførsel</strong> eller <strong>Ompostering</strong>. Valget styrer automatisk, hvilken kladdeside der åbnes.</td>
         </tr>
         <tr>
           <td><strong>Kildekode</strong></td>
-          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Eksempel: <strong>VP-HANDEL</strong>.</td>
+          <td>Kildespor, der sættes på alle poster bogført fra denne kladdetype. Bruges til sporing af, hvordan posterne opstod. Foreslås automatisk fra <strong>Kildekodeopsætning</strong>, når du vælger typen — se bemærkningen nedenfor.</td>
         </tr>
         <tr>
           <td><strong>Årsagskode</strong></td>
@@ -116,6 +124,10 @@
       </tbody>
     </table>
   </div>
+
+  <div class="note"><strong>Bemærk om kildekoden:</strong> Sæt kildekoderne op én gang på siden <strong>Kildekodeopsætning</strong> i gruppen <em>Værdipapirer</em> — ét felt pr. kladde: <em>Værdipapirkladde, Afkastkladde, Værdipapirkursreguleringskladde, Overførselskladde</em> og <em>Omposteringskladde</em>. Når du derefter vælger <strong>Kladdetypetype</strong> på en kladdetype, foreslås den tilhørende kildekode automatisk. Du kan altid skrive en anden kode på kladdetypen — et bevidst valg bliver ikke overskrevet. Det er kladdetypens eget felt, der følger med ud på posterne.</div>
+
+  <div class="note"><strong>Bemærk om de to rapport-id'er:</strong> Begge felter findes på alle fem kladdetyper og virker ens. Standardrapporterne dækker det almindelige behov — kontroludskrift før bogføring og journaludskrift efter — og skal kun ændres, hvis I har jeres egen udskrift. Handlingerne <strong>Testrapport</strong> og <strong>Bogfør og udskriv</strong> findes på alle fem kladdesider.</div>
 
   <div class="note"><strong>Bemærk om kolonnevisning:</strong> Kladdetypen styrer ikke, hvilke kolonner kladden viser. Hver kladde har et fast standardlayout, og du tilføjer eller fjerner selv kolonner med <strong>Tilpas</strong> — Business Central husker derefter din egen opsætning. Kolonner som <strong>Fondsaktie</strong>, <strong>Gratis</strong> og beløbsfelterne i regnskabsvaluta er skjult i standardlayoutet, men kan altid hentes frem den vej.</div>
 </div>
@@ -181,7 +193,7 @@
   </div>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer

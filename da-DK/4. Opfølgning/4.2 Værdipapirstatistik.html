@@ -83,22 +83,35 @@
     <div class="section-icon">📦</div>
     <h2>Beholdning</h2>
   </div>
-  <p>Gruppen <strong>Beholdning</strong> viser, hvad du har tilbage — opgjort på de åbne
-  købspartier.</p>
+  <p>Gruppen <strong>Beholdning</strong> viser, hvad der er købt, hvad der er tilbage, og hvad det
+  er værd — både til bogført værdi og til seneste kurs.</p>
   <div class="table-wrap">
   <table>
     <thead>
       <tr><th>Felt</th><th>Indhold</th></tr>
     </thead>
     <tbody>
+      <tr><td><strong>Købt antal</strong></td><td>Alt, hvad der er købt på værdipapiret — også de partier, der siden er solgt. Fondsaktier tæller med i antallet, men lægger intet til værdien: de er modtaget uden betaling. Med et datofilter tælles kun periodens køb.</td></tr>
+      <tr><td><strong>Købsværdi (RV)</strong></td><td>Anskaffelsessummen for alle køb i regnskabsvaluta. Det er også det beløb, <strong>Avance i %</strong> måles mod.</td></tr>
       <tr><td><strong>Antal</strong></td><td>Det samlede restantal på værdipapiret, altså summen af restantallet på alle åbne købspartier.</td></tr>
-      <tr><td><strong>Kostprisværdi (RV)</strong></td><td>Beholdningens anskaffelsesværdi i regnskabsvaluta: restantal × købskurs, lagt sammen for de åbne købspartier.</td></tr>
-      <tr><td><strong>Gns. kostpris</strong></td><td>Den vejede gennemsnitlige anskaffelseskurs, altså <strong>Kostprisværdi (RV)</strong> delt med <strong>Antal</strong>. Vises i værdipapirets valuta.</td></tr>
+      <tr><td><strong>Kostprisværdi (RV)</strong></td><td>Restbeholdningens anskaffelsesværdi i regnskabsvaluta — opgjort som <strong>Totalværdi (RV)</strong> minus de to reguleringer nedenfor, så identiteten <em>kostpris + reguleringer = total</em> holder til øre.</td></tr>
+      <tr><td><strong>Gns. kostpris</strong></td><td>Den vejede gennemsnitlige anskaffelseskurs for den åbne beholdning. Vises som en <strong>kurs</strong> i værdipapirets valuta — for en obligation altså 98, ikke 0,98.</td></tr>
+      <tr><td><strong>Fondskursregulering (RV)</strong></td><td>Den udestående urealiserede fondskursregulering på restbeholdningen. Positiv, når kursen er steget siden købet.</td></tr>
+      <tr><td><strong>Valutakursregulering (RV)</strong></td><td>Samme for valutakursen.</td></tr>
+      <tr><td><strong>Totalværdi (RV)</strong></td><td>Restbeholdningens <strong>bogførte</strong> værdi: kostprisværdien plus de to reguleringer. Uden filtre er det samme tal som <strong>Restværdi (RV)</strong> på værdipapirkortet.</td></tr>
+      <tr><td><strong>Markedsværdi</strong></td><td>Det åbne antal til seneste fondskurs, opgjort i værdipapirets egen valuta.</td></tr>
+      <tr><td><strong>Kursdato</strong></td><td>Datoen på den fondskurs, markedsværdien hviler på — seneste kurs på eller før valueringsdatoen, dvs. datofilterets slutdato, ellers arbejdsdatoen. En gammel dato betyder, at markedsværdien hviler på en gammel kurs.</td></tr>
     </tbody>
   </table>
   </div>
-  <p>Tallene er <em>anskaffelsesværdier</em>, ikke markedsværdier. Kursstigninger og -fald står i
-  stedet i gruppen <strong>Gevinst / Tab</strong> som urealiserede beløb.</p>
+  <div class="note">
+    <strong>Totalværdi og markedsværdi er ikke det samme.</strong> Totalværdien er den
+    <strong>bogførte</strong> værdi — reguleret så langt, kursreguleringskørslen er nået.
+    Markedsværdien er værdien til den kurs, <strong>Kursdato</strong> viser. Forskellen mellem de to
+    er altså den kursregulering, der endnu ikke er bogført. For papirer i fremmed valuta kommer
+    valutaomregningen oveni, fordi markedsværdien står i papirets egen valuta, mens totalværdien er
+    i regnskabsvaluta.
+  </div>
 </div>
 
 <div class="section" id="gevinst-tab">
@@ -106,15 +119,19 @@
     <div class="section-icon">📈</div>
     <h2>Gevinst / Tab</h2>
   </div>
-  <p>Gruppen <strong>Gevinst / Tab</strong> deler resultatet op i de tre ting, der kan tjene eller
-  tabe penge på et værdipapir — <strong>fondskurs</strong>, <strong>valutakurs</strong> og
-  <strong>afkast</strong> — hver især vist både realiseret og urealiseret.</p>
+  <p>Gruppen <strong>Gevinst / Tab</strong> indledes med, hvad der er solgt, deler derefter
+  resultatet op i de tre ting, der kan tjene eller tabe penge på et værdipapir —
+  <strong>fondskurs</strong>, <strong>valutakurs</strong> og <strong>afkast</strong>, hver især vist
+  både realiseret og urealiseret — og slutter med totalen.</p>
   <div class="table-wrap">
   <table>
     <thead>
       <tr><th>Felt</th><th>Indhold</th></tr>
     </thead>
     <tbody>
+      <tr><td><strong>Solgt antal</strong></td><td>Det samlede antal, der er solgt. Udtrækninger er salg og tæller med.</td></tr>
+      <tr><td><strong>Realiseret salgssum (RV)</strong></td><td>Provenuet af alle salg og udtrækninger til de faktiske salgspriser, omregnet med de solgte partiers <strong>købs</strong>valutakurs.</td></tr>
+      <tr><td><strong>Realiseret afståelsessum (RV)</strong></td><td>Kostprisen på de partier, salgene forbrugte — til deres egne købskurser og købsvalutakurser. Vises negativ, så salgssum + afståelsessum netop giver <strong>Realiseret fondskursavance (RV)</strong>.</td></tr>
       <tr><td><strong>Realiseret fondskursavance (RV)</strong></td><td>Gevinst eller tab på kursbevægelsen for de partier, der er <strong>solgt</strong>: salgsprovenuet målt til partiets egen købsvalutakurs, minus partiets kostpris.</td></tr>
       <tr><td><strong>Realiseret valutakursavance (RV)</strong></td><td>Gevinst eller tab, fordi valutakursen har flyttet sig mellem købet og salget af de solgte partier.</td></tr>
       <tr><td><strong>Realiseret afkast (RV)</strong></td><td>Modtagne renter og udbytter, opgjort <strong>før</strong> skat.</td></tr>
@@ -122,6 +139,8 @@
       <tr><td><strong>Urealiseret valutakursavance (RV)</strong></td><td>Samme for valutakursen på den åbne beholdning.</td></tr>
       <tr><td><strong>Urealiseret afkast (RV)</strong></td><td>Periodiseret rente og udbytte, der endnu ikke er modtaget.</td></tr>
       <tr><td><strong>Udbytteskat (RV)</strong></td><td>Den indeholdte udbytteskat, der er bogført på værdipapiret.</td></tr>
+      <tr><td><strong>Avance i alt (RV)</strong></td><td>Summen af de seks avancerækker — realiseret og urealiseret fondskurs- og valutakursavance samt afkast. Udbytteskatten trækkes <strong>ikke</strong> fra: afkastrækkerne er opgjort før skat.</td></tr>
+      <tr><td><strong>Avance i %</strong></td><td><strong>Avance i alt (RV)</strong> i procent af <strong>Købsværdi (RV)</strong> — altså afkastet målt på hele det investerede beløb, ikke kun på den beholdning, der er tilbage. Blank, når der ikke er købt noget.</td></tr>
     </tbody>
   </table>
   </div>
@@ -129,10 +148,11 @@
   laver på den enkelte post — derfor er der ikke et særskilt realiseringstypefilter i filtergruppen;
   opdelingen <em>er</em> allerede vist.</p>
   <div class="note">
-    <strong>Om fortegn:</strong> De realiserede rækker viser en gevinst med <strong>negativt</strong>
-    fortegn (indkomsttegn, som i finansen), mens de urealiserede reguleringer viser en gevinst
-    <strong>positivt</strong>. Forskellen ligger i bogføringen, ikke på statistiksiden. Læg derfor
-    ikke de seks rækker sammen uden at tage højde for det.
+    <strong>Om fortegn:</strong> Alle rækker vises med <strong>gevinsttegn</strong>: en gevinst, en
+    indtægt og en salgssum er positiv, og et tab er negativt. Den eneste række med omvendt fortegn er
+    <strong>Realiseret afståelsessum (RV)</strong>, der vises negativ, fordi den er en omkostning mod
+    salgssummen. Rækkerne kan derfor lægges sammen direkte — og det er netop, hvad
+    <strong>Avance i alt (RV)</strong> gør.
   </div>
 </div>
 
@@ -177,16 +197,23 @@
   </div>
   <ol class="steps">
     <li>Sæt <strong>Datofilter</strong> til den periode, du vil afstemme — fx en måned eller et kvartal.</li>
-    <li>Sammenhold <strong>Kostprisværdi (RV)</strong> med <strong>Saldo på værdipapir</strong> på beholdningskontoen.</li>
+    <li>Sammenhold <strong>Kostprisværdi (RV)</strong> med <strong>Saldo på værdipapir</strong> på
+    beholdningskontoen, og <strong>Totalværdi (RV)</strong> med beholdningskontoen plus de to
+    kursreguleringskonti. Bogføres papiret efter <strong>lagerprincippet</strong>, ligger
+    reguleringen på beholdningskontoen selv — så er det <strong>Totalværdi (RV)</strong>, der skal
+    matche den ene konto (se afsnit 5.2).</li>
     <li>Stemmer de ikke, så klik på saldoen og gennemgå finansposterne. De hyppigste årsager er, at en
     kursregulering mangler at blive bogført, eller at handelsdato og bogføringsdato ligger i hver sin
     periode på en enkelt post.</li>
-    <li>Sammenhold de seks avancerækker med resultatkontiene i
-    <strong>Værdipapiravancebogføringsgruppe</strong>.</li>
+    <li>Sammenhold de seks avancerækker — og <strong>Avance i alt (RV)</strong> — med
+    resultatkontiene i <strong>Værdipapiravancebogføringsgruppe</strong>.</li>
+    <li>Er <strong>Markedsværdi</strong> væsentligt forskellig fra <strong>Totalværdi (RV)</strong>,
+    mangler der en kursregulering. Kontrollér <strong>Kursdato</strong>: er den gammel, er det
+    kurslisten, der skal opdateres, før kørslen giver det rigtige resultat (se afsnit 5.2 og 6.5).</li>
   </ol>
 </div>
   </div>
-  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret august 2026</footer>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
   <script>
 /* ============================================================
    html-guide — progressive enhancement layer
