@@ -36,8 +36,8 @@
   <header>
     <div class="header-badge">Testscenarier</div>
     <h1>Overførsel og stykstørrelse</h1>
-    <p>Case 9–10: overførsel af værdipapirværdier (værdipapir → værdipapir) og stykstørrelsesregulering (1:2 split) på den resterende beholdning efter Case 8.</p>
-    <div class="header-pills"><span class="pill">Case 9–10</span></div>
+    <p>Case 9–10: overførsel af værdipapirværdier (værdipapir → værdipapir) og stykstørrelsesregulering (1:2 split) på den resterende beholdning efter Case 8. Case 12: NAV's 75/25-fordeling på to nye papirer med én DKK-aktie og to købspartier.</p>
+    <div class="header-pills"><span class="pill">Case 9–10</span><span class="pill">Case 12</span></div>
   </header>
   <div class="container">
     <nav class="toc">
@@ -47,6 +47,7 @@
         <li><a href="#metode">Metodenote</a></li>
         <li><a href="#case9">Case 9 — Overførsel</a></li>
         <li><a href="#case10">Case 10 — Stykstørrelse</a></li>
+        <li><a href="#case12">Case 12 — Overførsel 75/25</a></li>
       </ol>
     </nav>
 <div class="section" id="finanskonti-mini">
@@ -71,7 +72,8 @@
     <li><strong>Overførsel flytter til kostbasis.</strong> Afgangslinjen værdiansættes til lottets Indkøbspris ved købskursen, og tilgangslinjen åbner et nyt lot med samme kostbasis. Der dannes <strong>ingen Detaljeret Resultatpost</strong> — overførsel realiserer intet.</li>
     <li><strong>Urealiserede marks følger ikke med til mål-værdipapiret.</strong> Overførslen hverken flytter, tilbagefører eller omposterer kildens urealiserede pris-/valuta-skiver; mål-værdipapiret får rene kostbasis-lots uden marks.</li>
     <li><strong>Købsdato bevares</strong> via rapportens tilbagedatering: tilgangslinjens Handelsdato = lottets oprindelige købsdato, så FIFO/ejertid bevares.</li>
-    <li><strong>Depot-til-depot (Depotregulering, §9.4.3) er en separat funktion</strong> og er <span class="neg">ikke implementeret</span> i denne version. Case 9 dækker derfor værdipapir → værdipapir-overførslen, ikke en depotflytning.</li>
+    <li><strong>Depot-til-depot (Depotoverførsel, §9.4.3) er en separat bilagstype</strong> med sin egen linjeform (én linje med Depotkode og Ny depotkode, ingen finansposter) og er ikke en del af Case 9–12. Case 9 og 12 dækker værdipapir → værdipapir-overførslen.</li>
+    <li><strong>Fordeling på to nye papirer</strong> angives med <em>1. mål %</em> / <em>2. mål %</em> i kørslen. Udfyldes <em>2. målværdipapirnr.</em>, foreslås 50/50, som kan rettes (fx 75/25). Antal, beløb og beløb (RV) splittes pr. parti, og det andet mål får afrundingsresten, så købslinjerne summerer præcist til afgangslinjen — Case 12 viser det.</li>
   </ol>
 </div>
 
@@ -131,6 +133,65 @@
         <tr><td>Værdipapir-kort</td><td>Stykstørrelse opdateres til 0,50</td></tr>
       </tbody></table></div>
   <div class="note">Reverse split testes ved at sætte Ny aktie størrelse &gt; aktuel (fx 10:1 → Ny = 10). Multi-valuta-lots afvises (<code>MultiCurrencyErr</code>); reguleringen kan ikke tilbageføres (se Case 11a på side 7.5).</div>
+</div>
+
+<div class="section" id="case12">
+  <div class="section-header"><div class="section-icon">🔀</div><h2>Case 12 — Overførsel med 75/25-fordeling på to nye papirer <span class="case-badge transfer">Overførsel</span></h2></div>
+  <p><strong>Kladde:</strong> Overførselskladde, funktion <strong>Foreslå overførselslinjer for værdipapirer</strong> &nbsp;|&nbsp; Bilagstype = Overførsel &nbsp;|&nbsp; Bogføringsdato 01-06-2026.</p>
+  <p>Selvstændigt DKK-spor (uafhængigt af Case 8–10): NAV-manualens eksempel i §9.4.1 fordeler restværdien <strong>75 % / 25 %</strong> på to nye værdipapirer. Her med én aktie og to købspartier, så det ses, at kørslen danner ét sæt linjer pr. parti og bevarer begge købsdatoer. Partierne (100 og 40 stk) er valgt, så procenterne går op i hele stk.</p>
+  <div class="summary-box">Bogført værdi, der flyttes = 20.000,00 + 8.800,00 = <strong>28.800,00 DKK</strong>, fordelt 21.600,00 til AKT-NY1 og 7.200,00 til AKT-NY2.<br>
+    <strong>Overførslen realiserer ingen gevinst/tab</strong> — kontrolsalgene bagefter giver tilsammen 6.200,00, præcis som et salg direkte fra kilden.</div>
+  <h3>Forudsætning (opsætning)</h3>
+  <ul class="bullets">
+    <li>Gammelt papir <strong>AKT-GL</strong>; nye papirer <strong>AKT-NY1</strong> og <strong>AKT-NY2</strong> uden poster. Alle tre i DKK, stykstørrelse 1, samme bogføringsgruppe (FIFO, Realisationsprincip).</li>
+    <li>Depotet <strong>DEPOT-A</strong> er eneste depot på alle tre papirer, så kørslen finder måldepotet selv (<em>1. målkonto</em> / <em>2. målkonto</em> kan stå tomme).</li>
+    <li><strong>Værdipapirbogføringsgruppe:</strong> række Beholdning → <span class="acct" data-acct="holding">2640</span>. <strong>Avancebogføringsgruppe:</strong> række Realiseret / Overførsel / avancetype blank → <strong>Realiseret overførsel</strong>-mellemregningskontoen, samme konto i alle grupper.</li>
+    <li>Køb AKT-GL 100 stk @ 200,00 den 15-01-2026 (20.000,00) og 40 stk @ 220,00 den 10-03-2026 (8.800,00).</li>
+  </ul>
+  <h3>Kørslen</h3>
+  <p>1. kildeværdipapirnr. = AKT-GL; 1. målværdipapirnr. = AKT-NY1; 2. målværdipapirnr. = AKT-NY2. Udfyld det andet mål <strong>først</strong> (50/50 foreslås), og ret derefter <em>1. mål %</em> til <strong>75</strong> og <em>2. mål %</em> til <strong>25</strong>. Bilagsnr. kan stå tomt — ét nummer fra kladdens nummerserie dækker alle linjer.</p>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Linje</th><th>Papir</th><th class="num">Antal</th><th class="num">Kurs</th><th class="num">Beløb</th><th>Bogførings-/handelsdato</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>AKT-GL</td><td class="num">−100</td><td class="num">200,00</td><td class="num">−20.000,00</td><td>01-06-2026</td></tr>
+        <tr><td>2</td><td>AKT-NY1</td><td class="num">+75</td><td class="num">200,00</td><td class="num">15.000,00</td><td><strong>15-01-2026</strong> (partiets købsdato)</td></tr>
+        <tr><td>3</td><td>AKT-NY2</td><td class="num">+25</td><td class="num">200,00</td><td class="num">5.000,00</td><td><strong>15-01-2026</strong></td></tr>
+        <tr><td>4</td><td>AKT-GL</td><td class="num">−40</td><td class="num">220,00</td><td class="num">−8.800,00</td><td>01-06-2026</td></tr>
+        <tr><td>5</td><td>AKT-NY1</td><td class="num">+30</td><td class="num">220,00</td><td class="num">6.600,00</td><td><strong>10-03-2026</strong></td></tr>
+        <tr><td>6</td><td>AKT-NY2</td><td class="num">+10</td><td class="num">220,00</td><td class="num">2.200,00</td><td><strong>10-03-2026</strong></td></tr>
+      </tbody></table></div>
+  <p class="muted">Alle seks linjer har Bilagstype = Overførsel og Overført fra værdipapirnr. = AKT-GL. Summen af Beløb (RV) er 0,00 — NAV's betingelse for at bogføre. Kørslen runder antal til 0,00001, ikke hele stk: havde parti 2 været 50 stk, ville 75 % give 37,5 — ret da antallet til 38 / 12 i kladden og lad beløbet følge kursen.</p>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody>
+        <tr><td>Værdipapirpost (SLE)</td><td>AKT-GL: 2 afgange (−100, −40), Åben = Nej. AKT-NY1: 2 tilgange (+75, +30), Åben = Ja, Restværdi 15.000,00 og 6.600,00. AKT-NY2: 2 tilgange (+25, +10), Åben = Ja, Restværdi 5.000,00 og 2.200,00.</td></tr>
+        <tr><td>Detaljeret Værdipost (DVLE)</td><td>AKT-GL's to partier lukkes (Restantal 0). AKT-NY1 får partier 75 stk @ 200,00 (Købsdato 15-01-2026) og 30 stk @ 220,00 (10-03-2026); AKT-NY2 får 25 stk @ 200,00 og 10 stk @ 220,00 med samme købsdatoer.</td></tr>
+        <tr><td>Depotpost</td><td>DEPOT-A: AKT-GL −100 og −40; AKT-NY1 +75 og +30; AKT-NY2 +25 og +10.</td></tr>
+        <tr><td>Detaljeret Resultatpost (DPLE)</td><td><span class="zero">Ingen</span> — overførsel realiserer intet</td></tr>
+        <tr><td>Beholdning i alt</td><td>Stadig 140 stk / 28.800,00: AKT-NY1 105 stk / 21.600,00 og AKT-NY2 35 stk / 7.200,00 = 75 / 25.</td></tr>
+      </tbody></table></div>
+  <h3>Bogføring — finansposter (netter til nul pr. konto)</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">L1</th><th class="num">L2</th><th class="num">L3</th><th class="num">L4</th><th class="num">L5</th><th class="num">L6</th><th class="num">Sum</th></tr></thead>
+      <tbody>
+        <tr><td><span class="acct" data-acct="holding">2640</span></td><td>Værdipapirbeholdning</td><td class="num">−20.000,00</td><td class="num">+15.000,00</td><td class="num">+5.000,00</td><td class="num">−8.800,00</td><td class="num">+6.600,00</td><td class="num">+2.200,00</td><td class="num"><strong>0,00</strong></td></tr>
+        <tr><td>Realiseret overførsel</td><td>Mellemregning</td><td class="num">+20.000,00</td><td class="num">−15.000,00</td><td class="num">−5.000,00</td><td class="num">+8.800,00</td><td class="num">−6.600,00</td><td class="num">−2.200,00</td><td class="num"><strong>0,00</strong></td></tr>
+      </tbody></table></div>
+  <h3>Kritisk verifikation — kontrolsalg 01-09-2026 @ 250,00</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Salg</th><th class="num">Salgssum</th><th>Kostpris (FIFO efter oprindelig købsdato)</th><th class="num">Gevinst</th></tr></thead>
+      <tbody>
+        <tr><td>AKT-NY1 105 stk</td><td class="num">26.250,00</td><td>75 × 200,00 + 30 × 220,00 = 21.600,00</td><td class="num"><strong>4.650,00</strong></td></tr>
+        <tr><td>AKT-NY2 35 stk</td><td class="num">8.750,00</td><td>25 × 200,00 + 10 × 220,00 = 7.200,00</td><td class="num"><strong>1.550,00</strong></td></tr>
+        <tr><td>I alt</td><td class="num">35.000,00</td><td>28.800,00</td><td class="num"><strong>6.200,00</strong></td></tr>
+      </tbody></table></div>
+  <ul class="bullets">
+    <li>6.200,00 er nøjagtig den gevinst, et salg af 140 stk direkte fra AKT-GL ville have givet — kostpris og købsdato fulgte med. Bogført som salg + genkøb den 01-06-2026 ville ejertiden være tabt.</li>
+    <li><strong>Variant 1:1:</strong> lad 2. målværdipapirnr. stå tomt (100/0) — fire linjer, −100/+100 og −40/+40, og AKT-NY1 ender med 140 stk / 28.800,00 (det er Case 9 i DKK).</li>
+    <li><strong>Variant to bogføringsgrupper:</strong> AKT-NY2 i en anden gruppe med anden beholdningskonto men samme mellemregningskonto — 7.200,00 flytter reelt mellem beholdningskonti, mellemregningen går stadig i nul. Forskellige mellemregningskonti efterlader 7.200,00 på hver sin side.</li>
+  </ul>
+  <div class="note">Afgangslinjen forbruger depotets åbne partier efter FIFO — med kørslens linjer i partirækkefølge er det samme parti, linjen blev dannet fra. Urealiserede kursreguleringer bliver hængende på de gamle partier (derfor Realisationsprincippet her).</div>
 </div>
 
   </div>

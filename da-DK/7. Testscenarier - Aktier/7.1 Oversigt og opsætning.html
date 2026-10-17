@@ -59,7 +59,7 @@
   <div class="card-grid cols-2">
     <div class="feature-card"><span class="feature-icon">🛒</span><h3>Køb &amp; kursregulering</h3><p>Case 1–6 — opbygning af urealiserede pris- og valutamarks. Se <strong>7.2</strong>.</p></div>
     <div class="feature-card"><span class="feature-icon">💰</span><h3>Udbytte &amp; salg</h3><p>Case 7–8 — realiseret afkast og realisering ved salg. Se <strong>7.3</strong>.</p></div>
-    <div class="feature-card"><span class="feature-icon">🔀</span><h3>Overførsel &amp; stykstørrelse</h3><p>Case 9–10 — værdipapir → værdipapir og aktiesplit. Se <strong>7.4</strong>.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔀</span><h3>Overførsel &amp; stykstørrelse</h3><p>Case 9–10 og 12 — værdipapir → værdipapir (1:1 og 75/25 på to nye papirer) og aktiesplit. Se <strong>7.4</strong>.</p></div>
     <div class="feature-card"><span class="feature-icon">↩️</span><h3>Korrektion &amp; tilbageførsel</h3><p>Case 11 — tilbageførsel og fejl-vagter. Se <strong>7.5</strong>.</p></div>
   </div>
 </div>
@@ -120,7 +120,7 @@
         <tr><td>Køb</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
         <tr><td>Salg</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
         <tr><td>Kursregulering</td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
-        <tr><td>Overførsel <span class="day-tag">kun ved Case 9</span></td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
+        <tr><td>Overførsel <span class="day-tag">Case 9 og 12</span></td><td><span class="acct" data-acct="holding">2640</span> — beholdning</td></tr>
       </tbody></table></div>
   <p class="note"><strong>Bemærk:</strong> rækker for <em>Afkast</em> og <em>Valutakursjustering</em> i Balance bruges ikke af motoren — de gør ingen skade, men er ikke nødvendige.</p>
 
@@ -141,7 +141,7 @@
 
   <div class="info-box"><strong>Skattetype:</strong> motoren afleder skattetypen på salgs- og kursreguleringsrækker fra <strong>Skattemetode avance</strong>, og skattetypen på <strong>afkast</strong>-rækken (udbytte) fra <strong>Skattemetode afkast</strong>. Med “begge skattefri” får alle resultatrækkerne ovenfor Skattetype = <strong>Skattefri</strong>. Er Skattemetode afkast i stedet <strong>Skattepligtig</strong>, skal afkast-rækken oprettes med Skattetype = Skattepligtig.</div>
 
-  <div class="note" style="border-left-color:#c0392b"><strong>Kendt begrænsning — Overførsel (Case 9):</strong> mellemregningskontoen “Realiseret Overførsel” slås op med en Avancetype, som feltets liste ikke tilbyder, så <em>Resultatopgørelse-rækken kan ikke oprettes</em> i denne version. Overførsel kan derfor ikke bogføres, før det rettes i koden (samme gælder periodiseret obligationsrente). Beholdnings-rækken (Bilagstype = Overførsel) kan derimod godt oprettes.</div>
+  <div class="note" style="border-left-color:#c0392b"><strong>Opsætning — Overførsel (Case 9 og 12):</strong> mellemregningskontoen “Realiseret overførsel” slås op på rækken <em>Realiseret / Overførsel / Avancetype blank</em> i avancebogføringsgruppen (Resultatopgørelse-fanen). Rækken kan oprettes med blank Avancetype, og bogføringen giver en tidlig fejl med rækkens navn, hvis den mangler. Brug samme konto i alle implicerede bogføringsgrupper, så mellemregningen går i nul. Beholdningsbenet bruger rækken Beholdning i værdibogføringsgruppen. Den tidligere bemærkning om, at rækken ikke kunne oprettes, er forældet.</div>
 </div>
 
 <div class="section" id="parametre">
