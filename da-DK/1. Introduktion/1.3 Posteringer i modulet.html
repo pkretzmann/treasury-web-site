@@ -105,10 +105,12 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1</span></div>
-          <div class="ledger-box miss"><span class="lbl">Avancedetalje</span><span class="val">—</span></div>
+          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">0–1</span></div>
         </div>
         <ul>
           <li><strong>Finans:</strong> Debet værdipapirkonto · Kredit modkonto (bank/finans).</li>
+          <li>Et obligationskøb med handelsrente registrerer renten som en detaljeret avancepost af
+          typen Afkast (negativ — renten betales væk); en aktielinje har ingen.</li>
           <li>Købsposten markeres som åben med fuldt resterende antal og købspris — bruges senere
           ved salg til at beregne kostprisen.</li>
         </ul>
@@ -129,7 +131,7 @@
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">1 + reverseringer</span></div>
-          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">2–4</span></div>
+          <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">2–5 (heraf 1 for evt. handelsrente)</span></div>
         </div>
         <ul>
           <li><strong>Finans:</strong> Salgsprovenu mod afgang fra værdipapirkontoen, plus realiseret
@@ -176,7 +178,7 @@
         <div class="ledger-grid">
           <div class="ledger-box"><span class="lbl">Finans</span><span class="val">4 linjer</span></div>
           <div class="ledger-box"><span class="lbl">Værdipapir</span><span class="val">1</span></div>
-          <div class="ledger-box"><span class="lbl">Depot</span><span class="val">1</span></div>
+          <div class="ledger-box miss"><span class="lbl">Depot</span><span class="val">—</span></div>
           <div class="ledger-box"><span class="lbl">Værdidetalje</span><span class="val">2 (kurs + valuta)</span></div>
           <div class="ledger-box"><span class="lbl">Avancedetalje</span><span class="val">2 + tilbageførsel</span></div>
         </div>

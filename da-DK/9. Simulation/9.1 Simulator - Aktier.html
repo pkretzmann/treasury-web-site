@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulator - Aktier · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental (delt med kapitel 7/8) ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+
+  /* ── Simulator — supplemental ── */
+  .sim-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px 18px; margin: 10px 0 4px; padding: 14px 16px; background: var(--brand-subtle); border: 1px solid var(--gray-200); border-radius: 10px; }
+  .sim-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .sim-field label { color: var(--gray-700); font-weight: 600; }
+  .sim-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); text-align: right; }
+  .sim-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .sim-field .unit { color: var(--gray-400); font-weight: 400; }
+  .gl-balance { margin: 8px 0 0; font-size: 12.5px; color: var(--gray-700); }
+  .gl-balance .ok { color: var(--success); font-weight: 700; }
+  .gl-balance .fail { color: #C0392B; font-weight: 700; }
+  td.empty { color: var(--gray-400); font-style: italic; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Simulation</div>
+    <h1>Simulator — Aktier</h1>
+    <p>Interaktiv bogføringssimulator for et aktieforløb: Køb → Kursregulering → Udbytte → Salg. Ret parametrene i hvert trin — alle poster og finansposter genberegnes med det samme efter samme opskrift som testscenarierne i kapitel 7.</p>
+    <div class="header-pills"><span class="pill">Køb · Kursregulering · Udbytte · Salg</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#intro">Sådan bruges simulatoren</a></li>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#koeb">Trin 1 — Køb</a></li>
+        <li><a href="#kursregulering">Trin 2 — Kursregulering</a></li>
+        <li><a href="#udbytte">Trin 3 — Udbytte</a></li>
+        <li><a href="#salg">Trin 4 — Salg</a></li>
+      </ol>
+    </nav>
+
+<div class="section" id="intro">
+  <div class="section-header"><div class="section-icon">🎛️</div><h2>Sådan bruges simulatoren</h2></div>
+  <p>Simulatoren viser hvordan én aktiebeholdning bevæger sig gennem de fire bilagstyper og hvilke poster hvert trin skriver: <strong>Værdipapirpost (SLE)</strong>, <strong>Depotpost</strong>, <strong>Detaljeret værdipost (DVLE)</strong>, <strong>Detaljeret avancepost (DPLE)</strong> og <strong>finansposter</strong>. Trinnene bygger på hinanden: kursreguleringen regulerer købet, og salget realiserer og tilbagefører reguleringens urealiserede marks.</p>
+  <ul>
+    <li>Standardparametrene replikerer testscenarierne i <a href="../7.%20Testscenarier%20-%20Aktier/7.2%20K%C3%B8b%20og%20kursregulering.html">kapitel 7.2</a> og <a href="../7.%20Testscenarier%20-%20Aktier/7.3%20Udbytte%20og%20salg.html">kapitel 7.3</a> (case 1, 6, 7 og 8), så alle viste beløb kan efterprøves 1:1 dér.</li>
+    <li>Beløb (RV) beregnes som <code>EUR-beløb × EUR-kurs</code>. Kursreguleringens split følger opskriften <em>FX på kostbasis</em>: priskomponenten opgøres ved den nye valutakurs, valutakomponenten på kostbasis — se beregningslinjerne under hvert trin.</li>
+    <li>Markedsværdi-princippet (lagerprincip) er aktivt: kursreguleringens SLE bærer hele depotbeholdningen og hele markedsværdien.</li>
+    <li><strong>Afgrænsning:</strong> ét købsparti, én kursregulering, delsalg understøttet. Overførsler, ompostering, flere partier (FIFO på tværs af køb) og obligationer er ikke med — se kapitel 7–8 for de fulde forløb.</li>
+  </ul>
+</div>
+
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra eksempel-firmaets <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering) og <strong>Værdipapir-resultatbogføringsgruppe</strong> (resultatkonti). Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og testscenarie-siderne) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Værdipapirbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2640" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret resultat – pris</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1350" /></div>
+      <div class="acct-field"><label for="acct-fxResult">Resultat – valuta (urealiseret + realiseret residual)</label><input class="acct-input" id="acct-fxResult" data-acct="fxResult" type="text" value="1680" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret resultat – pris</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1670" /></div>
+      <div class="acct-field"><label for="acct-dividendIncome">Udbytteindtægt / afkast</label><input class="acct-input" id="acct-dividendIncome" data-acct="dividendIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-dividendTax">Udbytteskat</label><input class="acct-input" id="acct-dividendTax" data-acct="dividendTax" type="text" value="1455" /></div>
+  </div></div></details></div>
+</div>
+
+<div class="section" id="koeb">
+  <div class="section-header"><div class="section-icon">🛒</div><h2>Trin 1 — Køb <span class="case-badge buy">Køb</span></h2></div>
+  <p>Bogfør en Værdipapirjournalpost: Bilagstype = Køb. Købet aktiveres til kostbasis — der opstår endnu ingen avance.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-qty">Antal <span class="unit">(stk)</span></label><input id="sim-qty" type="text" inputmode="decimal" value="10" /></div>
+    <div class="sim-field"><label for="sim-pprice">Købspris <span class="unit">(EUR/stk)</span></label><input id="sim-pprice" type="text" inputmode="decimal" value="400,00" /></div>
+    <div class="sim-field"><label for="sim-pfx">EUR-kurs ved køb</label><input id="sim-pfx" type="text" inputmode="decimal" value="7,4726" /></div>
+  </div>
+  <div class="summary-box" id="koeb-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="koeb-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="koeb-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="koeb-gl"></tbody></table></div>
+  <div class="gl-balance" id="koeb-bal"></div>
+</div>
+
+<div class="section" id="kursregulering">
+  <div class="section-header"><div class="section-icon">📈</div><h2>Trin 2 — Kursregulering <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p>Bogfør en Kursregulering-journalpost. Markedsværdi-princippet skal være aktivt på posteringsgruppen. Reguleringen opdeles i en <strong>priskomponent</strong> (ved den nye valutakurs) og en <strong>valutakomponent</strong> (på kostbasis) — hver med sin egen avancepost og finanspostlinje.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-aprice">Ny aktiekurs <span class="unit">(EUR/stk)</span></label><input id="sim-aprice" type="text" inputmode="decimal" value="435,00" /></div>
+    <div class="sim-field"><label for="sim-afx">EUR-kurs ved regulering</label><input id="sim-afx" type="text" inputmode="decimal" value="7,4738" /></div>
+  </div>
+  <div class="summary-box" id="reg-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="reg-udfald"></tbody></table></div>
+  <h3>Beregning af split (FX på kostbasis)</h3>
+  <p class="muted" id="reg-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="reg-gl"></tbody></table></div>
+  <div class="gl-balance" id="reg-bal"></div>
+</div>
+
+<div class="section" id="udbytte">
+  <div class="section-header"><div class="section-icon">💰</div><h2>Trin 3 — Udbytte (Afkast) <span class="case-badge yield">Afkast</span></h2></div>
+  <p>Bogfør en Afkast-journalpost i <strong>Værdipapirafkastkladden</strong>: Bilagstype = Afkast, Antal = 0. Udbyttet er en <strong>realiseret</strong> indtægt og rører hverken kostbasis, købspartiet eller de urealiserede kursmarks.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-div">Udbytte <span class="unit">(EUR/aktie)</span></label><input id="sim-div" type="text" inputmode="decimal" value="4,00" /></div>
+    <div class="sim-field"><label for="sim-tax">Udbytteskat <span class="unit">(%)</span></label><input id="sim-tax" type="text" inputmode="decimal" value="15" /></div>
+    <div class="sim-field"><label for="sim-dfx">EUR-kurs ved udbytte</label><input id="sim-dfx" type="text" inputmode="decimal" value="7,4735" /></div>
+  </div>
+  <div class="summary-box" id="udb-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="udb-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="udb-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="udb-gl"></tbody></table></div>
+  <div class="gl-balance" id="udb-bal"></div>
+</div>
+
+<div class="section" id="salg">
+  <div class="section-header"><div class="section-icon">🏦</div><h2>Trin 4 — Salg <span class="case-badge sale">Salg</span></h2></div>
+  <p>Salget lukker (helt eller delvist) købspartiet og realiserer resultatet. Den realiserede avance opdeles via en <strong>residual-konvention</strong> der holder salgets finansposter i balance til øren: realiseret pris opgøres ved <strong>købskursen</strong>, og FX-residualet er salgssum (salgskurs) − salgsside (købskurs). Samtidig tilbageføres de urealiserede marks fra kursreguleringen proportionalt med den solgte andel.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-sqty">Antal solgt <span class="unit">(stk)</span></label><input id="sim-sqty" type="text" inputmode="decimal" value="5" /></div>
+    <div class="sim-field"><label for="sim-sprice">Salgspris <span class="unit">(EUR/stk)</span></label><input id="sim-sprice" type="text" inputmode="decimal" value="445,00" /></div>
+    <div class="sim-field"><label for="sim-sfx">EUR-kurs ved salg</label><input id="sim-sfx" type="text" inputmode="decimal" value="7,4729" /></div>
+  </div>
+  <div id="salg-warn"></div>
+  <div class="summary-box" id="salg-summary"></div>
+  <h3>Forventet udfald — realisering</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="salg-udfald"></tbody></table></div>
+  <h3 id="salg-rev-head">Forventet udfald — tilbageførsel af urealiserede DPLE-rækker</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Oprindelig DPLE</th><th class="num">Beløb før (RV)</th><th class="num">Tilbageføres ved salg (RV)</th></tr></thead>
+      <tbody id="salg-rev"></tbody></table></div>
+  <h3>Beregning af realiseret split</h3>
+  <p class="muted" id="salg-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="salg-gl"></tbody></table></div>
+  <div class="gl-balance" id="salg-bal"></div>
+  <div class="note" id="salg-rest"></div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  </script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ════════ Finanskonti — delt med testscenarie-siderne ════════ */
+    var DEF = {"holding":"2640","bank":"2620","unrealPrice":"1350","fxResult":"1680","realPrice":"1670","dividendIncome":"1450","dividendTax":"1455"};
+    var ROLES = {
+      holding: "Værdipapirbeholdning / kursregulering",
+      bank: "Bank / modkonto",
+      unrealPrice: "Urealiseret resultat – pris",
+      fxResult: "Resultat – valuta (urealiseret + realiseret residual)",
+      realPrice: "Realiseret resultat – pris",
+      dividendIncome: "Udbytteindtægt / afkast",
+      dividendTax: "Udbytteskat"
+    };
+    var KEY = 'testscenarier.accounts';
+    function loadAcc() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function saveAcc(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    var acc = loadAcc();
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; saveAcc(acc); render(); });
+    });
+
+    /* ════════ Hjælpere ════════ */
+    function r2(x) { return Math.sign(x) * Math.round(Math.abs(x) * 100) / 100; }
+    function pnum(id) {
+      var s = String(document.getElementById(id).value).trim();
+      if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
+      else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+      var v = parseFloat(s);
+      return isNaN(v) ? 0 : v;
+    }
+    function fmt(v, dec) {
+      if (dec === undefined) dec = 2;
+      return (v === 0 ? 0 : v).toLocaleString('da-DK', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+    function signed(v) {
+      var s = (v > 0 ? '+' : '') + fmt(v);
+      if (v > 0) return '<span class="pos">' + s + '</span>';
+      if (v < 0) return '<span class="neg">' + s + '</span>';
+      return '<span class="zero">0,00</span>';
+    }
+    function acct(k) { return '<span class="acct">' + (acc[k] || DEF[k]) + '</span>'; }
+
+    /* GL-række: {k: kontonøgle, note: rolle-parentes, amt: beløb, side: 'dr'|'cr'}
+       Negativt beløb vender siden. */
+    function glRows(tbodyId, balId, rows) {
+      var dr = 0, cr = 0, html = '';
+      rows.forEach(function (r) {
+        if (Math.abs(r.amt) < 0.005) return;
+        var side = r.side, amt = r.amt;
+        if (amt < 0) { side = side === 'dr' ? 'cr' : 'dr'; amt = -amt; }
+        if (side === 'dr') dr += amt; else cr += amt;
+        html += '<tr><td>' + acct(r.k) + '</td><td>' + ROLES[r.k] +
+          (r.note ? ' <span class="muted">(' + r.note + ')</span>' : '') + '</td>' +
+          '<td class="num">' + (side === 'dr' ? fmt(amt) : '') + '</td>' +
+          '<td class="num">' + (side === 'cr' ? fmt(amt) : '') + '</td></tr>';
+      });
+      document.getElementById(tbodyId).innerHTML = html ||
+        '<tr><td class="empty" colspan="4">Ingen finansposter — alle beløb er 0,00.</td></tr>';
+      var ok = Math.abs(dr - cr) < 0.005;
+      document.getElementById(balId).innerHTML =
+        'Debet i alt <strong>' + fmt(dr) + '</strong> · Kredit i alt <strong>' + fmt(cr) + '</strong> — ' +
+        (ok ? '<span class="ok">i balance ✓</span>' : '<span class="fail">UDE AF BALANCE — ville fejle konsistenskontrollen</span>');
+    }
+    function udfald(tbodyId, rows) {
+      document.getElementById(tbodyId).innerHTML = rows.map(function (r) {
+        return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+      }).join('');
+    }
+
+    /* ════════ Beregning ════════ */
+    function compute() {
+      var qty = pnum('sim-qty'), pPrice = pnum('sim-pprice'), pFX = pnum('sim-pfx');
+      var aPrice = pnum('sim-aprice'), aFX = pnum('sim-afx');
+      var divPS = pnum('sim-div'), taxPct = pnum('sim-tax'), dFX = pnum('sim-dfx');
+      var sQty = pnum('sim-sqty'), sPrice = pnum('sim-sprice'), sFX = pnum('sim-sfx');
+
+      var warn = '';
+      if (sQty > qty) { warn = 'Antal solgt (' + fmt(sQty, 0) + ') overstiger beholdningen (' + fmt(qty, 0) + ') — der regnes med salg af hele beholdningen.'; sQty = qty; }
+      if (sQty < 0) sQty = 0;
+
+      // Køb
+      var buyFCY = r2(qty * pPrice);
+      var buyLCY = r2(qty * pPrice * pFX);
+
+      // Kursregulering (ét lag oven på kostbasis; udestående marks før = 0)
+      var mv = r2(qty * aPrice * aFX);
+      var cumPrice = r2(qty * (aPrice - pPrice) * aFX);
+      var cumFX = r2(qty * pPrice * (aFX - pFX));
+      var totalAdj = r2(cumPrice + cumFX);
+
+      // Udbytte (på hele beholdningen; antal = 0 på posten)
+      var grossFCY = r2(qty * divPS);
+      var grossLCY = r2(grossFCY * dFX);
+      var taxFCY = r2(grossFCY * taxPct / 100);
+      var taxLCY = r2(taxFCY * dFX);
+      var netLCY = r2(grossLCY - taxLCY);
+
+      // Salg (residual-konvention + proportional tilbageførsel)
+      var saleSum = r2(sQty * sPrice * sFX);
+      var costOut = r2(sQty * pPrice * pFX);
+      var saleSide = r2(sQty * sPrice * pFX);
+      var realPrice = r2(saleSide - costOut);
+      var fxResidual = r2(saleSum - saleSide);
+      var realTotal = r2(saleSum - costOut);
+      var share = qty > 0 ? sQty / qty : 0;
+      var revPrice = r2(cumPrice * share);
+      var revFX = r2(cumFX * share);
+
+      return {
+        qty: qty, pPrice: pPrice, pFX: pFX, aPrice: aPrice, aFX: aFX,
+        divPS: divPS, taxPct: taxPct, dFX: dFX, sQty: sQty, sPrice: sPrice, sFX: sFX,
+        buyFCY: buyFCY, buyLCY: buyLCY,
+        mv: mv, cumPrice: cumPrice, cumFX: cumFX, totalAdj: totalAdj,
+        grossFCY: grossFCY, grossLCY: grossLCY, taxFCY: taxFCY, taxLCY: taxLCY, netLCY: netLCY,
+        saleSum: saleSum, costOut: costOut, saleSide: saleSide, realPrice: realPrice,
+        fxResidual: fxResidual, realTotal: realTotal, share: share, revPrice: revPrice, revFX: revFX,
+        warn: warn
+      };
+    }
+
+    /* ════════ Rendering ════════ */
+    function render() {
+      var c = compute();
+
+      /* ── Trin 1: Køb ── */
+      document.getElementById('koeb-summary').innerHTML =
+        'Beløb EUR = ' + fmt(c.buyFCY) + ' &nbsp;|&nbsp; <strong>Beløb (DKK) = ' + fmt(c.buyLCY) + '</strong>';
+      udfald('koeb-udfald', [
+        ['Finanspost (G/L)', 'Debet ' + acct('holding') + ' (beholdning) ' + fmt(c.buyLCY) + ' DKK; Kredit ' + acct('bank') + ' (bank/modkonto) ' + fmt(c.buyLCY) + ' DKK'],
+        ['Værdipapirpost (SLE)', '1 ny post, Bilagstype = Køb, Antal = ' + fmt(c.qty, 0) + ', Restantal = ' + fmt(c.qty, 0) + ', Åben = Ja, Beløb = ' + fmt(c.buyFCY) + ' EUR, Beløb (RV) = ' + fmt(c.buyLCY) + ' DKK'],
+        ['Depotpost', 'Bilagstype = Køb, Antal = ' + fmt(c.qty, 0) + ', Modkonto = Bank/modkonto fra depotet'],
+        ['Detaljeret værdipost (DVLE)', '1 partirække (FIFO): Åben = Ja, Restantal = ' + fmt(c.qty, 0) + ', Indkøbspris = ' + fmt(c.pPrice) + ' EUR/stk'],
+        ['Detaljeret avancepost (DPLE)', '<span class="zero">Ingen</span> — avance opstår først ved regulering/salg']
+      ]);
+      document.getElementById('koeb-calc').innerHTML =
+        'Beløb (RV) = antal × købspris × købskurs = ' + fmt(c.qty, 0) + ' × ' + fmt(c.pPrice) + ' × ' + fmt(c.pFX, 4) +
+        ' = ' + fmt(c.buyLCY) + ' DKK. Ingen split — købet aktiveres til kostbasis.';
+      glRows('koeb-gl', 'koeb-bal', [
+        { k: 'holding', note: 'beholdning (kostbasis)', amt: c.buyLCY, side: 'dr' },
+        { k: 'bank', note: 'betaling', amt: c.buyLCY, side: 'cr' }
+      ]);
+
+      /* ── Trin 2: Kursregulering ── */
+      document.getElementById('reg-summary').innerHTML =
+        'Ny markedsværdi = ' + fmt(c.mv) + ' DKK &nbsp;|&nbsp; Bogført værdi før = ' + fmt(c.buyLCY) + ' DKK<br>' +
+        '<strong>Samlet urealiseret regulering = ' + signed(c.totalAdj) + ' DKK</strong><br>' +
+        'Split: Pris = ' + signed(c.cumPrice) + ' DKK &nbsp;|&nbsp; FX = ' + signed(c.cumFX) + ' DKK';
+      udfald('reg-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Kursregulering, Antal = ' + fmt(c.qty, 0) + ' (depotets beholdning), Beløb (RV) = ' + fmt(c.mv) + ' DKK (hele markedsværdien — NAV skrev her 0 og kun tilvæksten; bevidst afvigelse)'],
+        ['DPLE — Fondskursavance', c.cumPrice !== 0
+          ? '1 række: Realiseringstype = Urealiseret, Avancekomponent = Fondskursavance, Beløb (RV) = ' + signed(c.cumPrice) + ' DKK'
+          : '<span class="zero">Ingen post</span> (pris uændret)'],
+        ['DPLE — Valutakursavance', c.cumFX !== 0
+          ? '1 række: Realiseringstype = Urealiseret, Avancekomponent = Valutakursavance, Beløb (RV) = ' + signed(c.cumFX) + ' DKK'
+          : '<span class="zero">Ingen post</span> (valutakurs uændret)'],
+        ['Finanspost', 'Regulering på ' + acct('holding') + ' med modpost pr. komponent: ' + acct('unrealPrice') + ' (urealiseret pris) og ' + acct('fxResult') + ' (urealiseret valuta), sum ' + signed(c.totalAdj) + ' DKK']
+      ]);
+      document.getElementById('reg-calc').innerHTML =
+        'Kumulativ pris = ' + fmt(c.qty, 0) + ' × (' + fmt(c.aPrice) + ' − ' + fmt(c.pPrice) + ') × ' + fmt(c.aFX, 4) + ' = ' + fmt(c.cumPrice) +
+        ' → minus udestående 0,00 = netto pris ' + signed(c.cumPrice) + '. ' +
+        'Kumulativ FX = ' + fmt(c.qty, 0) + ' × ' + fmt(c.pPrice) + ' × (' + fmt(c.aFX, 4) + ' − ' + fmt(c.pFX, 4) + ') = ' + fmt(c.cumFX) +
+        ' → minus udestående 0,00 = netto FX ' + signed(c.cumFX) + '.';
+      glRows('reg-gl', 'reg-bal', [
+        { k: 'holding', note: 'beholdning reguleres', amt: c.totalAdj, side: 'dr' },
+        { k: 'unrealPrice', note: 'urealiseret pris', amt: c.cumPrice, side: 'cr' },
+        { k: 'fxResult', note: 'urealiseret valuta', amt: c.cumFX, side: 'cr' }
+      ]);
+
+      /* ── Trin 3: Udbytte ── */
+      document.getElementById('udb-summary').innerHTML =
+        'Antal i behold = ' + fmt(c.qty, 0) + ' stk &nbsp;|&nbsp; Bruttoafkast = ' + fmt(c.grossFCY) + ' EUR = <strong>' + fmt(c.grossLCY) + ' DKK</strong><br>' +
+        'Udbytteskat (' + fmt(c.taxPct, 0) + ' %) = ' + fmt(c.taxFCY) + ' EUR = ' + signed(-c.taxLCY) + ' DKK<br>' +
+        '<strong>Nettoudbytte (bank) = ' + signed(c.netLCY) + ' DKK</strong>';
+      udfald('udb-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Afkast, Antal = 0, Afkast før skat = ' + fmt(c.grossFCY) + ' EUR, Udbytteskat = ' + fmt(c.taxFCY) + ' EUR, Beløb (netto) = ' + fmt(r2(c.grossFCY - c.taxFCY)) + ' EUR (gemmes med negativt fortegn = kreditpostering)'],
+        ['DPLE — Afkast', '1 række: Avancekomponent = Afkast, Realiseringstype = Realiseret, Beløb = ' + fmt(c.grossFCY) + ' EUR, Beløb (RV) = ' + fmt(c.grossLCY) + ' DKK'],
+        ['DPLE — Udbytteskat', c.taxLCY !== 0
+          ? '1 række: Avancekomponent = Udbytteskat, Beløb (RV) = ' + fmt(c.taxLCY) + ' DKK'
+          : '<span class="zero">Ingen post</span> (skat = 0)'],
+        ['Beholdning / marks', '<span class="zero">Uændret</span> — udbytte har Antal = 0 og rører ikke kostbasis eller de urealiserede kursmarks']
+      ]);
+      document.getElementById('udb-calc').innerHTML =
+        'Bruttoafkast = ' + fmt(c.qty, 0) + ' × ' + fmt(c.divPS) + ' = ' + fmt(c.grossFCY) + ' EUR → × ' + fmt(c.dFX, 4) + ' = ' + fmt(c.grossLCY) + ' DKK. ' +
+        'Udbytteskat = brutto × ' + fmt(c.taxPct, 0) + ' % = ' + fmt(c.taxFCY) + ' EUR = ' + fmt(c.taxLCY) + ' DKK. ' +
+        'Nettoudbytte = ' + fmt(c.grossLCY) + ' − ' + fmt(c.taxLCY) + ' = ' + fmt(c.netLCY) + ' DKK.';
+      glRows('udb-gl', 'udb-bal', [
+        { k: 'bank', note: 'nettoudbytte modtaget', amt: c.netLCY, side: 'dr' },
+        { k: 'dividendIncome', note: 'bruttoafkast (indtægt)', amt: c.grossLCY, side: 'cr' },
+        { k: 'dividendTax', note: 'indeholdt udbytteskat', amt: c.taxLCY, side: 'dr' }
+      ]);
+
+      /* ── Trin 4: Salg ── */
+      document.getElementById('salg-warn').innerHTML = c.warn ? '<div class="err-box">' + c.warn + '</div>' : '';
+      var pct = fmt(c.share * 100, 0) + ' %';
+      document.getElementById('salg-summary').innerHTML =
+        'Salgssum = ' + fmt(c.saleSum) + ' DKK &nbsp;|&nbsp; Kostside (FIFO ved købs-FX ' + fmt(c.pFX, 4) + ') = ' + fmt(c.costOut) + ' DKK<br>' +
+        '<strong>Realiseret resultat i alt = ' + signed(c.realTotal) + ' DKK</strong><br>' +
+        'Split: Realiseret pris = ' + signed(c.realPrice) + ' DKK &nbsp;|&nbsp; Realiseret FX-residual = ' + signed(c.fxResidual) + ' DKK';
+      udfald('salg-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Salg, Antal = −' + fmt(c.sQty, 0)],
+        ['DVLE', '1 forbrugsrække mod oprindeligt købsparti (partiets Restantal reduceres med ' + fmt(c.sQty, 0) + ')'],
+        ['DPLE — Realiseret pris (salgsside)', 'Beløb (RV) = ' + signed(c.saleSide) + ' DKK, Salgsbeløb = Ja, Antal = −' + fmt(c.sQty, 0)],
+        ['DPLE — Realiseret pris (kostside)', 'Beløb (RV) = ' + signed(-c.costOut) + ' DKK, Salgsbeløb = Nej, Antal = +' + fmt(c.sQty, 0) + ' (modpost til kostbasis)'],
+        ['DPLE — Realiseret FX-residual', 'Beløb = 0 EUR, Beløb (RV) = ' + signed(c.fxResidual) + ' DKK, Avancekomponent = Valutakursavance']
+      ]);
+      document.getElementById('salg-rev').innerHTML =
+        (c.share > 0 && (c.cumPrice !== 0 || c.cumFX !== 0))
+          ? '<tr><td>Urealiseret pris (kumulativ, ' + fmt(c.qty, 0) + ' stk)</td><td class="num">' + signed(c.cumPrice) + '</td><td class="num">' + signed(-c.revPrice) + '</td></tr>' +
+            '<tr><td>Urealiseret FX (kumulativ, ' + fmt(c.qty, 0) + ' stk)</td><td class="num">' + signed(c.cumFX) + '</td><td class="num">' + signed(-c.revFX) + '</td></tr>'
+          : '<tr><td class="empty" colspan="3">Ingen tilbageførsel — ingen urealiserede marks eller intet salg.</td></tr>';
+      document.getElementById('salg-rev-head').textContent =
+        'Forventet udfald — tilbageførsel af urealiserede DPLE-rækker (proportionalt: solgt/beholdning = ' + pct + ')';
+      document.getElementById('salg-calc').innerHTML =
+        'Realiseret i alt = salgssum − kostbasis = ' + fmt(c.saleSum) + ' − ' + fmt(c.costOut) + ' = ' + fmt(c.realTotal) + '. ' +
+        'Split (residual-konvention): realiseret pris = ' + fmt(c.sQty, 0) + ' × (' + fmt(c.sPrice) + ' − ' + fmt(c.pPrice) + ') × ' + fmt(c.pFX, 4) + ' = ' + fmt(c.realPrice) + ' (ved købskursen); ' +
+        'FX-residual = salgssum (salgskurs) − salgsside (købskurs) = ' + fmt(c.saleSum) + ' − ' + fmt(c.saleSide) + ' = ' + fmt(c.fxResidual) + '. ' +
+        'Tilbageførsel af urealiseret mark (andel ' + pct + '): pris ' + fmt(-c.revPrice) + ', FX ' + fmt(-c.revFX) + '.';
+      glRows('salg-gl', 'salg-bal', [
+        { k: 'bank', note: 'salgssum', amt: c.saleSum, side: 'dr' },
+        { k: 'holding', note: 'kostbasis ud', amt: c.costOut, side: 'cr' },
+        { k: 'holding', note: 'tilbagef. ureal. pris', amt: c.revPrice, side: 'cr' },
+        { k: 'holding', note: 'tilbagef. ureal. FX', amt: c.revFX, side: 'cr' },
+        { k: 'realPrice', note: 'realiseret pris (salgs- + kostside)', amt: c.realPrice, side: 'cr' },
+        { k: 'fxResult', note: 'realiseret FX-residual', amt: c.fxResidual, side: 'cr' },
+        { k: 'unrealPrice', note: 'nulstil ureal. pris', amt: c.revPrice, side: 'dr' },
+        { k: 'fxResult', note: 'nulstil ureal. FX', amt: c.revFX, side: 'dr' }
+      ]);
+      var restQty = r2(c.qty - c.sQty);
+      document.getElementById('salg-rest').innerHTML =
+        'Realiseret pris bogføres i koden som <strong>to</strong> linjer på ' + acct('realPrice') + ' (salgsside og kostside); ovenfor er de slået sammen til nettobeløbet. ' +
+        'Efter salget: <strong>' + fmt(restQty, 0) + ' stk</strong> i behold med urealiseret mark ' +
+        signed(r2(c.cumPrice - c.revPrice)) + ' DKK (pris) og ' + signed(r2(c.cumFX - c.revFX)) + ' DKK (FX).';
+    }
+
+    document.querySelectorAll('.sim-field input').forEach(function (el) {
+      el.addEventListener('input', render);
+    });
+    render();
+  })();
+  </script>
+</body>
+</html>

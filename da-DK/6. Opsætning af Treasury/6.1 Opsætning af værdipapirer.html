@@ -46,7 +46,7 @@
            alt="Siden Opsætning af Treasury med fanebladene Generelt, Nummerering og Opdatering"
            width="1517" height="761" loading="lazy" decoding="async" />
     </a>
-    <figcaption>Opsætning af Treasury med fanebladene Generelt, Nummerering og Opdatering. Klik på billedet for at se det i fuld størrelse.</figcaption>
+    <figcaption>Opsætning af Treasury med fanebladene Generelt, Nummerering og Opdatering. Klik på billedet for at se det i fuld størrelse. Skærmbilledet er fra en tidligere version: felterne <em>Rapporteringsgruppemetode</em>, <em>Brug ISIN-kode i rapporter</em> og <em>Opdater værdipapirnavn ved import</em> er siden udgået af siden.</figcaption>
   </figure>
 </div>
 
@@ -68,24 +68,22 @@
           <td>Angiv et filter for, hvilke finanskonti der vedrører værdipapirerne. Filteret afgør, hvilke konti der vises i delen <strong>Finansafstemning</strong> nederst på <strong>Værdipapirstatistik</strong>. Lades feltet blankt, viser afstemningen i stedet de konti, det enkelte værdipapir rent faktisk er bogført på — ikke hele kontoplanen. Feltet er skjult som standard — klik på <strong>Vis mere</strong> for at se det.</td>
         </tr>
         <tr>
-          <td><strong>Rapporteringsgruppemetode</strong></td>
-          <td>Vælg den grupperingsmetode, der skal indsættes på værdipapiret ved oprettelse. Valgene er: <strong>Blank</strong>, <strong>Bogføringsgruppe</strong>, <strong>Dimensionsværdi</strong> eller <strong>Detaljeret information</strong>. Valget påvirker, hvordan værdipapirerne grupperes på rapporter.</td>
-        </tr>
-        <tr>
           <td><strong>Regnskabsprincip</strong></td>
           <td>Vælg det regnskabsprincip, der skal anvendes: <strong>Realisationsprincippet</strong>, <strong>Lagerprincippet</strong> eller <strong>Begge</strong>. Standardværdien er Begge. Valget bestemmer, hvilke muligheder der kan vælges i bogføringsgrupperne: vælger du ét af de to principper, skal <strong>alle</strong> bogføringsgrupper bruge netop det, mens Begge lader den enkelte bogføringsgruppe vælge selv. Begge kan kun stå her — ikke på en bogføringsgruppe.</td>
         </tr>
         <tr>
-          <td><strong>Brug ISIN-kode i rapporter</strong></td>
-          <td>Markér feltet, hvis ISIN-koden skal vises i stedet for værdipapirsnummeret på visse rapporter.</td>
+          <td><strong>Foreslå værdipapirkurs v. handel</strong></td>
+          <td>Markér feltet, hvis programmet skal foreslå en fondskurs fra kurslisten ved køb og salg af værdipapirer. Kursen foreslås kun, når kurslisten har en kurs på selve handelsdatoen, så en forældet kurs aldrig føres videre.</td>
         </tr>
         <tr>
-          <td><strong>Foreslå fondskurs v. handel</strong></td>
-          <td>Markér feltet, hvis programmet skal foreslå en fondskurs fra kurslisten ved køb og salg af værdipapirer.</td>
+          <td><strong>Sletteblokeringsperiode</strong></td>
+          <td>Angiv en bagudrettet datoformel, der afgør hvor nye et værdipapirs poster må være, før sletning spærres. Formlen beregnes fra arbejdsdatoen; poster bogført efter den beregnede dato forhindrer sletning. Standarden <strong>-LÅ-5Å</strong> spærrer indeværende år plus de fem foregående. Lades feltet blankt, kan et værdipapir med poster aldrig slettes. Et værdipapir med restbeholdning kan aldrig slettes, uanset denne opsætning.</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <div class="info-box">Felterne <strong>Rapporteringsgruppemetode</strong>, <strong>Brug ISIN-kode i rapporter</strong> og <strong>Opdater værdipapirnavn ved import</strong> fra NAV-løsningen er udgået af siden — ingen funktion læser dem i dag. Rapporteringsgruppen vælges nu udelukkende på det enkelte værdipapirkort.</div>
 
   <h3>Regnskabsprincipper</h3>
   <ul class="bullets">
@@ -124,7 +122,7 @@
     <div class="section-icon">🔄</div>
     <h2>Fanebladet Opdatering</h2>
   </div>
-  <p>Her styrer du, hvordan værdipapirnavne skal opdateres automatisk.</p>
+  <p>Her styrer du, hvordan obligationsnavne dannes ved oprettelse.</p>
 
   <div class="table-wrap">
     <table>
@@ -132,10 +130,6 @@
         <tr><th>Felt</th><th>Beskrivelse</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>Opdater værdipapirnavn ved import</strong></td>
-          <td>Markér feltet, hvis værdipapirets navn skal opdateres automatisk, når det importeres fra en kurslistefil. Bemærk: denne funktion er endnu ikke fuldt implementeret.</td>
-        </tr>
         <tr>
           <td><strong>Obligationsnavn format</strong></td>
           <td>Angiv en skabelon for navngivning af obligationer. Du kan bruge følgende pladsholdere: <strong>%1</strong> = Navn (som du indtastede det), <strong>%2</strong> = Udsteder, <strong>%3</strong> = Rentepct., <strong>%4</strong> = Udløbsår. Eksempel: hvis du angiver <strong>%3 %2 %1 %4</strong>, navngives en obligation som "6 % Danske Statslån Grøn 2035". Formateringen anvendes kun ved første oprettelse af obligationen — efterfølgende manuelle redigeringer ændres ikke automatisk.</td>

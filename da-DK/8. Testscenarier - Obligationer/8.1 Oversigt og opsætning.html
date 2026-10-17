@@ -200,9 +200,9 @@
           <td><strong>Løst i koden:</strong> resultatkontoen slås nu op på <strong>Bilagstype (Document Type) + Avancetype (Profit Type)</strong>, hvor Avancetype udledes af beløbet: gevinst→Gevinst, tab→Tab, og afkast/mellemregning/offset→Blank. Overførsel = (Realiseret, Overførsel, Blank); renteperiodiseringens modpost hentes fra balancesiden (Værdikomponent = <em>Afkastperiodisering</em>). <strong>Tabellen er uændret.</strong> <span class="muted">GL-routingen bør verificeres mod et opsat firma, og opsætningen kræver nye rækker (Tab-konti, Valutakursjustering gevinst/tab, Afkast Blank, Overførsel Blank). Udbytteskat (kun aktier) bogføres på rækken <strong>Realiseret / Udbytteskat / Blank / Blank</strong> — det dedikerede felt <em>Konto for udbytteskat</em> er udfaset.</span></td>
         </tr>
         <tr>
-          <td>2</td><td><span class="tag pending">Mellem</span></td>
-          <td><strong>Tilbageførselsmetode = “Straks” findes ikke som rapportparameter.</strong> Columbus' koncept (dan automatisk en tilbageførselslinje dagen efter terminsdatoen og tilbagefør tidligere ikke-tilbageførte urealiserede renter) er ikke 1:1 på <code>Calculate Bond Interest</code>.</td>
-          <td>Urealiserede periodiseringer skal tilbageføres manuelt (eller realiseres) — i testscenarierne sker det automatisk ved kuponen via salgs-/yield-bogføringen. Anbefaling: tilføj <em>Tilbageførselsmetode</em> + tilbageførselsdatoer som anfordringsfelter.</td>
+          <td>2</td><td><span class="tag done">Løst</span></td>
+          <td><strong>Tilbageførselsmetode = “Straks” findes ikke som rapportparameter.</strong> Columbus' koncept (dan automatisk en tilbageførselslinje dagen efter terminsdatoen og tilbagefør tidligere ikke-tilbageførte urealiserede renter) var ikke 1:1 på <code>Calculate Bond Interest</code>.</td>
+          <td><strong>Løst i koden:</strong> anfordringssiden har nu <em>Tilbageførselsmetode</em> (<em>Ved realisation</em> / <em>Straks</em>) og <em>Datoformel for tilbageførsel</em> (blank = 1D). <em>Straks</em> danner modlinjerne i samme kladde med periodiseringens egen valutakurs og tilbagefører udestående bogførte periodiseringer på deres første terminsdato — se afsnit 5.3. NAV's blanke valg er bevidst udeladt: BC lukker udestående periodiseringer automatisk, når der bogføres realiseret rente.</td>
         </tr>
         <tr>
           <td>3</td><td><span class="tag pending">Mellem</span></td>
@@ -220,9 +220,9 @@
           <td>Bevidst forenkling; kræver forretningsbeslutning. Lavt prioriteret.</td>
         </tr>
         <tr>
-          <td>6</td><td><span class="tag info">Lav</span></td>
+          <td>6</td><td><span class="tag done">Løst</span></td>
           <td><strong>Manglende TableRelation/ToolTip på batch-feltet</strong> i <code>report 79930</code> (udkommenteret TODO).</td>
-          <td>Ingen opslag/validering på batchnavnet i anfordringsvinduet — ren UX. Anbefaling: aktivér <code>TableRelation = "Security Journal Batch"</code> og tilføj ToolTip.</td>
+          <td><strong>Løst i koden:</strong> batch-feltet har fået ToolTip og et opslag, der er afgrænset til den valgte kladdetype (en anfordringsside kan ikke bruge <code>where(field(...))</code>, så filteret lægges i opslaget); et håndskrevet navn, der ikke findes under kladdetypen, afvises, når kørslen starter.</td>
         </tr>
         <tr>
           <td>7</td><td><span class="tag info">Lav</span></td>

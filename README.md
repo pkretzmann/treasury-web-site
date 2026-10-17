@@ -64,3 +64,11 @@ de filer der ligger i hver sprogmappe.
 1. Opret en ny sprogmappe, fx `.website/de-DE/`, med en `.sourcematerial.md/`-undermappe.
 2. Læg sider i den som beskrevet ovenfor og kør `/update-website` — den danner sprogets portal
    og tilføjer sproget til rod-redirecten.
+
+## Indholdsopdateringer
+
+**2026-10-17** — `da-DK/` ført ajour med `.website_higgsfield/da-DK/` (den primære kilde til
+sideindhold): alle 38 indholdssider overskrevet med den nyeste tekst, kapitel *9. Simulation*
+(interaktive simulatorer for aktier og obligationer) tilføjet, og portalmenuen i `da-DK/index.html`
+udvidet. Kildematerialet i `da-DK/.sourcematerial.md/` dækker kun kapitel 1–6 og er ikke ført
+tilsvarende ajour — genbyg derfor ikke siderne derfra uden først at opdatere det.

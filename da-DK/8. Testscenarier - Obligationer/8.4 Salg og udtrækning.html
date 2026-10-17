@@ -74,8 +74,9 @@
   <div class="table-wrap"><table>
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr><td>SLE</td><td>1 ny post, Bilagstype = Salg, Antal = −600.000, Handelsrente = 3.566,67 DKK</td></tr>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Salg, Antal = −600.000, Handelsrente = <strong>−3.566,67</strong> DKK — renten vendes med salget, så identiteten Beløb = Beløb før renter + Handelsrente også holder på posten</td></tr>
         <tr><td>DVLE</td><td>1 forbrugs-række mod købs-lottet; lot-Restantal reduceres til 400.000</td></tr>
+        <tr><td>DPLE — Handelsrente (Afkast)</td><td>1 række: Bilagstype = Afkast, Realiseret, Avancetype = Blank, Beløb (RV) = <span class="pos">+3.566,67</span> DKK — positiv ved salg (sælger modtager renten); købets modstykke i Case 1 var negativ</td></tr>
         <tr><td>DPLE — Realiseret pris</td><td>Beløb (RV) = <span class="pos">+2.100,00</span> DKK (salgsside − kostside)</td></tr>
         <tr><td>DPLE — tilbageførsel (urealiseret, proportionalt 60 %)</td><td>Pris <span class="neg">−3.900,00</span> DKK</td></tr>
         <tr><td>Finanspost</td><td>Se opstillingen nedenfor (banken modtager salgssum + handelsrente)</td></tr>

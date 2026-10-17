@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulator - Obligationer · Værdipapirhandel</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+<style>
+  /* ── Testscenarier — supplemental (delt med kapitel 7/8) ── */
+  .pos { color: var(--success); font-weight: 600; }
+  .neg { color: #C0392B; font-weight: 600; }
+  .zero { color: var(--gray-400); }
+  .muted { color: var(--gray-700); font-size: 12.5px; }
+  .acct { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; color: var(--brand-dark); }
+  .acct-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 18px; margin: 4px 0; }
+  .acct-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .acct-field label { color: var(--gray-700); font-weight: 600; }
+  .acct-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); }
+  .acct-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .case-badge { display: inline-block; margin-left: 10px; padding: 2px 11px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #fff; vertical-align: middle; }
+  .case-badge.buy { background: var(--brand-mid); }
+  .case-badge.mt { background: #008089; }
+  .case-badge.sale { background: var(--brand-dark); }
+  .case-badge.yield { background: var(--success); }
+  .summary-box { background: var(--brand-subtle); border-left: 4px solid var(--brand-mid); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 16px 0; font-size: 14px; line-height: 1.8; }
+  .err-box { background: #FDECEA; border-left: 4px solid #C0392B; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 14px 0; font-size: 14px; }
+
+  /* ── Simulator — supplemental ── */
+  .sim-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px 18px; margin: 10px 0 4px; padding: 14px 16px; background: var(--brand-subtle); border: 1px solid var(--gray-200); border-radius: 10px; }
+  .sim-field { display: flex; flex-direction: column; gap: 3px; font-size: 13px; }
+  .sim-field label { color: var(--gray-700); font-weight: 600; }
+  .sim-field input { font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 6px 9px; border: 1px solid var(--gray-200); border-radius: 6px; font-size: 13px; color: var(--brand-dark); text-align: right; }
+  .sim-field input:focus { outline: none; border-color: var(--brand-mid); box-shadow: 0 0 0 3px var(--brand-pale); }
+  .sim-field .unit { color: var(--gray-400); font-weight: 400; }
+  .gl-balance { margin: 8px 0 0; font-size: 12.5px; color: var(--gray-700); }
+  .gl-balance .ok { color: var(--success); font-weight: 700; }
+  .gl-balance .fail { color: #C0392B; font-weight: 700; }
+  td.empty { color: var(--gray-400); font-style: italic; }
+</style>
+</head>
+<body class="fx">
+  <header>
+    <div class="header-badge">Simulation</div>
+    <h1>Simulator — Obligationer</h1>
+    <p>Interaktiv bogføringssimulator for et obligationsforløb: Køb med handelsrente → Renteperiodisering → Kupon → Kursregulering → Salg → Udtrækning. Ret parametrene i hvert trin — alle poster og finansposter genberegnes med det samme efter samme opskrift som testscenarierne i kapitel 8.</p>
+    <div class="header-pills"><span class="pill">Køb · Periodisering · Kupon · Kursregulering · Salg · Udtrækning</span></div>
+  </header>
+  <div class="container">
+    <nav class="toc">
+      <h2>På denne side</h2>
+      <ol>
+        <li><a href="#intro">Sådan bruges simulatoren</a></li>
+        <li><a href="#finanskonti-mini">Finanskonti</a></li>
+        <li><a href="#koeb">Trin 1 — Køb med handelsrente</a></li>
+        <li><a href="#periodisering">Trin 2 — Renteperiodisering</a></li>
+        <li><a href="#kupon">Trin 3 — Kupon + tilbageførsel</a></li>
+        <li><a href="#kursregulering">Trin 4 — Kursregulering</a></li>
+        <li><a href="#salg">Trin 5 — Salg</a></li>
+        <li><a href="#udtraekning">Trin 6 — Udtrækning</a></li>
+      </ol>
+    </nav>
+
+<div class="section" id="intro">
+  <div class="section-header"><div class="section-icon">🎛️</div><h2>Sådan bruges simulatoren</h2></div>
+  <p>Simulatoren viser hvordan én obligationsbeholdning bevæger sig gennem hele livscyklussen og hvilke poster hvert trin skriver: <strong>Værdipapirpost (SLE)</strong>, <strong>Depotpost</strong>, <strong>Detaljeret værdipost (DVLE)</strong>, <strong>Detaljeret avancepost (DPLE)</strong> og <strong>finansposter</strong>. Trinnene bygger på hinanden: kuponen tilbagefører periodiseringen, og salget/udtrækningen realiserer kursresultatet og tilbagefører kursreguleringens urealiserede mark proportionalt.</p>
+  <ul>
+    <li>Standardparametrene replikerer testscenarierne i <a href="../8.%20Testscenarier%20-%20Obligationer/8.2%20K%C3%B8b%20og%20renteperiodisering.html">kapitel 8.2</a>, <a href="../8.%20Testscenarier%20-%20Obligationer/8.3%20Kupon%20og%20kursregulering.html">kapitel 8.3</a> og <a href="../8.%20Testscenarier%20-%20Obligationer/8.4%20Salg%20og%20udtr%C3%A6kning.html">kapitel 8.4</a> (case 1–8), så alle viste beløb kan efterprøves 1:1 dér.</li>
+    <li>Obligationsbeløb beregnes som <code>nominel × kurs ÷ 100</code> (motoren dividerer selv med 100 for obligationer). Renter beregnes som <code>nominel × kuponrente % × dage ÷ 360</code> (renteår 360).</li>
+    <li>Markedsværdi-princippet (lagerprincip) er aktivt: kursreguleringens SLE bærer hele depotbeholdningen og hele markedsværdien.</li>
+    <li>Obligationen er i <strong>DKK</strong> — der er derfor ingen valutakomponent i dette forløb. Pris/valuta-splitten for et papir i fremmed valuta vises i <a href="9.1%20Simulator%20-%20Aktier.html">Simulator — Aktier</a>.</li>
+    <li><strong>Afgrænsning:</strong> ét købsparti, én kursregulering, delsalg og udtrækning understøttet. Overførsler, ompostering, flere partier (FIFO på tværs af køb) og indeksobligationer er ikke med — se kapitel 8 for de fulde forløb.</li>
+  </ul>
+</div>
+
+<div class="section" id="finanskonti-mini">
+  <div class="section-header"><div class="section-icon">🔧</div><h2>Finanskonti</h2></div>
+  <p>Kontonumrene nedenfor stammer fra obligationens <strong>Værdipapirbogføringsgruppe</strong> (beholdning/regulering), <strong>Værdipapir-resultatbogføringsgruppe</strong> (kurs- og renteresultat) samt opsætningen af handelsrentekontoen. Det er <strong>rollerne</strong> der er det vigtige — er dine egne kontonumre anderledes, så ret dem her: alle numre på denne side (og testscenarie-siderne) opdateres automatisk og huskes i din browser.</p>
+  <div class="accordion"><details><summary><span class="acc-title">Ret kontonumre</span></summary><div class="acc-body"><div class="acct-panel">
+      <div class="acct-field"><label for="acct-holding">Obligationsbeholdning / kursregulering</label><input class="acct-input" id="acct-holding" data-acct="holding" type="text" value="2650" /></div>
+      <div class="acct-field"><label for="acct-bank">Bank / modkonto</label><input class="acct-input" id="acct-bank" data-acct="bank" type="text" value="2620" /></div>
+      <div class="acct-field"><label for="acct-unrealPrice">Urealiseret kursresultat – obligationer</label><input class="acct-input" id="acct-unrealPrice" data-acct="unrealPrice" type="text" value="1355" /></div>
+      <div class="acct-field"><label for="acct-realPrice">Realiseret kursresultat – obligationer</label><input class="acct-input" id="acct-realPrice" data-acct="realPrice" type="text" value="1675" /></div>
+      <div class="acct-field"><label for="acct-couponIncome">Renteindtægt (realiseret kupon)</label><input class="acct-input" id="acct-couponIncome" data-acct="couponIncome" type="text" value="1450" /></div>
+      <div class="acct-field"><label for="acct-unrealInterest">Urealiseret renteindtægt (periodisering)</label><input class="acct-input" id="acct-unrealInterest" data-acct="unrealInterest" type="text" value="1455" /></div>
+      <div class="acct-field"><label for="acct-interestReceivable">Periodiseret rentetilgodehavende (balance)</label><input class="acct-input" id="acct-interestReceivable" data-acct="interestReceivable" type="text" value="2280" /></div>
+      <div class="acct-field"><label for="acct-tradingInterest">Handelsrente / vedhængende rente</label><input class="acct-input" id="acct-tradingInterest" data-acct="tradingInterest" type="text" value="1460" /></div>
+  </div></div></details></div>
+</div>
+
+<div class="section" id="koeb">
+  <div class="section-header"><div class="section-icon">🛒</div><h2>Trin 1 — Køb med handelsrente <span class="case-badge buy">Køb</span></h2></div>
+  <p>Bogfør en handelskladdelinje i en kladdetype med <strong>Show Bond Columns</strong> aktiveret: Bilagstype = Køb. Kun den rene kursværdi aktiveres som kostbasis (Beløb før renter) — handelsrenten holdes ude.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-nom">Nominel <span class="unit">(DKK)</span></label><input id="sim-nom" type="text" inputmode="decimal" value="1.000.000" /></div>
+    <div class="sim-field"><label for="sim-pprice">Ren kurs <span class="unit">(%)</span></label><input id="sim-pprice" type="text" inputmode="decimal" value="98,75" /></div>
+    <div class="sim-field"><label for="sim-rate">Kuponrente <span class="unit">(% p.a.)</span></label><input id="sim-rate" type="text" inputmode="decimal" value="2,00" /></div>
+    <div class="sim-field"><label for="sim-d1">Handelsrentedage</label><input id="sim-d1" type="text" inputmode="decimal" value="45" /></div>
+  </div>
+  <div class="summary-box" id="koeb-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="koeb-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="koeb-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="koeb-gl"></tbody></table></div>
+  <div class="gl-balance" id="koeb-bal"></div>
+  <div class="note">Er <strong>Handelsrentekonto</strong> blank på bogføringsgruppen, udelades handelsrentelinjen, handelsrenten registreres kun på Værdipapirposten, og banken krediteres kun den rene kursværdi.</div>
+</div>
+
+<div class="section" id="periodisering">
+  <div class="section-header"><div class="section-icon">⏳</div><h2>Trin 2 — Renteperiodisering <span class="case-badge yield">Afkast · Urealiseret</span></h2></div>
+  <p>Kør <strong>Calculate Bond Interest</strong> (<code>report 79930</code>) med Realiseringstype = Urealiseret på terminsopsætningslinjen, og bogfør den dannede afkastlinje fra Værdipapirafkastkladden. Renten er endnu ikke forfaldet, så den føres urealiseret mod balancekontoen rentetilgodehavende og tilbageføres ved kuponen i trin 3.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-d2">Rentedage <span class="unit">(periodisering)</span></label><input id="sim-d2" type="text" inputmode="decimal" value="60" /></div>
+  </div>
+  <div class="summary-box" id="per-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="per-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="per-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="per-gl"></tbody></table></div>
+  <div class="gl-balance" id="per-bal"></div>
+  <div class="note">Periodiseringen forudsætter, at resultatbogføringsgruppen har en række for Realiseringstype = Urealiseret · Bilagstype = Afkast · Avancetype = <strong>Blank</strong>.</div>
+</div>
+
+<div class="section" id="kupon">
+  <div class="section-header"><div class="section-icon">🎟️</div><h2>Trin 3 — Kuponbetaling + tilbageførsel <span class="case-badge yield">Afkast · Realiseret</span></h2></div>
+  <p>Kør <strong>Calculate Bond Interest</strong> for terminsdatoen (Realiseringstype = Realiseret) og bogfør afkastlinjen. Banken modtager kuponen, og den udestående urealiserede periodisering fra trin 2 tilbageføres <strong>fuldt</strong> — så indtægten ikke dobbelttælles.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-d3">Rentedage <span class="unit">(kuponperiode)</span></label><input id="sim-d3" type="text" inputmode="decimal" value="90" /></div>
+  </div>
+  <div class="summary-box" id="kup-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="kup-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="kup-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="kup-gl"></tbody></table></div>
+  <div class="gl-balance" id="kup-bal"></div>
+</div>
+
+<div class="section" id="kursregulering">
+  <div class="section-header"><div class="section-icon">📈</div><h2>Trin 4 — Kursregulering <span class="case-badge mt">Kursregulering</span></h2></div>
+  <p>Kør <strong>Adjust Security Prices</strong> og bogfør reguleringslinjen. Markedsværdi-princippet skal være aktivt på bogføringsgruppen. Da obligationen er i DKK, er der ingen valutakomponent — hele reguleringen er ren fondskurs.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-aprice">Ny ren kurs <span class="unit">(%)</span></label><input id="sim-aprice" type="text" inputmode="decimal" value="99,40" /></div>
+  </div>
+  <div class="summary-box" id="reg-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="reg-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="reg-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="reg-gl"></tbody></table></div>
+  <div class="gl-balance" id="reg-bal"></div>
+  <div class="note">Kører du flere reguleringer efter hinanden, bogføres kun periodens nettobevægelse (reverse-and-repost): den nye kumulative mark bogføres, og den foregående tilbageføres — se kapitel 8.3, case 4–5. I simulatoren er der ét reguleringstrin, så netto = kumulativ.</div>
+</div>
+
+<div class="section" id="salg">
+  <div class="section-header"><div class="section-icon">🏦</div><h2>Trin 5 — Salg <span class="case-badge sale">Salg</span></h2></div>
+  <p>Bogfør en handelskladdelinje: Bilagstype = Salg. FIFO forbruger det åbne købsparti. Sælgeren <strong>modtager</strong> handelsrenten (modsat fortegn af købet), og den urealiserede mark fra kursreguleringen tilbageføres proportionalt med den solgte andel.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-snom">Solgt nominel <span class="unit">(DKK)</span></label><input id="sim-snom" type="text" inputmode="decimal" value="600.000" /></div>
+    <div class="sim-field"><label for="sim-sprice">Salgskurs <span class="unit">(%)</span></label><input id="sim-sprice" type="text" inputmode="decimal" value="99,10" /></div>
+    <div class="sim-field"><label for="sim-d4">Handelsrentedage</label><input id="sim-d4" type="text" inputmode="decimal" value="107" /></div>
+  </div>
+  <div id="salg-warn"></div>
+  <div class="summary-box" id="salg-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="salg-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="salg-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="salg-gl"></tbody></table></div>
+  <div class="gl-balance" id="salg-bal"></div>
+  <div class="note" id="salg-rest"></div>
+</div>
+
+<div class="section" id="udtraekning">
+  <div class="section-header"><div class="section-icon">🎯</div><h2>Trin 6 — Udtrækning til kurs 100 <span class="case-badge sale">Udtrækning</span></h2></div>
+  <p>Markér feltet <strong>Drawing</strong> på kladdelinjen (synligt når kladdetypen har <em>Show Bond Columns</em>). Feltet validerer, at værdipapiret er en obligation, og sætter automatisk <strong>Pris = 100</strong>. Posteringsmæssigt behandles udtrækning som et salg.</p>
+  <div class="sim-panel">
+    <div class="sim-field"><label for="sim-dnom">Udtrukket nominel <span class="unit">(DKK)</span></label><input id="sim-dnom" type="text" inputmode="decimal" value="400.000" /></div>
+  </div>
+  <div id="udt-warn"></div>
+  <div class="summary-box" id="udt-summary"></div>
+  <h3>Forventet udfald</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
+      <tbody id="udt-udfald"></tbody></table></div>
+  <h3>Beregning</h3>
+  <p class="muted" id="udt-calc"></p>
+  <h3>Bogføring — finansposter</h3>
+  <div class="table-wrap"><table>
+      <thead><tr><th>Konto</th><th>Rolle</th><th class="num">Debet</th><th class="num">Kredit</th></tr></thead>
+      <tbody id="udt-gl"></tbody></table></div>
+  <div class="gl-balance" id="udt-bal"></div>
+  <div class="note" id="udt-rest"></div>
+</div>
+
+  </div>
+  <footer><strong>Kretzmann ApS</strong> · Værdipapirhandel til Business Central · Opdateret september 2026</footer>
+  <script>
+
+/* ============================================================
+   html-guide — progressive enhancement layer
+   The /html-guide command inlines this file verbatim into a
+   <script> just before </body>. Pure vanilla JS, no dependencies,
+   no build step. Every feature is guarded so the guide is fully
+   usable with JavaScript disabled — this only enhances.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ── Smooth in-page scrolling for TOC / anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  /* ── Scroll-spy: highlight the current section in the TOC ── */
+  var tocLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.toc a[href^="#"]')
+  );
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    tocLinks.forEach(function (l) { byId[l.getAttribute('href').slice(1)] = l; });
+    var sections = tocLinks
+      .map(function (l) { return document.getElementById(l.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ── Copy-to-clipboard buttons on code blocks (technical guides) ── */
+  if (navigator.clipboard) {
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = 'Kopiér';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        navigator.clipboard.writeText(code.innerText).then(function () {
+          btn.textContent = 'Kopieret ✓';
+          setTimeout(function () { btn.textContent = 'Kopiér'; }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }
+
+  /* ── Expand / collapse all for FAQ accordions ── */
+  var details = Array.prototype.slice.call(document.querySelectorAll('details'));
+  if (details.length > 1) {
+    var first = details[0];
+    var allOpen = false;
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'expand-all-btn';
+    toggle.textContent = 'Fold alle ud';
+    toggle.addEventListener('click', function () {
+      allOpen = !allOpen;
+      details.forEach(function (d) { d.open = allOpen; });
+      toggle.textContent = allOpen ? 'Fold alle ind' : 'Fold alle ud';
+    });
+    if (first.parentNode) first.parentNode.insertBefore(toggle, first);
+  }
+
+  /* ── Back-to-top button ── */
+  var toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top-btn';
+  toTop.setAttribute('aria-label', 'Til toppen');
+  toTop.textContent = '↑';
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  document.body.appendChild(toTop);
+  window.addEventListener('scroll', function () {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ── Reading-progress bar: grows from 0–100% as the page scrolls ── */
+  var progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  document.body.appendChild(progress);
+  function updateProgress() {
+    var docEl = document.documentElement;
+    var scrolled = docEl.scrollTop || document.body.scrollTop;
+    var height = docEl.scrollHeight - docEl.clientHeight;
+    progress.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ── Scroll-reveal + count-up (opt-in via <body class="fx">) ──
+        Sections fade/slide in as they enter the viewport. Guarded so the guide
+        is fully readable without JS: CSS only hides sections under .js-fx, which
+        we add here — and only when motion is allowed. Honours reduced-motion. ── */
+  var wantsFx = document.body.classList.contains('fx');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup'));
+    if (isNaN(target)) return;
+    var dur = 900, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = String(Math.round(target * p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = String(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if (wantsFx && !reduceMotion && 'IntersectionObserver' in window) {
+    document.body.classList.add('js-fx');
+    var revObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+        var counters = entry.target.querySelectorAll('[data-countup]');
+        for (var i = 0; i < counters.length; i++) countUp(counters[i]);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    document.querySelectorAll('.section').forEach(function (s) { revObserver.observe(s); });
+  }
+})();
+
+  </script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ════════ Finanskonti — delt med testscenarie-siderne (kapitel 8) ════════ */
+    var DEF = {"holding":"2650","bank":"2620","unrealPrice":"1355","realPrice":"1675","couponIncome":"1450","unrealInterest":"1455","interestReceivable":"2280","tradingInterest":"1460"};
+    var ROLES = {
+      holding: "Obligationsbeholdning / kursregulering",
+      bank: "Bank / modkonto",
+      unrealPrice: "Urealiseret kursresultat – obligationer",
+      realPrice: "Realiseret kursresultat – obligationer",
+      couponIncome: "Renteindtægt (realiseret kupon)",
+      unrealInterest: "Urealiseret renteindtægt (periodisering)",
+      interestReceivable: "Periodiseret rentetilgodehavende (balance)",
+      tradingInterest: "Handelsrente / vedhængende rente"
+    };
+    var KEY = 'testscenarier.accounts';
+    function loadAcc() { try { var s = JSON.parse(localStorage.getItem(KEY) || '{}'); return Object.assign({}, DEF, s); } catch (e) { return Object.assign({}, DEF); } }
+    function saveAcc(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    var acc = loadAcc();
+    document.querySelectorAll('.acct-input').forEach(function (inp) {
+      var k = inp.getAttribute('data-acct');
+      inp.value = acc[k];
+      inp.addEventListener('input', function () { acc[k] = inp.value; saveAcc(acc); render(); });
+    });
+
+    /* ════════ Hjælpere ════════ */
+    function r2(x) { return Math.sign(x) * Math.round(Math.abs(x) * 100) / 100; }
+    function pnum(id) {
+      var s = String(document.getElementById(id).value).trim();
+      if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
+      else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+      var v = parseFloat(s);
+      return isNaN(v) ? 0 : v;
+    }
+    function fmt(v, dec) {
+      if (dec === undefined) dec = 2;
+      return (v === 0 ? 0 : v).toLocaleString('da-DK', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+    function fmtR(v) {
+      return (v === 0 ? 0 : v).toLocaleString('da-DK', { minimumFractionDigits: 0, maximumFractionDigits: 4 });
+    }
+    function signed(v) {
+      var s = (v > 0 ? '+' : '') + fmt(v);
+      if (v > 0) return '<span class="pos">' + s + '</span>';
+      if (v < 0) return '<span class="neg">' + s + '</span>';
+      return '<span class="zero">0,00</span>';
+    }
+    function acct(k) { return '<span class="acct">' + (acc[k] || DEF[k]) + '</span>'; }
+
+    /* GL-række: {k: kontonøgle, note: rolle-parentes, amt: beløb, side: 'dr'|'cr'}
+       Negativt beløb vender siden. */
+    function glRows(tbodyId, balId, rows) {
+      var dr = 0, cr = 0, html = '';
+      rows.forEach(function (r) {
+        if (Math.abs(r.amt) < 0.005) return;
+        var side = r.side, amt = r.amt;
+        if (amt < 0) { side = side === 'dr' ? 'cr' : 'dr'; amt = -amt; }
+        if (side === 'dr') dr += amt; else cr += amt;
+        html += '<tr><td>' + acct(r.k) + '</td><td>' + ROLES[r.k] +
+          (r.note ? ' <span class="muted">(' + r.note + ')</span>' : '') + '</td>' +
+          '<td class="num">' + (side === 'dr' ? fmt(amt) : '') + '</td>' +
+          '<td class="num">' + (side === 'cr' ? fmt(amt) : '') + '</td></tr>';
+      });
+      document.getElementById(tbodyId).innerHTML = html ||
+        '<tr><td class="empty" colspan="4">Ingen finansposter — alle beløb er 0,00.</td></tr>';
+      var ok = Math.abs(dr - cr) < 0.005;
+      document.getElementById(balId).innerHTML =
+        'Debet i alt <strong>' + fmt(dr) + '</strong> · Kredit i alt <strong>' + fmt(cr) + '</strong> — ' +
+        (ok ? '<span class="ok">i balance ✓</span>' : '<span class="fail">UDE AF BALANCE — ville fejle konsistenskontrollen</span>');
+    }
+    function udfald(tbodyId, rows) {
+      document.getElementById(tbodyId).innerHTML = rows.map(function (r) {
+        return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+      }).join('');
+    }
+
+    /* ════════ Beregning ════════ */
+    function compute() {
+      var nom = pnum('sim-nom'), pPrice = pnum('sim-pprice'), rate = pnum('sim-rate'), d1 = pnum('sim-d1');
+      var d2 = pnum('sim-d2'), d3 = pnum('sim-d3');
+      var aPrice = pnum('sim-aprice');
+      var sNom = pnum('sim-snom'), sPrice = pnum('sim-sprice'), d4 = pnum('sim-d4');
+      var dNom = pnum('sim-dnom');
+
+      var warnSale = '', warnDraw = '';
+      if (sNom > nom) { warnSale = 'Solgt nominel (' + fmt(sNom, 0) + ') overstiger beholdningen (' + fmt(nom, 0) + ') — der regnes med salg af hele beholdningen.'; sNom = nom; }
+      if (sNom < 0) sNom = 0;
+      var rest = r2(nom - sNom);
+      if (dNom > rest) { warnDraw = 'Udtrukket nominel (' + fmt(dNom, 0) + ') overstiger restbeholdningen (' + fmt(rest, 0) + ') — der regnes med udtrækning af hele restbeholdningen.'; dNom = rest; }
+      if (dNom < 0) dNom = 0;
+
+      // Trin 1: Køb med handelsrente (ren kursværdi = kostbasis; renten holdes ude)
+      var costBasis = r2(nom * pPrice / 100);
+      var tradeIntBuy = r2(nom * rate / 100 * d1 / 360);
+      var buyBank = r2(costBasis + tradeIntBuy);
+
+      // Trin 2: Urealiseret renteperiodisering
+      var accr = r2(nom * rate / 100 * d2 / 360);
+
+      // Trin 3: Realiseret kupon + fuld tilbageførsel af periodiseringen
+      var coupon = r2(nom * rate / 100 * d3 / 360);
+
+      // Trin 4: Kursregulering (ét lag; DKK — ingen valutakomponent)
+      var mv = r2(nom * aPrice / 100);
+      var cumMark = r2(mv - costBasis);
+
+      // Trin 5: Delsalg (FIFO ved købskurs; proportional tilbageførsel af marken)
+      var saleSum = r2(sNom * sPrice / 100);
+      var costOut = r2(sNom * pPrice / 100);
+      var realPrice = r2(saleSum - costOut);
+      var tradeIntSale = r2(sNom * rate / 100 * d4 / 360);
+      var saleBank = r2(saleSum + tradeIntSale);
+      var saleShare = nom > 0 ? sNom / nom : 0;
+      var revMark = r2(cumMark * saleShare);
+      var remMark = r2(cumMark - revMark);
+
+      // Trin 6: Udtrækning til kurs 100 (behandles som salg)
+      var proceeds = r2(dNom);
+      var costOut2 = r2(dNom * pPrice / 100);
+      var realGain2 = r2(proceeds - costOut2);
+      var revMark2 = (rest > 0 && dNom === rest) ? remMark : r2(cumMark * (nom > 0 ? dNom / nom : 0));
+      var rest2 = r2(rest - dNom);
+      var markAfter = r2(remMark - revMark2);
+
+      return {
+        nom: nom, pPrice: pPrice, rate: rate, d1: d1, d2: d2, d3: d3,
+        aPrice: aPrice, sNom: sNom, sPrice: sPrice, d4: d4, dNom: dNom,
+        costBasis: costBasis, tradeIntBuy: tradeIntBuy, buyBank: buyBank,
+        accr: accr, coupon: coupon,
+        mv: mv, cumMark: cumMark,
+        saleSum: saleSum, costOut: costOut, realPrice: realPrice,
+        tradeIntSale: tradeIntSale, saleBank: saleBank, saleShare: saleShare,
+        revMark: revMark, remMark: remMark, rest: rest,
+        proceeds: proceeds, costOut2: costOut2, realGain2: realGain2,
+        revMark2: revMark2, rest2: rest2, markAfter: markAfter,
+        warnSale: warnSale, warnDraw: warnDraw
+      };
+    }
+
+    /* ════════ Rendering ════════ */
+    function render() {
+      var c = compute();
+
+      /* ── Trin 1: Køb med handelsrente ── */
+      document.getElementById('koeb-summary').innerHTML =
+        'Ren kursværdi (kostbasis) = ' + fmt(c.nom, 0) + ' × ' + fmt(c.pPrice) + ' ÷ 100 = <strong>' + fmt(c.costBasis) + ' DKK</strong> &nbsp;|&nbsp; Handelsrente = ' + fmt(c.tradeIntBuy) + ' DKK<br>' +
+        '<strong>Samlet bankafregning = ' + fmt(c.buyBank) + ' DKK</strong>';
+      udfald('koeb-udfald', [
+        ['Værdipapirpost (SLE)', '1 ny post, Bilagstype = Køb, Antal = ' + fmt(c.nom, 0) + ', Restantal = ' + fmt(c.nom, 0) + ', Åben = Ja, Beløb (RV) = ' + fmt(c.buyBank) + ' DKK <strong>(inkl. handelsrente)</strong>, Beløb før renter = ' + fmt(c.costBasis) + ' DKK, Handelsrente = ' + fmt(c.tradeIntBuy) + ' DKK — identiteten Beløb = Beløb før renter + Handelsrente holder på posten'],
+        ['Depotpost', 'Bilagstype = Køb, Antal = ' + fmt(c.nom, 0) + ', Modkonto = Bank/modkonto fra depotet'],
+        ['Detaljeret værdipost (DVLE)', '1 åbent parti (FIFO): Åben = Ja, Restantal = ' + fmt(c.nom, 0) + ', Beløb før renter = ' + fmt(c.costBasis) + ' DKK'],
+        ['Detaljeret avancepost (DPLE)', c.tradeIntBuy !== 0
+          ? '1 række for handelsrenten: Bilagstype = Afkast, Realiseringstype = Realiseret, Avancekomponent = Afkast, Avancetype = Blank, Beløb (RV) = <span class="neg">−' + fmt(c.tradeIntBuy) + ' DKK</span> — negativ ved køb, fordi køberen betaler renten væk. Kursavance opstår først ved regulering/salg'
+          : '<span class="zero">Ingen</span> — ingen handelsrente, og kursavance opstår først ved regulering/salg']
+      ]);
+      document.getElementById('koeb-calc').innerHTML =
+        'Ren kursværdi (kostbasis) = Antal × Pris ÷ 100 = ' + fmt(c.nom, 0) + ' × ' + fmt(c.pPrice) + ' ÷ 100 = ' + fmt(c.costBasis) + ' DKK (motoren dividerer selv med 100 for obligationer). ' +
+        'Handelsrente = nominel × rente % × dage ÷ renteår = ' + fmt(c.nom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d1, 0) + '/360 = ' + fmt(c.tradeIntBuy) + ' DKK. ' +
+        'Samlet bankafregning = ' + fmt(c.costBasis) + ' + ' + fmt(c.tradeIntBuy) + ' = ' + fmt(c.buyBank) + ' DKK. Kun den rene kursværdi aktiveres som kostbasis (Beløb før renter) — handelsrenten holdes ude.';
+      glRows('koeb-gl', 'koeb-bal', [
+        { k: 'holding', note: 'beholdning (kostbasis)', amt: c.costBasis, side: 'dr' },
+        { k: 'tradingInterest', note: 'handelsrente betalt', amt: c.tradeIntBuy, side: 'dr' },
+        { k: 'bank', note: 'samlet betaling', amt: c.buyBank, side: 'cr' }
+      ]);
+
+      /* ── Trin 2: Renteperiodisering ── */
+      document.getElementById('per-summary').innerHTML =
+        'Urealiseret rente = nominel × rente % × rentedage ÷ renteår = ' + fmt(c.nom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d2, 0) + '/360 = <strong>' + fmt(c.accr) + ' DKK</strong><br>' +
+        '<span class="muted">Føres som urealiseret indtægt (' + acct('unrealInterest') + ') mod balancekontoen rentetilgodehavende (' + acct('interestReceivable') + ').</span>';
+      udfald('per-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Afkast, Antal = 0, Realiseringstype = Urealiseret, Afkast før skat = ' + fmt(c.accr) + ' DKK'],
+        ['DPLE — Afkast', '1 række: Realiseringstype = Urealiseret, Avancekomponent = Afkast, Beløb (RV) = ' + fmt(c.accr) + ' DKK'],
+        ['Depotpost', '<span class="zero">Ingen</span> — en urealiseret periodisering afregner ikke gennem depotet; kun realiseret afkast med depotkode danner en depotpost (Antal = 0), se trin 3'],
+        ['Beholdning / partier', '<span class="zero">Uændret</span> — afkast har Antal = 0 og rører ikke kostbasis eller FIFO-partier']
+      ]);
+      document.getElementById('per-calc').innerHTML =
+        'Urealiseret rente = ' + fmt(c.nom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d2, 0) + '/360 = ' + fmt(c.accr) + ' DKK. ' +
+        'Renten er endnu ikke forfaldet, så den føres urealiseret (' + acct('unrealInterest') + ') mod balancekontoen rentetilgodehavende (' + acct('interestReceivable') + ') og tilbageføres ved kuponbetalingen i trin 3.';
+      glRows('per-gl', 'per-bal', [
+        { k: 'interestReceivable', note: 'rentetilgodehavende', amt: c.accr, side: 'dr' },
+        { k: 'unrealInterest', note: 'urealiseret renteindtægt', amt: c.accr, side: 'cr' }
+      ]);
+
+      /* ── Trin 3: Kupon + tilbageførsel ── */
+      document.getElementById('kup-summary').innerHTML =
+        'Realiseret kupon = nominel × rente % × rentedage ÷ renteår = ' + fmt(c.nom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d3, 0) + '/360 = <strong>' + fmt(c.coupon) + ' DKK</strong><br>' +
+        'Tilbagefører udestående urealiseret periodisering fra trin 2 = ' + fmt(c.accr) + ' DKK<br>' +
+        '<span class="muted">Netto resultatpåvirkning = realiseret kupon (den urealiserede nulstilles).</span>';
+      udfald('kup-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Afkast, Antal = 0, Realiseringstype = Realiseret, Afkast før skat = ' + fmt(c.coupon) + ' DKK'],
+        ['Depotpost', '1 pr. depot med Antal = 0 — den realiserede kupon afregner gennem depotet. (Trin 2’s urealiserede periodisering dannede ingen.)'],
+        ['DPLE — Afkast (realiseret)', '1 række: Realiseringstype = Realiseret, Avancekomponent = Afkast, Beløb (RV) = ' + fmt(c.coupon) + ' DKK'],
+        ['DPLE — tilbageførsel (urealiseret)', c.accr !== 0
+          ? 'Tilbagefører trin 2-rækken: Beløb (RV) = <span class="neg">−' + fmt(c.accr) + ' DKK</span>, Tilbageført = Ja'
+          : '<span class="zero">Ingen</span> — ingen udestående periodisering']
+      ]);
+      document.getElementById('kup-calc').innerHTML =
+        'Realiseret kupon = ' + fmt(c.nom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d3, 0) + '/360 = ' + fmt(c.coupon) + ' DKK (banken modtager kuponen, renteindtægt ' + acct('couponIncome') + ' krediteres). ' +
+        (c.accr !== 0
+          ? 'Samtidig tilbageføres den udestående urealiserede periodisering fra trin 2 (' + fmt(c.accr) + ' DKK): ' + acct('interestReceivable') + ' krediteres og ' + acct('unrealInterest') + ' debiteres — så indtægten ikke dobbelttælles. '
+          : '') +
+        'Netto resultatpåvirkning = ' + fmt(c.coupon) + ' DKK. Tilbageførslen er <strong>fuld</strong> (hele den udestående urealiserede rente) — ikke proportional.';
+      glRows('kup-gl', 'kup-bal', [
+        { k: 'bank', note: 'kupon modtaget', amt: c.coupon, side: 'dr' },
+        { k: 'couponIncome', note: 'realiseret renteindtægt', amt: c.coupon, side: 'cr' },
+        { k: 'unrealInterest', note: 'tilbagefør urealiseret rente', amt: c.accr, side: 'dr' },
+        { k: 'interestReceivable', note: 'tilbagefør rentetilgodehavende', amt: c.accr, side: 'cr' }
+      ]);
+
+      /* ── Trin 4: Kursregulering ── */
+      document.getElementById('reg-summary').innerHTML =
+        'Ny markedsværdi = ' + fmt(c.mv) + ' DKK &nbsp;|&nbsp; Bogført værdi før = ' + fmt(c.costBasis) + ' DKK<br>' +
+        '<strong>Samlet urealiseret regulering (kumulativ) = ' + signed(c.cumMark) + ' DKK</strong> &nbsp;|&nbsp; Netto for perioden = ' + signed(c.cumMark) + ' DKK<br>' +
+        'Split: Pris-komponent = ' + signed(c.cumMark) + ' DKK &nbsp;|&nbsp; FX-komponent = <span class="zero">0,00</span> DKK (DKK)';
+      udfald('reg-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Kursregulering, Antal = ' + fmt(c.nom, 0) + ' (depotets beholdning), Beløb (RV) = ' + fmt(c.mv) + ' DKK (hele markedsværdien — NAV skrev her 0 og kun tilvæksten; bevidst afvigelse)'],
+        ['DPLE — Fondskursavance', c.cumMark !== 0
+          ? '1 række: Realiseringstype = Urealiseret, Avancekomponent = Fondskursavance, Beløb (RV) = ' + signed(c.cumMark) + ' DKK (markedsværdi minus kostbasis)'
+          : '<span class="zero">Ingen post</span> (kurs uændret)'],
+        ['DPLE — Valuta', '<span class="zero">Ingen post</span> — DKK, ingen valutaeffekt'],
+        ['Finanspost', 'Regulering på ' + acct('holding') + ' (beholdning/regulering) mod ' + acct('unrealPrice') + ' (urealiseret kursresultat), beløb = ' + signed(c.cumMark) + ' DKK']
+      ]);
+      document.getElementById('reg-calc').innerHTML =
+        'Ny markedsværdi = nominel × ny kurs ÷ 100 = ' + fmt(c.nom, 0) + ' × ' + fmt(c.aPrice) + ' ÷ 100 = ' + fmt(c.mv) + ' DKK. ' +
+        'Kumulativ regulering fra kostbasis = ' + fmt(c.mv) + ' − ' + fmt(c.costBasis) + ' = ' + signed(c.cumMark) + ' DKK (rent kurs; ingen valuta, da DKK). ' +
+        'Udestående urealiseret før = 0,00 → netto for perioden = ' + signed(c.cumMark) + ' DKK. Den udestående mark tilbageføres proportionalt ved salg og udtrækning i trin 5–6.';
+      glRows('reg-gl', 'reg-bal', [
+        { k: 'holding', note: 'beholdning reguleres', amt: c.cumMark, side: 'dr' },
+        { k: 'unrealPrice', note: c.cumMark >= 0 ? 'urealiseret gevinst' : 'urealiseret tab', amt: c.cumMark, side: 'cr' }
+      ]);
+
+      /* ── Trin 5: Salg ── */
+      document.getElementById('salg-warn').innerHTML = c.warnSale ? '<div class="err-box">' + c.warnSale + '</div>' : '';
+      var salePct = fmt(c.saleShare * 100, 0) + ' %';
+      document.getElementById('salg-summary').innerHTML =
+        'Salgssum (ren) = ' + fmt(c.saleSum) + ' DKK &nbsp;|&nbsp; Kostbasis (FIFO ved købskurs) = ' + fmt(c.costOut) + ' DKK<br>' +
+        '<strong>Realiseret kursresultat = ' + signed(c.realPrice) + ' DKK</strong> &nbsp;|&nbsp; Handelsrente modtaget = ' + fmt(c.tradeIntSale) + ' DKK<br>' +
+        'Samlet bankafregning = ' + fmt(c.saleBank) + ' DKK &nbsp;|&nbsp; Tilbagefører urealiseret mark (' + salePct + '): ' + signed(-c.revMark) + ' DKK';
+      udfald('salg-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Salg, Antal = −' + fmt(c.sNom, 0) + ', Handelsrente = <strong>−' + fmt(c.tradeIntSale) + '</strong> DKK — renten vendes med salget, så identiteten Beløb = Beløb før renter + Handelsrente også holder på posten'],
+        ['DVLE', '1 forbrugsrække mod købspartiet; partiets Restantal reduceres til ' + fmt(c.rest, 0)],
+        ['DPLE — Handelsrente (Afkast)', c.tradeIntSale !== 0
+          ? '1 række: Bilagstype = Afkast, Realiseret, Avancetype = Blank, Beløb (RV) = ' + signed(c.tradeIntSale) + ' DKK — positiv ved salg (sælger modtager renten); købets modstykke i trin 1 var negativ'
+          : '<span class="zero">Ingen</span> — ingen handelsrente'],
+        ['DPLE — Realiseret pris', 'Beløb (RV) = ' + signed(c.realPrice) + ' DKK (salgsside − kostside), Avancekomponent = Fondskursavance'],
+        ['DPLE — tilbageførsel (urealiseret, proportionalt ' + salePct + ')', c.revMark !== 0
+          ? 'Pris ' + signed(-c.revMark) + ' DKK'
+          : '<span class="zero">Ingen</span> — ingen udestående mark']
+      ]);
+      document.getElementById('salg-calc').innerHTML =
+        'Salgssum (ren) = solgt nominel × salgskurs ÷ 100 = ' + fmt(c.sNom, 0) + ' × ' + fmt(c.sPrice) + ' ÷ 100 = ' + fmt(c.saleSum) + ' DKK. ' +
+        'Kostbasis (FIFO ved købskurs) = ' + fmt(c.sNom, 0) + ' × ' + fmt(c.pPrice) + ' ÷ 100 = ' + fmt(c.costOut) + ' DKK. ' +
+        'Realiseret kursresultat = ' + fmt(c.saleSum) + ' − ' + fmt(c.costOut) + ' = ' + signed(c.realPrice) + ' DKK. ' +
+        'Handelsrente modtaget = ' + fmt(c.sNom, 0) + ' × ' + fmtR(c.rate) + ' % × ' + fmt(c.d4, 0) + '/360 = ' + fmt(c.tradeIntSale) + ' DKK (afregnes med banken; ikke kursavance). ' +
+        'Tilbageførsel af urealiseret mark: ' + salePct + ' × ' + fmt(c.cumMark) + ' = ' + fmt(c.revMark) + ' DKK.';
+      glRows('salg-gl', 'salg-bal', [
+        { k: 'bank', note: 'salgssum + handelsrente', amt: c.saleBank, side: 'dr' },
+        { k: 'tradingInterest', note: 'handelsrente modtaget', amt: c.tradeIntSale, side: 'cr' },
+        { k: 'holding', note: 'kostbasis ud (FIFO)', amt: c.costOut, side: 'cr' },
+        { k: 'realPrice', note: c.realPrice >= 0 ? 'realiseret kursgevinst' : 'realiseret kurstab', amt: c.realPrice, side: 'cr' },
+        { k: 'holding', note: 'tilbagefør urealiseret mark', amt: c.revMark, side: 'cr' },
+        { k: 'unrealPrice', note: 'nulstil urealiseret kursresultat', amt: c.revMark, side: 'dr' }
+      ]);
+      document.getElementById('salg-rest').innerHTML =
+        'Handelsrenten posteres med modsat fortegn af købet (her kredit ' + acct('tradingInterest') + ') via <code>PostTradingInterestToGL</code>. ' +
+        'Efter salget: <strong>' + fmt(c.rest, 0) + '</strong> i nominel restbeholdning med udestående urealiseret mark ' + signed(c.remMark) + ' DKK.';
+
+      /* ── Trin 6: Udtrækning ── */
+      document.getElementById('udt-warn').innerHTML = c.warnDraw ? '<div class="err-box">' + c.warnDraw + '</div>' : '';
+      var drawPct = fmt((c.nom > 0 ? c.dNom / c.nom : 0) * 100, 0) + ' %';
+      document.getElementById('udt-summary').innerHTML =
+        'Udtræksprovenu = udtrukket nominel × kurs 100 ÷ 100 = ' + fmt(c.proceeds) + ' DKK &nbsp;|&nbsp; Kostbasis = ' + fmt(c.costOut2) + ' DKK<br>' +
+        '<strong>Realiseret resultat = ' + signed(c.realGain2) + ' DKK</strong> &nbsp;|&nbsp; Tilbagefører urealiseret mark (' + drawPct + '): ' + signed(-c.revMark2) + ' DKK<br>' +
+        '<span class="muted">Beholdning herefter = ' + fmt(c.rest2, 0) + '.</span>';
+      udfald('udt-udfald', [
+        ['SLE', '1 ny post, Bilagstype = Salg, Drawing = Ja, Antal = −' + fmt(c.dNom, 0)],
+        ['DVLE', c.rest2 === 0
+          ? 'Resterende parti lukkes (Restantal → 0, Åben = Nej)'
+          : 'Forbrugsrække mod købspartiet; partiets Restantal reduceres til ' + fmt(c.rest2, 0)],
+        ['DPLE — Realiseret pris', 'Beløb (RV) = ' + signed(c.realGain2) + ' DKK, Avancekomponent = Fondskursavance'],
+        ['DPLE — tilbageførsel (urealiseret, ' + drawPct + ')', c.revMark2 !== 0
+          ? 'Pris ' + signed(-c.revMark2) + ' DKK'
+          : '<span class="zero">Ingen</span> — ingen udestående mark']
+      ]);
+      document.getElementById('udt-calc').innerHTML =
+        'Udtræksprovenu = udtrukket nominel × kurs ÷ 100 = ' + fmt(c.dNom, 0) + ' × 100 ÷ 100 = ' + fmt(c.proceeds) + ' DKK. ' +
+        'Kostbasis = ' + fmt(c.dNom, 0) + ' × ' + fmt(c.pPrice) + ' ÷ 100 = ' + fmt(c.costOut2) + ' DKK. ' +
+        'Realiseret resultat = ' + fmt(c.proceeds) + ' − ' + fmt(c.costOut2) + ' = ' + signed(c.realGain2) + ' DKK. ' +
+        'Tilbageførsel af urealiseret mark: ' + drawPct + ' × ' + fmt(c.cumMark) + ' = ' + fmt(c.revMark2) + ' DKK' +
+        (c.rest2 === 0 && c.markAfter === 0 && (c.revMark !== 0 || c.revMark2 !== 0)
+          ? ' (al urealiseret mark nu nulstillet: ' + fmt(c.revMark) + ' + ' + fmt(c.revMark2) + ' = ' + fmt(c.cumMark) + ').'
+          : '.');
+      glRows('udt-gl', 'udt-bal', [
+        { k: 'bank', note: 'udtræksprovenu (par)', amt: c.proceeds, side: 'dr' },
+        { k: 'holding', note: 'kostbasis ud', amt: c.costOut2, side: 'cr' },
+        { k: 'realPrice', note: c.realGain2 >= 0 ? 'realiseret kursgevinst' : 'realiseret kurstab', amt: c.realGain2, side: 'cr' },
+        { k: 'holding', note: 'tilbagefør resterende mark', amt: c.revMark2, side: 'cr' },
+        { k: 'unrealPrice', note: 'nulstil urealiseret kursresultat', amt: c.revMark2, side: 'dr' }
+      ]);
+      document.getElementById('udt-rest').innerHTML =
+        '<strong>Udtrækning vs. NAV:</strong> i modsætning til NAV sættes kursen ikke til 100 ved et almindeligt salg — det er <em>Drawing</em>-markeringen der gør det. Drawing kan kun sættes på en obligation; forsøges det på en aktie, afvises linjen. ' +
+        'Efter udtrækningen: <strong>' + fmt(c.rest2, 0) + '</strong> i nominel restbeholdning, urealiseret mark ' + signed(c.markAfter) + ' DKK.';
+    }
+
+    document.querySelectorAll('.sim-field input').forEach(function (el) {
+      el.addEventListener('input', render);
+    });
+    render();
+  })();
+  </script>
+</body>
+</html>

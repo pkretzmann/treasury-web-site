@@ -76,6 +76,7 @@
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
         <tr><td>SLE</td><td>1 ny post, Bilagstype = Afkast, Antal = 0, Realiseringstype = Realiseret, Afkast før skat = 5.000,00 DKK</td></tr>
+        <tr><td>Depotpost</td><td>1 pr. depot med Antal = 0 — den realiserede kupon afregner gennem depotet. (Case 2's urealiserede periodisering dannede ingen.)</td></tr>
         <tr><td>DPLE — Afkast (realiseret)</td><td>1 række: Realiseringstype = Realiseret, Resultattype = Afkast, Beløb (RV) = 5.000,00 DKK</td></tr>
         <tr><td>DPLE — tilbageførsel (urealiseret)</td><td>Tilbagefører Case 2-rækken: Beløb (RV) = −3.333,33 DKK, Tilbageført = Ja</td></tr>
         <tr><td>Finanspost — realisering</td><td>Debet <span class="acct" data-acct="bank">2620</span> (bank) 5.000,00; Kredit <span class="acct" data-acct="couponIncome">1450</span> (renteindtægt) 5.000,00</td></tr>
@@ -106,8 +107,8 @@
   <div class="table-wrap"><table>
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr><td>SLE</td><td>1 ny post, Bilagstype = Kursregulering, Antal = 0</td></tr>
-        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="neg">−5.500,00</span> DKK</td></tr>
+        <tr><td>SLE</td><td>1 ny post, Bilagstype = Kursregulering, Antal = 1.000.000 (depotets beholdning), Beløb (RV) = 982.000,00 DKK (hele markedsværdien — NAV skrev her 0 og kun tilvæksten; bevidst afvigelse)</td></tr>
+        <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="neg">−5.500,00</span> DKK (markedsværdi minus kostbasis — også for et DKK-papir er det lot-opgørelsen, ikke linjens fulde beløb)</td></tr>
         <tr><td>DPLE — Valuta</td><td><span class="zero">Ingen post</span> — DKK, ingen valutaeffekt</td></tr>
         <tr><td>Finanspost</td><td>Kredit <span class="acct" data-acct="holding">2650</span> (beholdning/regulering) 5.500,00; Debet <span class="acct" data-acct="unrealPrice">1355</span> (urealiseret kursresultat) 5.500,00 (urealiseret tab)</td></tr>
       </tbody></table></div>
@@ -133,7 +134,7 @@
   <div class="table-wrap"><table>
       <thead><tr><th>Tabel</th><th>Felt / Værdi</th></tr></thead>
       <tbody>
-        <tr><td>SLE</td><td>1 ny Kursregulering-post, Antal = 0</td></tr>
+        <tr><td>SLE</td><td>1 ny Kursregulering-post, Antal = 1.000.000, Beløb (RV) = 994.000,00 DKK (markedsværdien)</td></tr>
         <tr><td>DPLE — Pris</td><td>1 række: Urealiseret, Pris-regulering, Beløb (RV) = <span class="pos">+12.000,00</span> DKK (netto)</td></tr>
         <tr><td>DPLE — Valuta</td><td><span class="zero">Ingen post</span> — DKK</td></tr>
         <tr><td>Finanspost</td><td>Debet <span class="acct" data-acct="holding">2650</span> 12.000,00; Kredit <span class="acct" data-acct="unrealPrice">1355</span> 12.000,00</td></tr>

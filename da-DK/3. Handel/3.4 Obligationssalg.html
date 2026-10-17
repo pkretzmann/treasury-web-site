@@ -33,7 +33,7 @@
     <h2>Åbn Handelskladden</h2>
   </div>
   <p>Klik på <strong>Værdipapirhandelskladder</strong> i Treasury-menuen i rollecentret. Hvis du har oprettet flere kladdetyper, vises en oversigt over disse. Vælg den kladdetype, der er oprettet til obligationshandel. Øverst i vinduet kan du skifte kladdenavn (batch) i feltet <strong>Kladdenavn</strong>.</p>
-  <p>Fremgangsmåden er den samme som ved aktiesalg – men beløbet beregnes efter obligationskonventionen, og tre kolonner er kun relevante her: <strong>Handelsrenter</strong>, <strong>Udtrækning</strong> og – ved indeksobligationer – <strong>Indekskurs</strong>, som er skjult som standard og hentes frem med <strong>Personalisér</strong> (se <em>Skjulte kolonner</em> nedenfor).</p>
+  <p>Fremgangsmåden er den samme som ved aktiesalg – men beløbet beregnes efter obligationskonventionen, og tre kolonner er kun relevante her: <strong>Handelsrenter</strong>, <strong>Udtrækning</strong> og – ved indeksobligationer – <strong>Indekskurs</strong>. Alle tre vises som standard i kladden.</p>
   <div class="note">
     <strong>Bemærk:</strong> Kladdetypen styrer ikke, hvilke kolonner du ser. Alle kolonner findes på kladden, uanset om du handler aktier eller obligationer, og du bestemmer selv hvilke der vises med <strong>Personalisér</strong> (tandhjulet → <em>Personalisér</em>).
   </div>
@@ -91,6 +91,10 @@
           <td>Salgskursen angives som <strong>procent af nominel værdi</strong> – f.eks. <code>101,25</code> for kurs 101,25. Foreslås automatisk fra ISIN-kurslisten, når der findes en kurs på handelsdatoen, og kan altid overskrives manuelt. Ved en udtrækning sættes kursen til 100 af sig selv.</td>
         </tr>
         <tr>
+          <td><strong>Indekskurs</strong></td>
+          <td>Kun obligationer, der er markeret <strong>Indeksobligation</strong> på obligationskortet – dér er feltet til gengæld <strong>obligatorisk</strong>. Angiv indeksfaktoren – <code>1,05</code> for indeks 105, ikke indekstallet selv. Den ganges på beløbet, se formlen nedenfor. Foreslås automatisk fra <strong>Indekskurser</strong>, se noten nedenfor. På en obligation uden markeringen, og på en aktie, afvises feltet.</td>
+        </tr>
+        <tr>
           <td><strong>Omkostninger</strong></td>
           <td>Angiv salgsomkostningerne: kurtage, provisioner m.v. Omkostningerne tastes som et <strong>positivt beløb</strong> – de trækkes automatisk fra salgsprovenuet.</td>
         </tr>
@@ -140,10 +144,6 @@
         <tr>
           <td><strong>Bogføringsdato</strong></td>
           <td>Sættes automatisk lig med handelsdatoen. Hent kolonnen frem, hvis bogføringsdatoen undtagelsesvis skal afvige fra handelsdatoen.</td>
-        </tr>
-        <tr>
-          <td><strong>Indekskurs</strong></td>
-          <td>Kun obligationer, der er markeret <strong>Indeksobligation</strong> på obligationskortet – dér er feltet til gengæld <strong>obligatorisk</strong>, så handler du indeksobligationer, henter du kolonnen frem, inden du bogfører. Angiv indeksfaktoren – <code>1,05</code> for indeks 105, ikke indekstallet selv. Den ganges på beløbet, se formlen nedenfor. Foreslås automatisk fra <strong>Indekskurser</strong>, se noten nedenfor. På en obligation uden markeringen, og på en aktie, afvises feltet.</td>
         </tr>
         <tr>
           <td><strong>Gratis</strong></td>
@@ -290,7 +290,8 @@
   <p>De detaljerede avanceposter ses på listen <strong>Detaljerede avanceposter</strong>.</p>
   <p>Derudover oprettes:</p>
   <ul class="bullets">
-    <li><strong>Værdipapirpost:</strong> Én post med bilagstype <strong>Salg</strong> og det solgte antal med negativt fortegn. Indekskursen og markeringen <strong>Udtrækning</strong> gemmes på posten.</li>
+    <li><strong>Værdipapirpost:</strong> Én post med bilagstype <strong>Salg</strong> og det solgte antal med negativt fortegn. Indekskursen og markeringen <strong>Udtrækning</strong> gemmes på posten. Handelsrenten gemmes på posten med samme fortegn som beløbet, så sammenhængen <strong>Beløb = Beløb før renter + Handelsrenter</strong> også holder på salgsposten.</li>
+    <li><strong>Detaljeret avancepost — handelsrente:</strong> Dannes kun, når linjen har en handelsrente, én pr. salg (ikke pr. lot). Renten registreres som realiseret afkast (bilagstype <strong>Afkast</strong>, avancekomponent <strong>Afkast</strong>, blank avancetype) med <strong>positivt</strong> fortegn — sælgeren modtager renten. Købets tilsvarende post er negativ, så tabellens nettorente stemmer med finansens.</li>
     <li><strong>Depotpost:</strong> En depotpost, der registrerer, at den nominelle værdi er fragået depotet. Antallet arver værdipapirpostens fortegn, så depotets <strong>Restantal</strong> nedskrives tilsvarende.</li>
     <li><strong>Finansposter:</strong> Salgets finansvirkning, opdelt på de konti der er beskrevet nedenfor.</li>
   </ul>

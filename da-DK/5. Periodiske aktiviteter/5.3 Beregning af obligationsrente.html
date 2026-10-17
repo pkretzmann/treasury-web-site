@@ -68,6 +68,8 @@
       <tr><td><strong>Afkastkladdetype</strong></td><td>Den kladdetype, linjerne dannes i. Feltet accepterer <strong>kun</strong> kladdetyper af typen <em>Afkast</em> — opslaget viser ikke andre, og en type af forkert slags afvises, når kørslen starter.</td></tr>
       <tr><td><strong>Afkastkladdebatch</strong></td><td>Kladdenavnet under den valgte kladdetype. Opslaget er afgrænset til den valgte type, og skifter du type, ryddes navnet. Findes navnet ikke, afvises kørslen.</td></tr>
       <tr><td><strong>Bilagsnr.</strong></td><td>Valgfrit. Lades feltet blankt, får hver linje sit bilagsnummer fra kladdenavnets nummerserie — som en linje, du selv taster. Udfylder du feltet, bruges dit nummer på alle linjer.</td></tr>
+      <tr><td><strong>Tilbageførselsmetode</strong></td><td>Angiver, hvordan de urealiserede renteperiodiseringer tilbageføres. <strong>Ved realisation</strong> lader periodiseringerne stå, til der bogføres realiseret rente på obligationen — det lukker dem automatisk. <strong>Straks</strong> danner desuden modlinjerne i samme kladde, dateret efter datoformlen, og tilbagefører allerede bogførte periodiseringer, der stadig er udestående på deres første terminsdato. Modlinjerne bærer periodiseringens egen valutakurs, så tilbageførslen udligner periodiseringen krone for krone — også i regnskabsvaluta.</td></tr>
+      <tr><td><strong>Datoformel for tilbageførsel</strong></td><td>Datoen på hver modlinje, beregnet fra dens terminsdato. Bruges kun med metoden <strong>Straks</strong>. Blank betyder <strong>1D</strong> — dagen efter terminen.</td></tr>
       <tr><td><strong>Filter på Værdipapir</strong></td><td>Begræns til ét eller flere værdipapirer. Kørslen ser i forvejen kun på obligationer, hvor <strong>Udelad renteberegning</strong> ikke er markeret.</td></tr>
     </tbody>
   </table>
@@ -155,7 +157,7 @@
     </thead>
     <tbody>
       <tr><td><strong>Værdipapirpost</strong></td><td>Bilagstype <em>Afkast</em>, antal 0, rentebeløbet i <strong>Afkast før skat</strong> samt beløbet i regnskabsvaluta. Realiseringstypen kommer fra terminsopsætningen.</td></tr>
-      <tr><td><strong>Depotpost</strong></td><td>Én pr. depot, med antal 0.</td></tr>
+      <tr><td><strong>Depotpost</strong></td><td>Kun ved <strong>realiseret</strong> rente med depotkode på linjen: én pr. depot, med antal 0 — renten afregnes gennem depotet. En urealiseret periodisering danner ingen depotpost; intet bevæger sig ind eller ud af depotet, før terminen afregnes.</td></tr>
       <tr><td><strong>Detaljeret avancepost</strong></td><td>Avancekomponent <em>Afkast</em>, realiseret eller urealiseret som på linjen.</td></tr>
       <tr><td><strong>Finansposter</strong></td><td>Renteindtægten på afkastkontoen i <strong>Værdipapiravancebogføringsgruppe</strong>, modposteret på depotets modkonto (typisk banken ved realiseret rente, en periodiseringskonto ved urealiseret).</td></tr>
     </tbody>
@@ -166,13 +168,14 @@
   urealiserede beløb på de forbrugte købspartier.</p>
   <div class="nav-deviation">
     <span class="nav-deviation-tag">Afvigelse fra NAV</span>
-    <h4>Tilbageførselsmetoden findes ikke som parameter</h4>
+    <h4>Tilbageførselsmetoden har ingen blank værdi</h4>
     <span class="nav-says">NAV: <em>Renteberegningen har en <strong>Tilbageførselsmetode</strong> — blank, <strong>Straks</strong> eller <strong>Ved realisation</strong> — med egne tilbageførselsdatoer.</em></span>
-    <p>NAV-løsningen har en <em>Tilbageførselsmetode</em>
-    (<em>blank</em>, <em>Straks</em>, <em>Ved realisation</em>) som parameter på renteberegningen, der
-    kan danne en modgående linje dagen efter terminsdatoen. Den parameter findes ikke i Business
-    Central. Tilbageførslen sker i stedet ved realisationen som beskrevet ovenfor, eller manuelt via
-    en ompostering.</p>
+    <p>Business Central har de to metoder <strong>Ved realisation</strong> og <strong>Straks</strong>,
+    men ikke NAV's blanke valg, der betød »kørslen danner ingen tilbageførsler«. Det er udeladt med
+    vilje: NAV lukkede aldrig periodiseringer af sig selv, mens BC's bogføring lukker udestående
+    periodiseringer i samme øjeblik, der bogføres realiseret rente på obligationen — et blankt valg
+    ville derfor enten være det samme som <em>Ved realisation</em> eller kræve et særskilt felt til
+    at slå den lukning fra.</p>
   </div>
 </div>
   </div>

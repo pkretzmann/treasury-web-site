@@ -118,8 +118,8 @@
   <ol class="steps">
     <li>Finder seneste fondskurs på eller før datoen. Er kursen hentet fra en <strong>tidligere</strong> dato, markeres linjen som fremskrevet: kursen bruges til at værdiansætte, men skrives <em>ikke</em> tilbage i kurslisten ved bogføring, så der ikke opstår en kurs på en dag, hvor ingen har noteret én.</li>
     <li>Findes der slet ingen kurs på eller før datoen, dannes linjen alligevel — med kurs 0 og nulbeløb — så du selv kan taste kursen inden bogføring. Den kurs, du taster, gemmes i kurslisten.</li>
-    <li>Beregner værdiændringen i regnskabsvaluta og deler den op i en kurskomponent og en valutakomponent.</li>
-    <li>Fordeler reguleringen pr. depot efter depotets beholdning og danner én linje pr. depot med bilagstype <strong>Kursregulering</strong> og realiseringstype <strong>Urealiseret</strong>.</li>
+    <li>Fordeler reguleringen pr. depot efter depotets andel af de åbne købsposter og danner én linje pr. depot med bilagstype <strong>Kursregulering</strong> og realiseringstype <strong>Urealiseret</strong>. Linjen viser depotets beholdning og hele markedsværdien til den nye kurs — det er kladdens konvention. Hver linje regulerer kun sit eget depots købsposter.</li>
+    <li>Ved bogføringen deles værdiændringen i regnskabsvaluta op i en kurskomponent og en valutakomponent ud fra de åbne købsposter — det gælder også papirer i regnskabsvalutaen, hvor valutakomponenten er 0 og kurskomponenten er markedsværdien minus kostprisen.</li>
     <li>Sætter <strong>Lagerprincip</strong> på linjerne ud fra afkrydsningsfeltet. Kørslen behandler kun værdipapirer, hvis bogføringsgruppe anvender lagerprincippet, så afkrydsningen slår igennem på alle de linjer, den danner.</li>
   </ol>
   <p>Til sidst viser kørslen, hvor mange kladdelinjer der blev dannet, og eventuelle advarsler om manglende kursdatoer. Linjerne står nu i kladden, klar til gennemsyn.</p>
@@ -130,7 +130,7 @@
       <p>Værdiændringen i regnskabsvaluta beregnes pr. åben købspost (lot) som forskellen mellem beholdningens værdi på reguleringsdatoen og dens bogførte anskaffelsesværdi:</p>
       <pre><code>ΔRV = Σ over åbne lots:  Antal × NyKurs      / Valutafaktor(reguleringsdato)
                        − Antal × Købskurs   / Valutafaktor(købsdato)</code></pre>
-      <p>Beløbet i handelsvaluta beregnes som <code>Σ Antal × (NyKurs − gennemsnitlig købskurs)</code>. Selve opdelingen mellem fondskurs- og valutakurskomponent udledes ved bogføringen af de åbne lots — ikke af beløbet på kladdelinjen.</p>
+      <p>Kladdelinjens <strong>Beløb</strong> og <strong>Beløb (RV)</strong> er depotets fulde markedsværdi til den nye kurs (<code>Antal × NyKurs</code>, hhv. omregnet med dagens valutafaktor) — ikke ændringen. Selve opdelingen mellem fondskurs- og valutakurskomponent udledes ved bogføringen af de åbne lots — ikke af beløbet på kladdelinjen.</p>
       <table>
         <thead><tr><th>Objekt</th><th>ID</th></tr></thead>
         <tbody>
@@ -151,7 +151,7 @@
 
   <p>Pr. bogført linje dannes:</p>
   <ul class="bullets">
-    <li><strong>Værdipapirpost</strong> med bilagstype <strong>Kursregulering</strong>, antal 0 og beløbet svarende til depotets samlede værdiændring. Realiseringstype <strong>Urealiseret</strong>.</li>
+    <li><strong>Værdipapirpost</strong> med bilagstype <strong>Kursregulering</strong>, depotets beholdning som antal og depotets fulde markedsværdi som beløb (kladdelinjens tal skrives uændret videre). Realiseringstype <strong>Urealiseret</strong>. NAV skrev her antal 0 og kun værditilvæksten — en bevidst afvigelse; finansposterne bogfører stadig kun ændringen.</li>
     <li><strong>Detaljerede avanceposter</strong> — én for fondskurseffekten og, for værdipapirer i fremmed valuta, én for valutakurseffekten. Begge urealiserede.</li>
     <li><strong>Finansposter</strong> — beholdningen reguleres, og modposten lander på kontiene for urealiseret gevinst eller tab. Alle posteringer deles om samme transaktionsnummer.</li>
   </ul>
@@ -170,7 +170,7 @@
         <tbody>
           <tr>
             <td>Værdipapirpost</td>
-            <td>Bilagstype <em>Price Adjustment</em>, antal = 0, beløb og beløb (RV) = depotets samlede mark-to-market-ændring, realiseringstype <em>Unrealized</em>.</td>
+            <td>Bilagstype <em>Price Adjustment</em>, antal = depotets beholdning, beløb og beløb (RV) = depotets fulde markedsværdi til den nye kurs, realiseringstype <em>Unrealized</em>. (NAV: antal 0 og kun tilvæksten — bevidst afvigelse, jf. Vestas-playbooken.)</td>
           </tr>
           <tr>
             <td>Detaljeret avancepost (kurs)</td>

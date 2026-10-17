@@ -32,7 +32,7 @@
     <h2>Åbn Handelskladden</h2>
   </div>
   <p>Klik på <strong>Værdipapirhandelskladder</strong> i Treasury-menuen i rollecentret. Hvis du har oprettet flere kladdetyper, vises en oversigt over disse. Vælg den kladdetype, der er oprettet til obligationshandel. Øverst i vinduet kan du skifte kladdenavn (batch) i feltet <strong>Kladdenavn</strong>.</p>
-  <p>Fremgangsmåden er den samme som ved aktiekøb – men beløbet beregnes efter obligationskonventionen, og tre kolonner er kun relevante her: <strong>Handelsrenter</strong>, <strong>Udtrækning</strong> og – ved indeksobligationer – <strong>Indekskurs</strong>, som er skjult som standard og hentes frem med <strong>Personalisér</strong> (se <em>Skjulte kolonner</em> nedenfor).</p>
+  <p>Fremgangsmåden er den samme som ved aktiekøb – men beløbet beregnes efter obligationskonventionen, og tre kolonner er kun relevante her: <strong>Handelsrenter</strong>, <strong>Udtrækning</strong> og – ved indeksobligationer – <strong>Indekskurs</strong>. Alle tre vises som standard i kladden.</p>
   <div class="note">
     <strong>Bemærk:</strong> Kladdetypen styrer ikke, hvilke kolonner du ser. Alle kolonner findes på kladden, uanset om du handler aktier eller obligationer, og du bestemmer selv hvilke der vises med <strong>Personalisér</strong> (tandhjulet → <em>Personalisér</em>).
   </div>
@@ -89,6 +89,10 @@
           <td>Kursen angives som <strong>procent af nominel værdi</strong> – f.eks. <code>98,50</code> for kurs 98,50. Foreslås automatisk fra ISIN-kurslisten, når der findes en kurs på handelsdatoen, og kan altid overskrives manuelt.</td>
         </tr>
         <tr>
+          <td><strong>Indekskurs</strong></td>
+          <td>Kun obligationer, der er markeret <strong>Indeksobligation</strong> på obligationskortet – dér er feltet til gengæld <strong>obligatorisk</strong>. Angiv indeksfaktoren – <code>1,05</code> for indeks 105, ikke indekstallet selv. Den ganges på beløbet, se formlen nedenfor. Feltet foreslås automatisk fra <strong>Indekskurser</strong>. På en obligation uden markeringen, og på en aktie, afvises feltet.</td>
+        </tr>
+        <tr>
           <td><strong>Omkostninger</strong></td>
           <td>Angiv omkostninger (kurtage, provisioner m.v.). Indgår i anskaffelsesværdien ved fremtidig avanceopgørelse.</td>
         </tr>
@@ -138,10 +142,6 @@
         <tr>
           <td><strong>Fondsaktie</strong> · <strong>Gratis</strong></td>
           <td>Bruges ved tildelinger, se afsnit 3.1.</td>
-        </tr>
-        <tr>
-          <td><strong>Indekskurs</strong></td>
-          <td>Kun obligationer, der er markeret <strong>Indeksobligation</strong> på obligationskortet – dér er feltet til gengæld <strong>obligatorisk</strong>, så handler du indeksobligationer, henter du kolonnen frem, inden du bogfører. Angiv indeksfaktoren – <code>1,05</code> for indeks 105, ikke indekstallet selv. Den ganges på beløbet, se formlen nedenfor. Feltet foreslås automatisk fra <strong>Indekskurser</strong>. På en obligation uden markeringen, og på en aktie, afvises feltet.</td>
         </tr>
         <tr>
           <td><strong>Valutafaktor</strong></td>
@@ -238,6 +238,10 @@
         <tr>
           <td><strong>Detaljeret værdipost</strong></td>
           <td>Én lot-post pr. køb. Den peger på sig selv via <em>Købspostløbenr.</em> og indeholder <em>Restantal</em> og <em>Købskurs</em>, der bruges til avanceopgørelse ved fremtidigt salg. Beløbet på lottet er <strong>Beløb før renter</strong>, således at handelsrenten ikke indgår i kostprisen.</td>
+        </tr>
+        <tr>
+          <td><strong>Detaljeret avancepost</strong></td>
+          <td>Dannes kun, når linjen har en handelsrente. Renten registreres som realiseret afkast (bilagstype <strong>Afkast</strong>, avancekomponent <strong>Afkast</strong>, blank avancetype) med <strong>negativt</strong> fortegn — køberen betaler renten væk. Sammen med den senere kupons positive post går tabellens nettorente dermed op med finansens.</td>
         </tr>
         <tr>
           <td><strong>Depotpost</strong></td>
